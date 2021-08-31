@@ -1,0 +1,15 @@
+{
+  "name": "keep-living-in-the-past-man",
+  "version": "1.0.0",
+  "description": "Keep living in the past browser plugin",
+  "main": "index.js",
+  "scripts": {
+    "test": "./test/"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^4.4.2"
+  },
+  "author": "Ferdia Fagan",
+  "license": "MIT"
+}
