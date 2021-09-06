@@ -14,7 +14,8 @@ import java.io.{IOException, InputStream, InterruptedIOException}
  * all through System.out
  */
 object InputOutputAdapter {
-  val logger = LoggerFactory.getLogger("InputOutputAdapter")
+//  val logger = LoggerFactory.getLogger("InputOutputAdapter")
+  val logger = LoggerFactory.getLogger(getClass)
   val STEP_SIZE: Int = 8000;
 
   private def changeMessageStreamIntoBytes(messageInput: InputStream, msgSize: Int): Array[Byte] = {

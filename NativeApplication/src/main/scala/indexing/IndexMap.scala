@@ -32,7 +32,8 @@ class IndexMap(val webpageLengths: mutable.HashMap[Long,Int],
     this ++= indexMap
   }
 
-  val logger = LoggerFactory.getLogger(classOf[IndexMap])
+//  val logger = LoggerFactory.getLogger(classOf[IndexMap])
+  val logger = LoggerFactory.getLogger(getClass)
 
 //  logger.info("indexMap: " + this.mkString(","))
 //  logger.info("webpageLengths: " + webpageLengths.mkString(","))
@@ -190,7 +191,7 @@ object IndexMap {
 
   val QUERY_RESULTS_LIMIT = 20
 
-  val logger = LoggerFactory.getLogger("IndexMap")
+  val logger = LoggerFactory.getLogger(getClass)
 
   /**
    * creates IndexMap instance that loads in previous data from database

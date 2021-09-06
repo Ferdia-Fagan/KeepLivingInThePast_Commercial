@@ -17,7 +17,8 @@ class BookmarksMappings_DAO(val db:Database) extends BookmarksMappingsComponent_
                                               with BookmarksMappings_DAO_QueryAPI {
   import BookmarksMappingsComponent.Bookmark
 
-  private val logger = LoggerFactory.getLogger(classOf[BookmarksMappings_DAO])
+//  private val logger = LoggerFactory.getLogger(classOf[BookmarksMappings_DAO])
+  private val logger = LoggerFactory.getLogger(getClass)
 
   def addBookmarkForWebpage(bookmarkId:Int,parentBookmarkId: Int,webpageLoggingId: Long): Unit = {
     val bookmarkWebpage = addNewBookmark(Bookmark(bookmarkId,parentBookmarkId,webpageLoggingId))

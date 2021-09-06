@@ -24,7 +24,8 @@ object DatabaseConfiguration{
 
       import slick.jdbc.H2Profile.api._
 
-      val logger: Logger = LoggerFactory.getLogger("generateAllUserSystemTables")
+//      val logger: Logger = LoggerFactory.getLogger("generateAllUserSystemTables")
+      val logger: Logger = LoggerFactory.getLogger(getClass)
 
 
       def setup: Unit = {

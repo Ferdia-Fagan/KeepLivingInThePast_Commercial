@@ -7,9 +7,10 @@ scalaVersion := "2.13.4"
 javacOptions ++= Seq("-encoding", "UTF-8")
 
 libraryDependencies ++= {
-  Seq("io.reactivex" %% "rxscala" % "0.27.0",
-    "org.slf4j" % "slf4j-api" % "1.7.5",
-    "org.slf4j" % "slf4j-simple" % "1.7.5",
+  Seq(
+//    "io.reactivex" %% "rxscala" % "0.27.0",
+    "org.slf4j" % "slf4j-api" % "1.7.32",
+    "org.slf4j" % "slf4j-simple" % "1.7.32",
     //    "org.clapper" %% "grizzled-slf4j" % "1.3.4",
     "com.fasterxml.jackson.core" % "jackson-databind" % "2.2.2",
     "com.fasterxml.jackson.module" %% "jackson-module-scala" % "2.12.0",

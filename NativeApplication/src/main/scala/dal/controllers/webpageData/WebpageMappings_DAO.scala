@@ -22,7 +22,8 @@ trait WebpageMappings_DAO_QueryAPI{
 class WebpageMappings_DAO(val db:Database) extends WebpageMappingsComponent_QueryAPI
                                             with WebpageMappings_DAO_QueryAPI {
 
-  private val logger = LoggerFactory.getLogger(classOf[WebpageMappings_DAO])
+//  private val logger = LoggerFactory.getLogger(classOf[WebpageMappings_DAO])
+  private val logger = LoggerFactory.getLogger(getClass)
 
 //  def create(webPageDetails: Webpage):Unit = {
 //    db.run(webpageMappingT += webPageDetails)

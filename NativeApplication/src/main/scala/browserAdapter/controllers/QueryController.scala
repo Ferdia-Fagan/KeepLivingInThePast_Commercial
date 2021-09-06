@@ -35,7 +35,8 @@ class QueryController(val browserSessionData: BrowserSessionData,
 
   import browserAdapter.InputOutputAdapter.sendMessageToBrowserPlugin
 
-  val logger: Logger = LoggerFactory.getLogger(classOf[QueryController])
+//  val logger: Logger = LoggerFactory.getLogger(classOf[QueryController])
+  val logger: Logger = LoggerFactory.getLogger(getClass)
 
   /**
    * Handles search query request from browser plugin.

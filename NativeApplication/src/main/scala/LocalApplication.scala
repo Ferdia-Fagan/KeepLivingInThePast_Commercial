@@ -6,17 +6,22 @@ import java.lang.Thread.sleep
 import dal.controllers.autoCollector.AutoAnnotator_DAO
 import dal.controllers.browsingData.DailyWebpageVisits_DAO
 import dal.controllers.webpageData.{BookmarksMappings_DAO, WebpageMappings_DAO, WebpageSearchData_DAO, WebpageTagMappings_DAO}
-import org.slf4j.LoggerFactory
+import org.slf4j.{Logger, LoggerFactory}
 import session.BrowserSessionData
 
 object LocalApplication{
 
-  val logger = LoggerFactory.getLogger("LocalApplication")
+  println("started here")
+
+  val logger: Logger = LoggerFactory.getLogger(getClass)
+
 
   def main(args: Array[String]): Unit = {
-
+    println("started there")
     logger.info("started: ")
+    println("started there 1")
     val instance = SetUp()
+    println("started there 2")
     stayConnected(instance)
     cleanUp(instance)
     logger.info("ending...")

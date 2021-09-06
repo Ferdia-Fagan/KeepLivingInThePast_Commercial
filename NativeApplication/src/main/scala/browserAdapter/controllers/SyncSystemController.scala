@@ -35,7 +35,8 @@ class SyncSystemController(val browserSessionData:BrowserSessionData,
                           ) {
   import browserAdapter.InputOutputAdapter.sendMessageToBrowserPlugin
 
-  val logger: Logger = LoggerFactory.getLogger(classOf[SyncSystemController])
+//  val logger: Logger = LoggerFactory.getLogger(classOf[SyncSystemController])
+  val logger: Logger = LoggerFactory.getLogger(getClass)
 
   val updateReportController =
     new SyncSystemController_UpdateReport(webpageMappings_DAO,bookmarksMappings_DAO,webpageTagMappings_DAO)
@@ -200,7 +201,8 @@ class SyncSystemController_UpdateReport(val webpageMappings_DAL: WebpageMappings
 
   import SyncSystemController_UpdateReport._
 
-  val logger:Logger = LoggerFactory.getLogger("SyncSystemController_UpdateReport")
+//  val logger:Logger = LoggerFactory.getLogger("SyncSystemController_UpdateReport")
+  val logger:Logger = LoggerFactory.getLogger(getClass)
 
   /**
    * Takes updateReports and applies them.

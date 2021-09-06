@@ -15,7 +15,8 @@ class IndexMappings_DAO extends IndexMappingsComponent with IndexMappingWebDocum
 
   import dal.DatabaseConfiguration.db
 
-  val logger = LoggerFactory.getLogger(classOf[IndexMappings_DAO])
+//  val logger = LoggerFactory.getLogger(classOf[IndexMappings_DAO])
+  val logger = LoggerFactory.getLogger(getClass)
 
   try{
     db.run({

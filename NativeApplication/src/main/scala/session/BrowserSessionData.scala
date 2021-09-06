@@ -19,7 +19,8 @@ import scala.collection.mutable
  */
 class BrowserSessionData(val webpagesOpenedToday: mutable.Set[Long]) {
   import BrowserSessionData._
-  val logger: Logger = LoggerFactory.getLogger(classOf[QueryController])
+//  val logger: Logger = LoggerFactory.getLogger(classOf[QueryController])
+  val logger: Logger = LoggerFactory.getLogger(getClass)
 
   def cleanUp(): Unit = {
 
@@ -40,7 +41,8 @@ class BrowserSessionData(val webpagesOpenedToday: mutable.Set[Long]) {
 }
 
 object BrowserSessionData{
-  val logger: Logger = LoggerFactory.getLogger("BrowserSessionData Companion object")
+//  val logger: Logger = LoggerFactory.getLogger("BrowserSessionData Companion object")
+  val logger: Logger = LoggerFactory.getLogger(getClass)
 
   def apply(): BrowserSessionData = {
 

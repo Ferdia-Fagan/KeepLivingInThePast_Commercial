@@ -19,7 +19,8 @@ class WebpageTagMappings_DAO(val db:Database) extends WebpageTagMappingsComponen
   import h2.webpageData.WebpageMappingsComponent.Webpage
   import WebpageTagsMappingsComponent.WebpageTag
 
-  private val logger = LoggerFactory.getLogger(classOf[WebpageTagMappings_DAO])
+//  private val logger = LoggerFactory.getLogger(classOf[WebpageTagMappings_DAO])
+  private val logger = LoggerFactory.getLogger(getClass)
 
   def addTagsToWebpage(newWebpageTag: Array[WebpageTag]): Unit = {
     val addedTagsReq = webpageTagsMappingT ++= newWebpageTag

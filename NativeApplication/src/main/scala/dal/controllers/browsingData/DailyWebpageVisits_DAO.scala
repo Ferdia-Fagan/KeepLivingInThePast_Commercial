@@ -25,7 +25,8 @@ class DailyWebpageVisits_DAO(val db:Database) extends DailyWebpageVisitsComponen
                                               with DailyWebpageVisits_DAO_QueryAPI {
   import DailyWebpageVisitsComponent.DailyWebpageVisits
 
-  val logger: Logger = LoggerFactory.getLogger(classOf[DailyWebpageVisits_DAO])
+//  val logger: Logger = LoggerFactory.getLogger(classOf[DailyWebpageVisits_DAO])
+  val logger: Logger = LoggerFactory.getLogger(getClass)
 
   def addWebpagesVisitedDuringDate(date: LocalDate, webpagesVisited: Set[Long]): Unit = {
     val addWebpageVisitedFoDate_Req = dailyWebpageVisitsT += DailyWebpageVisits(date,webpagesVisited)

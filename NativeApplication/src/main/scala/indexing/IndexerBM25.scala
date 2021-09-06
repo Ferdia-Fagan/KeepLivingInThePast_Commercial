@@ -36,7 +36,8 @@ trait Index_Queryer{
  */
 class IndexerBM25 extends Index_Management with Index_Queryer {
 
-  val logger = LoggerFactory.getLogger("IndexerBM25")
+//  val logger = LoggerFactory.getLogger("IndexerBM25")
+  val logger = LoggerFactory.getLogger(getClass)
 
   val STOP_WORDS: HashSet[String] = HashSet("a", "an", "and", "are", "as", "at", "be", "but", "by", "for", "if", "in", "into", "is",
     "it", "no", "not", "of", "on", "or", "such", "that", "the", "their", "then", "there",

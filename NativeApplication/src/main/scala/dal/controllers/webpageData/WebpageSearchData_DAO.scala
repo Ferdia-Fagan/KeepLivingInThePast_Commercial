@@ -18,7 +18,8 @@ class WebpageSearchData_DAO(val db:Database) extends WebpageSearchDataComponent
   import h2.webpageData.WebpageSearchDataComponent.WebpageSearchData
 
 
-  private val logger: Logger = LoggerFactory.getLogger(classOf[WebpageSearchData_DAO])
+//  private val logger: Logger = LoggerFactory.getLogger(classOf[WebpageSearchData_DAO])
+  private val logger: Logger = LoggerFactory.getLogger(getClass)
 
   def addWebpageSearchData(webpageLoggingId: Long, title: String,
                                     url: String, imgUrl: String): Unit = {

@@ -27,7 +27,8 @@ class BrowserInputController(val syncSystemController:SyncSystemController,
   import browserAdapter.InputOutputAdapter.readInputAsMessage
 
   // Variables:
-  val logger = LoggerFactory.getLogger(classOf[BrowserInputController])
+//  val logger = LoggerFactory.getLogger(classOf[BrowserInputController])
+  val logger = LoggerFactory.getLogger(getClass)
 
   // Functionality:
   /**
@@ -105,21 +106,22 @@ class BrowserInputController(val syncSystemController:SyncSystemController,
 
     case "AddHostnameId" => syncSystemController.handle_AddHostnameId(message)
 
-//    case "testRequest" => handle_TestRequest(message)
+    case "testRequest" => handle_TestRequest(message)
   }
 
-//  private def handle_TestRequest(testMessage:JsonNode):Unit = {
-//    //    logger.info("handle test request")
-//    //    val theData =  mapper.treeToValue(data, classOf[NativeRequest])
-//    //    logger.info("the message extracted : " + testMessage)
-//
-//    //    val response = NativeResponse(requestResponseId,"Hello!")
-//    //    logger.info("the message about to send back : " + response)
-//    // Send response message back
-//    //    val responseJson = mapper.writeValueAsString(response)
-//    //    logger.info("the message about to send back : " + responseJson)
-//    //    sendMessage(responseJson)
-//  }
+  private def handle_TestRequest(testMessage:JsonNode):Unit = {
+//    println("test message arrived")
+    logger.info("handle test request")
+    //    val theData =  mapper.treeToValue(data, classOf[NativeRequest])
+    //    logger.info("the message extracted : " + testMessage)
+
+    //    val response = NativeResponse(requestResponseId,"Hello!")
+    //    logger.info("the message about to send back : " + response)
+    // Send response message back
+    //    val responseJson = mapper.writeValueAsString(response)
+    //    logger.info("the message about to send back : " + responseJson)
+    //    sendMessage(responseJson)
+  }
 
   def cleanUp(): Unit = {
     syncSystemController.cleanUp()

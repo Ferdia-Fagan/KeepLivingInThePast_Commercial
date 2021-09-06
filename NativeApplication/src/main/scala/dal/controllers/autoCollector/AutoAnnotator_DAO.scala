@@ -21,7 +21,8 @@ class AutoAnnotator_DAO(val db:Database) extends AutoAnnotatorCollectionComponen
   import HostnameAutoAnnotatorsComponent._
   import AutoAnnotatorCollectionComponent._
 
-  private val logger = LoggerFactory.getLogger(classOf[AutoAnnotator_DAO])
+//  private val logger = LoggerFactory.getLogger(classOf[AutoAnnotator_DAO])
+  private val logger = LoggerFactory.getLogger(getClass)
 
 
   def addNewAutoAnnotator(newAutoCollector:NewAutoAnnotor): Unit ={
