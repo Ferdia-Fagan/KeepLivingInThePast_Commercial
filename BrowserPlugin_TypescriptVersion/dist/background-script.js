@@ -1,6 +1,146 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/background/nativeApplicationCommunication/NativeApplicationCommunicator.ts":
+/*!****************************************************************************************!*\
+  !*** ./src/background/nativeApplicationCommunication/NativeApplicationCommunicator.ts ***!
+  \****************************************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+// import * as Browser from '../../../node_modules/webextension-polyfill/dist/browser-polyfill.js';
+// import browser from "webextension-polyfill";
+const browser = __webpack_require__(/*! webextension-polyfill */ "./node_modules/webextension-polyfill/dist/browser-polyfill.js");
+const nativeMessaging = __importStar(__webpack_require__(/*! ./messages */ "./src/background/nativeApplicationCommunication/messages/index.ts"));
+// export default class NativeApplicationCommunicator {
+class NativeApplicationCommunicator {
+    constructor() {
+        this.requestsToRoute = new Map();
+        this.requestResponseId = 0;
+        this.port = browser.runtime.connectNative("keep_living_in_the_past_man");
+        this.port.onMessage.addListener(this.onResponse);
+    }
+    sendMessage(message) {
+        console.log("sned test message to native application");
+        let mess = nativeMessaging.Create_Test_Message();
+        this.port.postMessage(mess);
+    }
+    onResponse(response) {
+    }
+    onError(error) {
+    }
+}
+var inst = new NativeApplicationCommunicator();
+inst.sendMessage(null);
+console.log("print");
+
+
+/***/ }),
+
+/***/ "./src/background/nativeApplicationCommunication/messages/NativeMessage.ts":
+/*!*********************************************************************************!*\
+  !*** ./src/background/nativeApplicationCommunication/messages/NativeMessage.ts ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Create_NativeMessage = void 0;
+function Create_NativeMessage(type, message) {
+    return {
+        type: type,
+        message: message
+    };
+}
+exports.Create_NativeMessage = Create_NativeMessage;
+
+
+/***/ }),
+
+/***/ "./src/background/nativeApplicationCommunication/messages/Test.ts":
+/*!************************************************************************!*\
+  !*** ./src/background/nativeApplicationCommunication/messages/Test.ts ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Create_Test_Message = void 0;
+const NativeMessage_1 = __webpack_require__(/*! ./NativeMessage */ "./src/background/nativeApplicationCommunication/messages/NativeMessage.ts");
+function Create_Test_Message() {
+    return NativeMessage_1.Create_NativeMessage("testRequest", "");
+}
+exports.Create_Test_Message = Create_Test_Message;
+
+
+/***/ }),
+
+/***/ "./src/background/nativeApplicationCommunication/messages/WebpageScrapings.ts":
+/*!************************************************************************************!*\
+  !*** ./src/background/nativeApplicationCommunication/messages/WebpageScrapings.ts ***!
+  \************************************************************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Create_WebpageScrapings_Message = void 0;
+function Create_WebpageScrapings_Message(webpageLoggingId, title, url, imgUrl, scrapings) {
+    return {
+        webpageLoggingId: webpageLoggingId,
+        title: title,
+        url: url,
+        imgUrl: imgUrl,
+        scrapings: scrapings
+    };
+}
+exports.Create_WebpageScrapings_Message = Create_WebpageScrapings_Message;
+
+
+/***/ }),
+
+/***/ "./src/background/nativeApplicationCommunication/messages/index.ts":
+/*!*************************************************************************!*\
+  !*** ./src/background/nativeApplicationCommunication/messages/index.ts ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var NativeMessage_1 = __webpack_require__(/*! ./NativeMessage */ "./src/background/nativeApplicationCommunication/messages/NativeMessage.ts");
+Object.defineProperty(exports, "Create_NativeMessage", ({ enumerable: true, get: function () { return NativeMessage_1.Create_NativeMessage; } }));
+var Test_1 = __webpack_require__(/*! ./Test */ "./src/background/nativeApplicationCommunication/messages/Test.ts");
+Object.defineProperty(exports, "Create_Test_Message", ({ enumerable: true, get: function () { return Test_1.Create_Test_Message; } }));
+var WebpageScrapings_1 = __webpack_require__(/*! ./WebpageScrapings */ "./src/background/nativeApplicationCommunication/messages/WebpageScrapings.ts");
+Object.defineProperty(exports, "Create_WebpageScrapings_Message", ({ enumerable: true, get: function () { return WebpageScrapings_1.Create_WebpageScrapings_Message; } }));
+
+
+/***/ }),
+
 /***/ "./node_modules/webextension-polyfill/dist/browser-polyfill.js":
 /*!*********************************************************************!*\
   !*** ./node_modules/webextension-polyfill/dist/browser-polyfill.js ***!
@@ -1309,39 +1449,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 /******/ 	}
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
-(() => {
-/*!****************************************************************************************!*\
-  !*** ./src/background/nativeApplicationCommunication/NativeApplicationCommunicator.ts ***!
-  \****************************************************************************************/
-// import * as Browser from '../../../node_modules/webextension-polyfill/dist/browser-polyfill.js';
-// import browser from "webextension-polyfill";
-const browser = __webpack_require__(/*! webextension-polyfill */ "./node_modules/webextension-polyfill/dist/browser-polyfill.js");
-// export default class NativeApplicationCommunicator {
-class NativeApplicationCommunicator {
-    constructor() {
-        this.requestsToRoute = new Map();
-        this.requestResponseId = 0;
-        this.port = browser.runtime.connectNative("keep_living_in_the_past_man");
-        this.port.onMessage.addListener(this.onResponse);
-    }
-    sendMessage(message) {
-        this.port.postMessage({
-            "type": "testRequest", "message": ""
-        });
-    }
-    onResponse(response) {
-    }
-    onError(error) {
-    }
-}
-var inst = new NativeApplicationCommunicator();
-inst.sendMessage(null);
-console.log("print");
-
-})();
-
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
+/******/ 	var __webpack_exports__ = __webpack_require__("./src/background/nativeApplicationCommunication/NativeApplicationCommunicator.ts");
+/******/ 	
 /******/ })()
 ;
 //# sourceMappingURL=background-script.js.map

@@ -21,7 +21,7 @@ import {webpageTagsCollection} from "../datastores/WebpageTagsCollection.js"
  * @param {*} sender 
  * @param {*} sendResponse 
  */
-function recieveInternalMessage(msg,sender,sendResponse){
+function recieveInternalMessage(msg,sender,sendResponse) {
 
     if(msg.messageType === "Query"){        
         return requestQuery(msg.query)

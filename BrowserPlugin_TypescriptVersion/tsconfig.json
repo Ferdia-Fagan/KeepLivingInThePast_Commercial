@@ -8,6 +8,13 @@
         "moduleResolution": "node",
         "sourceMap": true,
         "outDir": "./CompleteBuild",
-        "baseUrl": ".",
-    }
+        "baseUrl": "./node_modules",
+        "rootDir": "./src",
+    },
+
+    "include": [
+        "./src/**/*.ts",
+        "./src/**/*.d.ts"
+    ]
+
 }

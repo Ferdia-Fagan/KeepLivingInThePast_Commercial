@@ -1,7 +1,7 @@
 // import * as Browser from '../../../node_modules/webextension-polyfill/dist/browser-polyfill.js';
 // import browser from "webextension-polyfill";
 const browser = require("webextension-polyfill");
-
+import * as nativeMessaging from "./messages";
 
 // export default class NativeApplicationCommunicator {
 class NativeApplicationCommunicator {
@@ -19,9 +19,8 @@ class NativeApplicationCommunicator {
 
     sendMessage(message: any){
         console.log("sned test message to native application")
-        this.port.postMessage({
-            "type": "testRequest", "message": ""
-        });
+        let mess = nativeMessaging.Create_Test_Message();
+        this.port.postMessage(mess);
     }
 
     onResponse(response: any) {
@@ -31,10 +30,6 @@ class NativeApplicationCommunicator {
     onError(error: any) {
 
     }    
-
-
-
-
 }
 
 var inst = new NativeApplicationCommunicator();

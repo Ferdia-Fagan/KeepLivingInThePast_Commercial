@@ -60,7 +60,8 @@ export function sendWebPageScrapings(webpageLoggingId, scrapingsReport){
   // var theScrapingsMessaging = {"type":"SaveWebScrapings", "message":{"webPageId":webPageId,"scrapings":JSON.stringify(transformHTML({html: scrapings}))}};
   // var theScrapingsMessaging = JSON.stringify({"type":"SaveWebScrapings", "message":{"webpageLoggingId":webPageId,"title": scrapingsReport.title, "url": scrapingsReport.url,
   // "imgUrl":scrapingsReport.imgUrl,"scrapings":scrapingsReport.scrapedContent}});
-  var theScrapingsMessaging = {type:"SaveWebScrapings", message:{webpageLoggingId:webpageLoggingId,title: scrapingsReport.title, url: scrapingsReport.url,
+  var theScrapingsMessaging = {type:"SaveWebScrapings", message:{webpageLoggingId:webpageLoggingId,
+    title: scrapingsReport.title, url: scrapingsReport.url,
   imgUrl:scrapingsReport.imgUrl,scrapings:scrapingsReport.scrapedContent}};
   // var theScrapingsMessaging = {"type":"SaveWebScrapings", "message":{"webPageId":webPageId,"scrapings":""}};
   //
@@ -81,7 +82,8 @@ export function sendWebPageScrapings(webpageLoggingId, scrapingsReport){
 export function logWebPageVisitToNativeApplication(tabId,hostName, pathName,hostnameId,timeStamp){
 
 
-  port.postMessage({"type":"RecordWebPageVisit","requestResponseId": requestResponseId,"message":{"hostName":hostName, "pathName":pathName,"hostnameId":hostnameId}});
+  port.postMessage({"type":"RecordWebPageVisit","requestResponseId": requestResponseId,
+  "message":{"hostName":hostName, "pathName":pathName,"hostnameId":hostnameId}});
   
   requestsToRoute.set(requestResponseId++,log_NoneCachedWebpage_Visit.bind(null,tabId,hostName,pathName,timeStamp));
 }
