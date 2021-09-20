@@ -14,7 +14,8 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@types/webextension-polyfill": "^0.8.0"
+    "@types/webextension-polyfill": "^0.8.0",
+    "page-metadata-parser": "^1.1.4"
   },
   "devDependencies": {
     "@types/node": "^16.7.10",
