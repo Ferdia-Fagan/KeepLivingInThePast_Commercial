@@ -43,17 +43,23 @@ class NativeApplicationCommunicator {
     }
     sendMessage(message) {
         console.log("sned test message to native application");
-        let mess = nativeMessaging.Create_Test_Message();
         this.port.postMessage(mess);
+    }
+    sendMessageWithResponse(message, messageResponseAction) {
     }
     onResponse(response) {
     }
     onError(error) {
     }
+    getNewResponseId() {
+        return this.requestResponseId++;
+    }
 }
-var inst = new NativeApplicationCommunicator();
-inst.sendMessage(null);
-console.log("print");
+const inst = new NativeApplicationCommunicator();
+let mess = nativeMessaging.Create_Test_Message();
+inst.sendMessage(mess);
+console.log("getNewResponseId: " + inst.getNewResponseId());
+console.log("requestResponseId: " + inst.requestResponseId);
 
 
 /***/ }),
@@ -67,7 +73,7 @@ console.log("print");
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Create_NativeMessage = void 0;
+exports.Create_NativeMessage_WithResponse = exports.Create_NativeMessage = void 0;
 function Create_NativeMessage(type, message) {
     return {
         type: type,
@@ -75,49 +81,14 @@ function Create_NativeMessage(type, message) {
     };
 }
 exports.Create_NativeMessage = Create_NativeMessage;
-
-
-/***/ }),
-
-/***/ "./src/background/nativeApplicationCommunication/messages/Test.ts":
-/*!************************************************************************!*\
-  !*** ./src/background/nativeApplicationCommunication/messages/Test.ts ***!
-  \************************************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Create_Test_Message = void 0;
-const NativeMessage_1 = __webpack_require__(/*! ./NativeMessage */ "./src/background/nativeApplicationCommunication/messages/NativeMessage.ts");
-function Create_Test_Message() {
-    return NativeMessage_1.Create_NativeMessage("testRequest", "");
-}
-exports.Create_Test_Message = Create_Test_Message;
-
-
-/***/ }),
-
-/***/ "./src/background/nativeApplicationCommunication/messages/WebpageScrapings.ts":
-/*!************************************************************************************!*\
-  !*** ./src/background/nativeApplicationCommunication/messages/WebpageScrapings.ts ***!
-  \************************************************************************************/
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Create_WebpageScrapings_Message = void 0;
-function Create_WebpageScrapings_Message(webpageLoggingId, title, url, imgUrl, scrapings) {
+function Create_NativeMessage_WithResponse(type, message, responseId) {
     return {
-        webpageLoggingId: webpageLoggingId,
-        title: title,
-        url: url,
-        imgUrl: imgUrl,
-        scrapings: scrapings
+        type: type,
+        responseId: responseId,
+        message: message
     };
 }
-exports.Create_WebpageScrapings_Message = Create_WebpageScrapings_Message;
+exports.Create_NativeMessage_WithResponse = Create_NativeMessage_WithResponse;
 
 
 /***/ }),
@@ -133,10 +104,55 @@ exports.Create_WebpageScrapings_Message = Create_WebpageScrapings_Message;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 var NativeMessage_1 = __webpack_require__(/*! ./NativeMessage */ "./src/background/nativeApplicationCommunication/messages/NativeMessage.ts");
 Object.defineProperty(exports, "Create_NativeMessage", ({ enumerable: true, get: function () { return NativeMessage_1.Create_NativeMessage; } }));
-var Test_1 = __webpack_require__(/*! ./Test */ "./src/background/nativeApplicationCommunication/messages/Test.ts");
+var Test_1 = __webpack_require__(/*! ./native/Test */ "./src/background/nativeApplicationCommunication/messages/native/Test.ts");
 Object.defineProperty(exports, "Create_Test_Message", ({ enumerable: true, get: function () { return Test_1.Create_Test_Message; } }));
-var WebpageScrapings_1 = __webpack_require__(/*! ./WebpageScrapings */ "./src/background/nativeApplicationCommunication/messages/WebpageScrapings.ts");
+var WebpageScrapings_1 = __webpack_require__(/*! ./native/WebpageScrapings */ "./src/background/nativeApplicationCommunication/messages/native/WebpageScrapings.ts");
 Object.defineProperty(exports, "Create_WebpageScrapings_Message", ({ enumerable: true, get: function () { return WebpageScrapings_1.Create_WebpageScrapings_Message; } }));
+
+
+/***/ }),
+
+/***/ "./src/background/nativeApplicationCommunication/messages/native/Test.ts":
+/*!*******************************************************************************!*\
+  !*** ./src/background/nativeApplicationCommunication/messages/native/Test.ts ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Create_Test_Message = void 0;
+const NativeMessage_1 = __webpack_require__(/*! ../NativeMessage */ "./src/background/nativeApplicationCommunication/messages/NativeMessage.ts");
+function Create_Test_Message() {
+    return NativeMessage_1.Create_NativeMessage("testRequest", "");
+}
+exports.Create_Test_Message = Create_Test_Message;
+
+
+/***/ }),
+
+/***/ "./src/background/nativeApplicationCommunication/messages/native/WebpageScrapings.ts":
+/*!*******************************************************************************************!*\
+  !*** ./src/background/nativeApplicationCommunication/messages/native/WebpageScrapings.ts ***!
+  \*******************************************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Create_WebpageScrapings_Message = void 0;
+const NativeMessage_1 = __webpack_require__(/*! ../NativeMessage */ "./src/background/nativeApplicationCommunication/messages/NativeMessage.ts");
+function Create_WebpageScrapings_Message(webpageLoggingId, title, url, imgUrl, scrapings) {
+    const webpageScrapingsMessage = {
+        webpageLoggingId: webpageLoggingId,
+        title: title,
+        url: url,
+        imgUrl: imgUrl,
+        scrapings: scrapings
+    };
+    return NativeMessage_1.Create_NativeMessage("SaveWebScrapings", webpageScrapingsMessage);
+}
+exports.Create_WebpageScrapings_Message = Create_WebpageScrapings_Message;
 
 
 /***/ }),

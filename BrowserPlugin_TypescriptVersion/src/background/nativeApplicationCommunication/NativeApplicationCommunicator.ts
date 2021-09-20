@@ -6,7 +6,6 @@ import * as nativeMessaging from "./messages";
 // export default class NativeApplicationCommunicator {
 class NativeApplicationCommunicator {
 
-
     requestsToRoute = new Map();
 
     requestResponseId = 0;
@@ -19,8 +18,11 @@ class NativeApplicationCommunicator {
 
     sendMessage(message: any){
         console.log("sned test message to native application")
-        let mess = nativeMessaging.Create_Test_Message();
         this.port.postMessage(mess);
+    }
+
+    sendMessageWithResponse(message: any, messageResponseAction: (() => void)) {
+        
     }
 
     onResponse(response: any) {
@@ -29,13 +31,14 @@ class NativeApplicationCommunicator {
 
     onError(error: any) {
 
-    }    
+    }
+
+    getNewResponseId(): number{
+        return this.requestResponseId++;
+    }
+
 }
 
-var inst = new NativeApplicationCommunicator();
-inst.sendMessage(null);
-
-console.log("print")
-
+export const inst = new NativeApplicationCommunicator();
 
 

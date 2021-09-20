@@ -8,7 +8,6 @@
     "start:firefox": "web-ext run --source-dir ./dist",
     "build:dev": "webpack --mode=development && web-ext build --source-dir ./dist --overwrite-dest",
     "build:prod": "webpack --mode=production && web-ext build --source-dir ./dist --overwrite-dest",
-
     "prestart": "npm run build",
     "start": "npm run build",
     "lint": "eslint . --ext .ts",
