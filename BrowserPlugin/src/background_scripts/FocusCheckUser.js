@@ -1,4 +1,4 @@
-import {UnfocusOnCurrentTab,FocusOnCurrentTab} from "./BrowserStateManager.js"
+import {UnfocusOnCurrentTab, FocusOnCurrentTab} from "./BrowserStateManager.js"
 
 function onError(error) {
 

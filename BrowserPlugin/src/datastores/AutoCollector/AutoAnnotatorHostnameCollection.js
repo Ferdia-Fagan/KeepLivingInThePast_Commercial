@@ -119,6 +119,7 @@ class AutoAnnotatorHostnameCollection extends AbstractDBCollection {
     }
 
 
+    // TODO: transfer this function
     async getHostnames(hostnames){
         var store = this.getObjectStore('readonly');
 

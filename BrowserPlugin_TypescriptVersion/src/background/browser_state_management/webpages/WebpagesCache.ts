@@ -1,5 +1,5 @@
 
-import MapCache from "../utils/MapCache"
+import MapCache from "../../utils/MapCache"
 
 const MAX_HOSTS = 100;
 const MAX_PATHS = 100;

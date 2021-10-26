@@ -1,10 +1,15 @@
-import TabsStateManager from "../tabs/TabsStateManager";
+import TabsStateManager from "../tabs/WindowTabsStateManager";
 
 export default class WindowsStateManager {
     
-    currentWindowsOpen = new Map<number, TabsStateManager>();
+    private currentWindowsOpen = new Map<number, TabsStateManager>();
 
-    currentWindowOpen_TabsStateManager = new TabsStateManager();
+    private currentWindowOpen: TabsStateManager;
+
+    constructor(windowId: number, currentWindowOpen: TabsStateManager){
+        this.currentWindowsOpen.set(windowId, currentWindowOpen);
+        this.currentWindowOpen = currentWindowOpen;
+    }
 
     addNewWindowOpened(windowId: number, 
         tabsStateManager: TabsStateManager = new TabsStateManager() ){
@@ -12,7 +17,11 @@ export default class WindowsStateManager {
     }
 
     changeActiveWindowOpened(changedWindowId: number){
-        this.currentWindowOpen_TabsStateManager = this.currentWindowsOpen.get(changedWindowId);
+        this.currentWindowOpen = this.currentWindowsOpen.get(changedWindowId);
+    }
+
+    getActiveWindowOpened(): TabsStateManager{
+        return this.currentWindowOpen;
     }
 
     removeWindow(deletedWindowId: number){

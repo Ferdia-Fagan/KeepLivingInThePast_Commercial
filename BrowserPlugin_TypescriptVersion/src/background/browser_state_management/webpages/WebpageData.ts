@@ -1,11 +1,19 @@
-import MetaData from "./MetaData";
-
+import WebpageMetaData from "./WebpageMetaData";
+import MetaData_UpdateTrackers from "./MetaData_UpdateTrackers";
 
 export default class WebpageData{
 
-    metaData: MetaData;
-
     readonly webpageLoggingId: number;
+
+    private isIndexed: boolean;
+    private isTagged: boolean;
+
+    private metaData: WebpageMetaData;
+    private metaData_UpdateTrackers?: MetaData_UpdateTrackers;
+
+    private lastLogTime: number;
+    private isPaused = false;
+   
 
     /**
      * 
@@ -16,37 +24,30 @@ export default class WebpageData{
      * @param {*} metaData -> {metaDataProperty:Value...}
      */
     constructor(webpageLoggingId: number, isIndexed: boolean, 
-                isTagged: boolean, timeStamp: number, metaData: MetaData){
+                isTagged: boolean, timeStamp: number, metaData: WebpageMetaData){
         
-        this.metaDataUpdatesSinceLastReport = new Set();
-        
-        this.metaDataLocalUpdatesSinceLastReport = new Set();
-
-        // this.otherUpdatesSinceLastReport = new Set();
-
         this.webpageLoggingId = webpageLoggingId;
 
-        this.isPaused = false;
+        this.isIndexed = isIndexed;
+        this.isTagged = isTagged;
 
-        this.metaData = {
-            isIndexed: isIndexed,
-            isTagged: isTagged
-        }
-
-        if(metaData !== {}){
-            this.metaData = Object.assign(this.metaData,metaData);
-            if("tags" in metaData){
-
-                this.metaData.tags = new Set(this.metaData.tags)
-            }
-            
-        }
-
-
+        this.metaData = metaData;
 
         this.lastLogTime = timeStamp;
 
-        // this.waitingForWebpageInfoChange = false;
+        // this.metaData = {
+        //     isIndexed: isIndexed,
+        //     isTagged: isTagged
+        // }
+
+        // if(metaData !== {}){
+        //     this.metaData = Object.assign(this.metaData,metaData);
+        //     if("tags" in metaData){
+
+        //         this.metaData.tags = new Set(this.metaData.tags)
+        //     }
+            
+        // }
     }
 
     // SETTERS:
@@ -55,23 +56,23 @@ export default class WebpageData{
      * 
      * @param {*} indexingCheckpointData -> totalVisitCount, totalVisitTime
      */
-    setIndexingCheckpointMarkers(indexingCheckpointData){
+    setIndexingCheckpointMarkers(totalVisitCount: number, totalVisitTime: number){
 
-        this.metaData.totalVisitCount = indexingCheckpointData.totalVisitCount
-        this.metaData.totalVisitTime = indexingCheckpointData.totalVisitTime
+        this.metaData.totalVisitCount = totalVisitCount;
+        this.metaData.totalVisitTime = totalVisitTime;
 
-        this.totalVisitCount_updated = false
-        this.totalVisitTime_updated = false
+        this.metaData_UpdateTrackers = {
+            totalVisitCount_updated: false,
+            totalVisitTime_updated: false
+        }
     }
 
-    logVisitTime(currentTimeStamp, isBeingPaused = false){
+    logVisitTime(currentTimeStamp: number, isBeingPaused = false){
         if(!this.isPaused && !this.isIndexed){
 
             this.isPaused = isBeingPaused;
             // TODO: here
             let visitTimeElapsed = currentTimeStamp - this.lastLogTime;
-
-
 
             this.metaData.totalVisitTime += visitTimeElapsed;
 
@@ -79,20 +80,24 @@ export default class WebpageData{
             this.lastLogTime = currentTimeStamp;
 
             // this.metaDataLocalUpdatesSinceLastReport.add(metaDataUpdateType.TOTAL_VISIT_TIME);
-            this.totalVisitTime_updated = true;
-            webpageMetadataLocalUpdates.add(this.webpageLoggingId);
+            this.metaData_UpdateTrackers.totalVisitTime_updated = true;
+
+            // this.webpageMetadataLocalUpdates.add(this.webpageLoggingId);
         }
     }
 
-    logVisitStartTime(currentTimeStamp){
+    logLeavingTime(){
+        // TODO: to complete logLeavingTime
+    }
+
+    logVisitStartTime(currentTimeStamp: number){
         if(!this.isIndexed){
 
-            // if(!this.isIndexed){
             this.lastLogTime = currentTimeStamp;  
         }        
     }
 
-    unpauseLoggingVisitTime(currentTimeStamp){
+    unpauseLoggingVisitTime(currentTimeStamp: number){
         if(!this.isIndexed){
 
             this.isPaused = false;
@@ -118,91 +123,91 @@ export default class WebpageData{
 
             this.metaData.totalVisitCount += 1;
 
-            this.totalVisitCount_updated = true;
+            this.metaData_UpdateTrackers.totalVisitCount_updated = true;
     
-            this.metaDataLocalUpdatesSinceLastReport.add(metaDataUpdateType.TOTAL_VISIT_COUNT);
-            webpageMetadataLocalUpdates.add(this.webpageLoggingId);
+            // this.metaDataLocalUpdatesSinceLastReport.add(metaDataUpdateType.TOTAL_VISIT_COUNT);
+            // webpageMetadataLocalUpdates.add(this.webpageLoggingId);
         }
     }
 
-    bookmarkWebpage(parentBookmarkId){
+    bookmarkWebpage(parentBookmarkId: number){
 
         this.metaData.parentBookmarkId = parentBookmarkId;
 
-        // this.otherUpdatesSinceLastReport.add(OtherUpdateTypes.Bookmark)
-        // this.updatesSinceLastReport.set(metaDataUpdateType.BOOKMARK_CHANGED)
-        // webpagesHaveUpdated.add(this.webpageLoggingId);
     }
 
     markAsIndexed(){
 
-        this.metaData.isIndexed = true;
+        this.isIndexed = true;
 
-        // this.tags = true;
-        this.metaDataUpdatesSinceLastReport.add(metaDataUpdateType.IS_INDEXED)
-        webpagesHaveUpdated.add(this.webpageLoggingId);
+        // this.metaDataUpdatesSinceLastReport.add(metaDataUpdateType.IS_INDEXED)
+        // webpagesHaveUpdated.add(this.webpageLoggingId);
     }
 
-    updateTagsWithReport(updateReport){
+    // TODO: COMPLETE
+    updateTagsWithReport(){
+    // updateTagsWithReport(updateReport){
 
 
         // && JSON.stringify(this.metaData.tags) !== '{}'
-        if(!("tags" in this.metaData)){
+        // if(!("tags" in this.metaData)){
 
-            this.metaData.tags = new Set();
-            this.metaData.isTagged = true;
-            this.metaDataUpdatesSinceLastReport.add(metaDataUpdateType.IS_TAGGED)
-            webpagesHaveUpdated.add(this.webpageLoggingId);
-        }
-        // this.metaData.tags.add(1)
-        for(let [tagId,isAdded] of updateReport){
+        //     this.metaData.tags = new Set();
+        //     this.metaData.isTagged = true;
 
-            if(isAdded){
-                // Then are adding this tag
-                this.metaData.tags.add(tagId)
+        //     // this.metaDataUpdatesSinceLastReport.add(metaDataUpdateType.IS_TAGGED)
+        //     // webpagesHaveUpdated.add(this.webpageLoggingId);
+        // }
+        // for(let [tagId,isAdded] of updateReport){
 
-            }else{
-                // Then are deleting this tag
-                this.metaData.tags.delete(tagId)
+        //     if(isAdded){
+        //         // Then are adding this tag
+        //         this.metaData.tags.add(tagId)
 
-            }
-        }
+        //     }else{
+        //         // Then are deleting this tag
+        //         this.metaData.tags.delete(tagId)
 
-
+        //     }
+        // }
 
 
-        if(this.metaData.tags.length == 0 && this.metaData.isTagged){
 
 
-            this.metaData.isTagged = false;
-            this.metaDataUpdatesSinceLastReport.add(metaDataUpdateType.IS_TAGGED)
-            webpagesHaveUpdated.add(this.webpageLoggingId);
-        }
+        // if(this.metaData.tags.size == 0 && this.metaData.isTagged){
+
+
+        //     this.metaData.isTagged = false;
+        //     // this.metaDataUpdatesSinceLastReport.add(metaDataUpdateType.IS_TAGGED)
+        //     // webpagesHaveUpdated.add(this.webpageLoggingId);
+        // }
     }
 
-    addTags(updateReport){
+    // TODO: COMPLETE
+    addTags(){
+    // addTags(updateReport){
 
-        if(!("tags" in this.metaData)){
+        // if(!("tags" in this.metaData)){
 
-            this.metaData.tags = new Set();
+        //     this.metaData.tags = new Set();
 
-            this.metaData.isTagged = true;
-            this.metaDataUpdatesSinceLastReport.add(metaDataUpdateType.IS_TAGGED)
-            webpagesHaveUpdated.add(this.webpageLoggingId);
-        }
+        //     this.metaData.isTagged = true;
+        //     // this.metaDataUpdatesSinceLastReport.add(metaDataUpdateType.IS_TAGGED)
+        //     // webpagesHaveUpdated.add(this.webpageLoggingId);
+        // }
         
-        for(const tagUpdate of updateReport){
+        // for(const tagUpdate of updateReport){
 
-            this.metaData.tags.add(tagUpdate)
-        }
+        //     this.metaData.tags.add(tagUpdate)
+        // }
 
 
-        if(this.metaData.tags.length == 0 && this.metaData.isTagged){
+        // if(this.metaData.tags.size == 0 && this.metaData.isTagged){
 
-            this.metaData.isTagged = false;
-            this.metaDataUpdatesSinceLastReport.add(metaDataUpdateType.IS_TAGGED)
-            webpagesHaveUpdated.add(this.webpageLoggingId);
-        }
+        //     this.metaData.isTagged = false;
+        //     // this.metaDataUpdatesSinceLastReport.add(metaDataUpdateType.IS_TAGGED)
+        //     // webpagesHaveUpdated.add(this.webpageLoggingId);
+        // }
     }
 
 /*     addTagToWebpage(tag,tagId){
@@ -232,76 +237,41 @@ export default class WebpageData{
 
     // UPDATE REPORT:
 
+    // TODO: Complete + Write test
     getLocalUpdatesForWebpage(clearUpdates = true){
 
 
-        // const localWebpageMetadataUpdates = this.metaDataLocalUpdatesSinceLastReport
-
-        // if(clearUpdates){
-        //     this.metaDataLocalUpdatesSinceLastReport = new Set();
-        // }
-
-        // var webpageLocalUpdateReport = [];
-        // for(let metadataParamToBeUpdated of localWebpageMetadataUpdates.values()){
-        //
-        //     webpageLocalUpdateReport.push([metadataParamToBeUpdated, this.metaData[metadataParamToBeUpdated]]);
-        // }
         var webpageToBeIndexedUpdateReport = {}
         if(!this.isIndexed){
-            if(this.totalVisitCount_updated){
-                webpageToBeIndexedUpdateReport["totalVisitCount"] = this.metaData.totalVisitCount 
+            if(this.metaData_UpdateTrackers.totalVisitCount_updated){
+                // webpageToBeIndexedUpdateReport["totalVisitCount"] = this.metaData.totalVisitCount 
             }
-            if(this.totalVisitTime_updated){
-                webpageToBeIndexedUpdateReport["totalVisitTime"] = this.metaData.totalVisitTime
+            if(this.metaData_UpdateTrackers.totalVisitTime_updated){
+                // webpageToBeIndexedUpdateReport["totalVisitTime"] = this.metaData.totalVisitTime
             }
         }
 
-        //
-        // return webpageLocalUpdateReport;
         return {webpageToBeIndexedUpdateReport}
     }
 
+    // TODO: Complete + write test
     getUpdatesForReport(clearUpdates = true){
 
 
-        let metaDataUpdatesSinceLastReport = this.metaDataUpdatesSinceLastReport
-        // let otherUpdatesSinceLastReport = this.otherUpdatesSinceLastReport
+        // let metaDataUpdatesSinceLastReport = this.metaDataUpdatesSinceLastReport
 
-        if(clearUpdates){
-            this.metaDataUpdatesSinceLastReport = new Set();
-            // this.otherUpdatesSinceLastReport = new Set();
-        }
+        // if(clearUpdates){
+        //     this.metaDataUpdatesSinceLastReport = new Set();
+        // }
 
 
-        var webpageUpdateReport = [];
-        for(let metadataParamToBeUpdated of metaDataUpdatesSinceLastReport.values()){
+        // var webpageUpdateReport = [];
+        // for(let metadataParamToBeUpdated of metaDataUpdatesSinceLastReport.values()){
 
-            // wpUpdateMDReport[metaDataParamToBeUpdated] = WebPageLoggingIdsMap[webPageLoggingId].metaData[metaDataParamToBeUpdated];
-            webpageUpdateReport.push([metadataParamToBeUpdated, this.metaData[metadataParamToBeUpdated]]);
-        }
+        //     // webpageUpdateReport.push([metadataParamToBeUpdated, this.metaData[metadataParamToBeUpdated]]);
+        // }
 
-/*         var otherUpdates = {}
-        for(let otherUpdateType of otherUpdatesSinceLastReport.values()){
-            if(otherUpdateType === OtherUpdateTypes.Bookmark){
-                if(this.metaData[otherUpdateType] !== null){
-                    // have changed bookmark
-
-
-                    otherUpdates[otherUpdateType] = [UpdateTypes.changeIndividual,this.metaData[otherUpdateType], this.webpageLoggingId]
-                }else{
-                    // Have deleted bookmark
-                    otherUpdates[otherUpdateType] = [UpdateTypes.deleteIndividual,this.webpageLoggingId]
-                }
-            }
-            else if(otherUpdateType === OtherUpdateTypes.Tags){
-
-            }
-        }
-
-
-         */
-
-        return webpageUpdateReport;
+        // return webpageUpdateReport;
     }
 
     toJSON(){

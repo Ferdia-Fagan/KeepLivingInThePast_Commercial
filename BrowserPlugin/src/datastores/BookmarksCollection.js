@@ -21,7 +21,7 @@ class BookmarksCollection extends AbstractDBCollection {
     
         }
 
-        super(DATABASE, DB_VERSION,STORE_NAME,createDatabase);
+        super(DATABASE, DB_VERSION, STORE_NAME, createDatabase);
 
 
         // this.BOOKMARK_KEY_CACHE = new Map()
@@ -203,7 +203,6 @@ class BookmarksCollection extends AbstractDBCollection {
             self.BOOKMARK_KEY_CACHE.set(bookmarkKey,bookmarkId);
             
             if(type === 2){
-                 ;
                 self.bookmarksAddedReport.set(bookmarkId, [parentId,webpageLoggingId])
 
             }

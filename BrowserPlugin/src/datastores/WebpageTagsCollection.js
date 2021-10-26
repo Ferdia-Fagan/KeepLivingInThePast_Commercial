@@ -109,6 +109,7 @@ class WebpageTagsCollection extends AbstractDBCollection {
     }
 
 
+    // TODO: still to transfer
     addNewTagsForWebpage(newTagsReport, webpageLoggingId){
         // tagsUpdateReport.set(webpageLoggingId, tagReport);
     

@@ -1,44 +1,44 @@
 // import * as Browser from '../../../node_modules/webextension-polyfill/dist/browser-polyfill.js';
-// import browser from "webextension-polyfill";
-const browser = require("webextension-polyfill");
+import browser from "webextension-polyfill";
+// const browser = require("webextension-polyfill");
 import * as nativeMessaging from "./messages";
 
 // export default class NativeApplicationCommunicator {
-class NativeApplicationCommunicator {
+// class NativeApplicationCommunicator {
 
-    requestsToRoute = new Map();
+//     requestsToRoute = new Map();
 
-    requestResponseId = 0;
+//     requestResponseId = 0;
 
-    port = browser.runtime.connectNative("keep_living_in_the_past_man");
+//     port = browser.runtime.connectNative("keep_living_in_the_past_man");
 
-    constructor(){
-        this.port.onMessage.addListener(this.onResponse);
-    }
+//     constructor(){
+//         this.port.onMessage.addListener(this.onResponse);
+//     }
 
-    sendMessage(message: any){
-        console.log("sned test message to native application")
-        this.port.postMessage(mess);
-    }
+//     sendMessage(message: any){
+//         console.log("sned test message to native application")
+//         this.port.postMessage(message);
+//     }
 
-    sendMessageWithResponse(message: any, messageResponseAction: (() => void)) {
+//     sendMessageWithResponse(message: any, messageResponseAction: (() => void)) {
         
-    }
+//     }
 
-    onResponse(response: any) {
+//     onResponse(response: any) {
 
-    }
+//     }
 
-    onError(error: any) {
+//     onError(error: any) {
 
-    }
+//     }
 
-    getNewResponseId(): number{
-        return this.requestResponseId++;
-    }
+//     getNewResponseId(): number{
+//         return this.requestResponseId++;
+//     }
 
-}
+// }
 
-export const inst = new NativeApplicationCommunicator();
+// export const inst = new NativeApplicationCommunicator();
 
 
