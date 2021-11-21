@@ -1,9 +1,15 @@
+/**
+ * This is a sample of code. Dont need to unit test Indexdb
+ */
+
+
 import DBStore from "../../../../src/background/datastores/abstract_object_store_parts/DBStore";
 
 import "mockzilla-webextension";
 require("fake-indexeddb/auto");
 
 import { ID, KEY } from "../../../../src/background/datastores/stores/Utils";
+import { flushPromises } from "../../../utils/AsyncUtils";
 
 interface StoreObjectInterfaceExample {
     ID: number,
@@ -14,94 +20,94 @@ var HAS_BEEN__CREATED: boolean = false;
 
 var script_self = this;
 
-// function handlerForCreationOfStore(self: ExampleObjectDBStore){
-//     var HAS_BEEN__CREATED2 = HAS_BEEN__CREATED;
-//     return function(evt: any): any{    // TODO: correct any
-//         // This will set up the DS
-//         console.log("handlerForCreationOfStore");
-//         HAS_BEEN__CREATED2 = true;
-//         self["DB"] = evt.result;
-//     }
-// }
-
-// function getHAS_BEEN__CREATED() {
-//     return HAS_BEEN__CREATED;
-// }
-
-
 class ExampleObjectDBStore extends DBStore<StoreObjectInterfaceExample> {
 
+    private constructor(STORE_NAME: string, DB: IDBDatabase){
+        super(STORE_NAME, DB)
+    }
 
-    constructor(DATABASE: string, DB_VERSION: number,STORE_NAME: string){
-        // const self = this;
+    static async builder(DATABASE: string, DB_VERSION: number,STORE_NAME: string){
+        
         function onUpgradeNeededHandler(event: any){    // TODO: correct any
             event.currentTarget.result.createObjectStore(
                 STORE_NAME, { keyPath: ID, autoIncrement: true });
         }
 
-        super(DATABASE, DB_VERSION, STORE_NAME, onUpgradeNeededHandler);
-
-        // this._tagsUpdateReport = new Map();
-    }
-
-    static async builder(){
         
+        var DB: IDBDatabase = await new Promise<IDBDatabase>((resolve,reject) => {
+            var openDBReq = indexedDB.open(DATABASE, DB_VERSION);
+            
+            openDBReq.onsuccess = function (evt: Event) {
+                // DB = evt.result;
+                resolve(openDBReq.result)
+            }
+
+            openDBReq.onerror = function (evt) {
+                console.error("openDb:", "db request fail");
+            };
+
+            openDBReq.onupgradeneeded = onUpgradeNeededHandler;
+        })
+
+        return new ExampleObjectDBStore(STORE_NAME, DB);
+
     }
 
-    // handlerForCreationOfStore(self: ExampleObjectDBStore){
-    //     var HAS_BEEN__CREATED2 = HAS_BEEN__CREATED;
-    //     return function(evt: any): any{    // TODO: correct any
-    //         // This will set up the DS
-    //         console.log("handlerForCreationOfStore");
-    //         HAS_BEEN__CREATED2 = true;
-    //         self["DB"] = evt.result;
-    //     }
-    // }
-    
-    // getHAS_BEEN__CREATED() {
-    //     return HAS_BEEN__CREATED;
-    // }
-
-    // authoriseIfDBStoreIsCreated(): boolean {
-    //     return HAS_BEEN__CREATED;
-    // }
 }
 
-var storeInstance: ExampleObjectDBStore = new ExampleObjectDBStore("testDatabaseName", 1, "testStoreName");
+describe("DBStore", function(){
+    var storeInstance: ExampleObjectDBStore
 
-console.log("hello there")
-// while(!getHAS_BEEN__CREATED()){
-//     console.log();
-// }
-console.log("hello there")
-
-
-describe("addElement", function(){
-
-    beforeEach(async() => {
+    beforeAll(async() => {
         console.log("")
-
-        // const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
-
-        // await delay(5000);
+    
+        storeInstance = await ExampleObjectDBStore.builder("testDatabaseName", 1, "testStoreName");
     })
 
-    it("add object with key that does not exist - successfully added object", async() => {
+    describe("addElement", function(){
 
-        let newObject: StoreObjectInterfaceExample = {
-            ID: 10,
-            KEY: "testKey"
-        }
+        it("add object with key that does not exist - successfully added object and then do something", async() => {
 
-        let handlerAfterObjectHasBeenSuccessfullyAdded = (evt: any) => console.log("added object to store");
+            const newObject: StoreObjectInterfaceExample = {
+                ID: 10,
+                KEY: "testKey"
+            }
 
-        storeInstance.addElement(newObject, handlerAfterObjectHasBeenSuccessfullyAdded);
+            class X {
+                id: number
+
+                constructor(){
+
+                }
+                
+                testFun(evt: any & Event): number{
+                    this.id = evt.target.result;
+                    return evt.target.result;
+                }
+            }
+            var xInst = new X()
+
+            function handlerAfterObjectHasBeenSuccessfullyAdded(evt: Event){
+                const copyOfObject = newObject
+                console.log("added object to store");
+                console.log(xInst.testFun(evt));
+                console.log(copyOfObject);
+                
+            }
+
+            jest.spyOn(xInst, 'testFun');
+
+            storeInstance.addElementAndThenDoSomething(
+                newObject, 
+                handlerAfterObjectHasBeenSuccessfullyAdded
+            );
+
+            await flushPromises();
+
+            expect(xInst.testFun).toHaveBeenCalledTimes(1);
+            expect(xInst.id).toEqual(10);
+        });
+
+
     });
-
-    it("add object with key that does exist - unsuccessfully add object", function(){
-
-    });
-
-
 });
-

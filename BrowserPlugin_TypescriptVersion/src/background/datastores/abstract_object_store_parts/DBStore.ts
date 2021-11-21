@@ -5,67 +5,52 @@
 // }
 
 import StoreObjectInterface  from "../abstract_store_object_parts/StoreObjectInterface";
+import DBInterface from "./DBInterface";
 
 
-export default abstract class DBStore<STORE_T extends StoreObjectInterface> {
+export default abstract class DBStore<STORE_T extends StoreObjectInterface> 
+                        implements DBInterface<STORE_T> {
 
     private STORE_NAME: string; 
 
     private DB: IDBDatabase;
 
-    constructor(DATABASE: string, DB_VERSION: number,STORE_NAME: string, 
-        onUpgradeNeededHandler: (event: any) => void
-        // onSuccessfulCreationOfStore: (evt: any) => any = null
-        // letNoHaveCompletedBuild: Promise<null> = null
-        ){
-        var openDBReq = indexedDB.open(DATABASE, DB_VERSION);
-
-        const self = this;
-
-        // var dbStoreHasBeenCreatedPromise: Promise<null> = new Promise((resolve, reject) => {
-        // if(onSuccessfulCreationOfStore === null) {
-        if(letNoHaveCompletedBuild === null) {
-            openDBReq.onsuccess = function (evt) {
-                console.log("dsfakjfdskjlfdsalk");
-                self.DB = openDBReq.result;
-            }
-        } else {
-            console.log("arrived here")
-            // openDBReq.onsuccess = onSuccessfulCreationOfStore(self);
-            letNoHaveCompletedBuild.resolve()
-        }
-
-        openDBReq.onerror = function (evt) {
-            console.error("openDb:", "db request fail");
-        };
-
-        openDBReq.onupgradeneeded = onUpgradeNeededHandler.bind(self);
-
+    protected constructor(STORE_NAME: string, DB: IDBDatabase){
         this.STORE_NAME = STORE_NAME;
-
+        this.DB = DB;
     }
 
-    static async builder(DATABASE: string, DB_VERSION: number,STORE_NAME: string, 
-        onUpgradeNeededHandler: (event: any) => void): Promise<T>{
-        var DB: IDBDatabase;
-        
-        return new Promise((resolve,reject) => {
-            var openDBReq = indexedDB.open(DATABASE, DB_VERSION);
-            
-            openDBReq.onsuccess = function (evt: any) {
-                console.log("dsfakjfdskjlfdsalk");
-                DB = evt.result;
-                resolve(null)
-            }
+    // constructor(DATABASE: string, DB_VERSION: number,STORE_NAME: string, 
+    //     onUpgradeNeededHandler: (event: any) => void
+    //     // onSuccessfulCreationOfStore: (evt: any) => any = null
+    //     // letNoHaveCompletedBuild: Promise<null> = null
+    //     ){
+    //     var openDBReq = indexedDB.open(DATABASE, DB_VERSION);
 
-            openDBReq.onerror = function (evt) {
-                console.error("openDb:", "db request fail");
-            };
-        })
+    //     const self = this;
 
-        // return 
+    //     // var dbStoreHasBeenCreatedPromise: Promise<null> = new Promise((resolve, reject) => {
+    //     // if(onSuccessfulCreationOfStore === null) {
+    //     if(letNoHaveCompletedBuild === null) {
+    //         openDBReq.onsuccess = function (evt) {
+    //             console.log("dsfakjfdskjlfdsalk");
+    //             self.DB = openDBReq.result;
+    //         }
+    //     } else {
+    //         console.log("arrived here")
+    //         // openDBReq.onsuccess = onSuccessfulCreationOfStore(self);
+    //         letNoHaveCompletedBuild.resolve()
+    //     }
 
-    }
+    //     openDBReq.onerror = function (evt) {
+    //         console.error("openDb:", "db request fail");
+    //     };
+
+    //     openDBReq.onupgradeneeded = onUpgradeNeededHandler.bind(self);
+
+    //     this.STORE_NAME = STORE_NAME;
+
+    // }
 
 
     /**
@@ -92,8 +77,12 @@ export default abstract class DBStore<STORE_T extends StoreObjectInterface> {
 
     // ---------------------------------------------------------
 
-    addElement(newElementToStore: STORE_T,
-        onSuccessfullReq: ((evt: any) => void)){
+    /**
+     * @param newElementToStore 
+     * @param onSuccessfullReq 
+     */
+    addElementAndThenDoSomething(newElementToStore: STORE_T,
+        onSuccessfullReq: ((evt: any & Event) => void)): void{
         let store = this.getStoreObject('readwrite');
 
         var req;
@@ -105,20 +94,19 @@ export default abstract class DBStore<STORE_T extends StoreObjectInterface> {
                                     "use Firefox");
             throw e;
         }
-
         req.onsuccess = onSuccessfullReq;
     
         req.onerror = this.onFailedRequest;
     }
 
     // async getStoreObjectByKeyColumn( indexName: string, value: IDBValidKey,
-    async getStoreObjectByColumn( indexName: string, value: IDBValidKey): Promise<IDBValidKey>{        
-        return new Promise<IDBValidKey>((resolve, reject) => {
+    getStoreObjectByColumn( indexName: string, value: IDBValidKey): Promise<IDBValidKey>{        
+        return new Promise<IDBValidKey>((resolve, reject) => {  // TODO: see if can just pass on the promise from one fun to another
             let store = this.getStoreObject('readonly');
 
             var req = store.index(indexName).get(value);
 
-            req.onsuccess = function(evt: any) {    // TODO: update type from any
+            req.onsuccess = function(evt: any & Event) {    // TODO: update type from any
                 if (typeof evt.target.result == 'undefined') {
                     resolve(null);
                 }else{
@@ -136,14 +124,14 @@ export default abstract class DBStore<STORE_T extends StoreObjectInterface> {
         let allTagsReq = store.getAll();
 
         return new Promise((resolve, reject) => {
-            allTagsReq.onsuccess = function(event: any) {
+            allTagsReq.onsuccess = function(event: any & Event) {
 
                 // var cursor = event.target.result;
                 resolve(event.target.result)
                 
             };
     
-            allTagsReq.onerror = function (evt: any) {
+            allTagsReq.onerror = function (evt: any & Event) {
                 console.error("geting similar results did not work")
                 resolve(null);
             };
