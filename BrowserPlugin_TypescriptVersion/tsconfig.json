@@ -9,7 +9,7 @@
         "sourceMap": true,
         "outDir": "./CompleteBuild",
         "baseUrl": "./node_modules",
-        "rootDir": "./src",
+        "rootDirs": ["./src", "./tests"],
     },
 
     "include": [

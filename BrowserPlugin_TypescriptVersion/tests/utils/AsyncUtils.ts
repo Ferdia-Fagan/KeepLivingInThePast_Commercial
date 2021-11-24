@@ -1,3 +1,3 @@
 
-export const flushPromises = () => new Promise(setImmediate);
+export const FlushPromises = () => new Promise(setImmediate);
 

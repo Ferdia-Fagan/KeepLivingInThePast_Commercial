@@ -1,5 +1,5 @@
 require("fake-indexeddb/auto");
-import {DBCache} from "../../../../src/background/datastores/abstract_object_store_parts/DBCache";
+import {DBWithCache} from "../../../../src/background/datastores/abstract_object_store_parts/DBWithCache";
 
 describe("addElementAndThenDoSomething", function() {
 

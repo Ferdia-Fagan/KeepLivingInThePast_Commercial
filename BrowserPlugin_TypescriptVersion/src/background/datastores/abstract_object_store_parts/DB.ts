@@ -5,10 +5,10 @@
 // }
 
 import StoreObjectInterface  from "../abstract_store_object_parts/StoreObjectInterface";
-import DBInterface from "./DBInterface";
+import DBInterface from "./interfaces/DBInterface";
 
 
-export default abstract class DBStore<STORE_T extends StoreObjectInterface> 
+export default abstract class DB<STORE_T extends StoreObjectInterface>
                         implements DBInterface<STORE_T> {
 
     private STORE_NAME: string; 
@@ -78,30 +78,26 @@ export default abstract class DBStore<STORE_T extends StoreObjectInterface>
     // ---------------------------------------------------------
 
     /**
+     *  TODO: unhandled error if add what does exist for indexes.
      * @param newElementToStore 
      * @param onSuccessfullReq 
      */
-    addElementAndThenDoSomething(newElementToStore: STORE_T,
-        onSuccessfullReq: ((evt: any & Event) => void)): void{
-        let store = this.getStoreObject('readwrite');
+    addObject(newElementToStore: STORE_T): Promise<number>{
+        return new Promise<number>((resolve, reject) => {
+            let store = this.getStoreObject('readwrite');
+            var req = store.add(newElementToStore);
 
-        var req;
-        try {
-            req = store.add(newElementToStore);
-        } catch (e) {
-            if (e.name == 'DataCloneError')
-                console.log("This engine doesn't know how to clone a Blob, " +
-                                    "use Firefox");
-            throw e;
-        }
-        req.onsuccess = onSuccessfullReq;
-    
-        req.onerror = this.onFailedRequest;
+            req.onsuccess = function(evt: any & Event) {
+                resolve(evt.target.result)
+            };
+
+            req.onerror = this.onFailedRequest;
+        })
     }
 
     // async getStoreObjectByKeyColumn( indexName: string, value: IDBValidKey,
-    getStoreObjectByColumn( indexName: string, value: IDBValidKey): Promise<IDBValidKey>{        
-        return new Promise<IDBValidKey>((resolve, reject) => {  // TODO: see if can just pass on the promise from one fun to another
+    getObjectByIndexColumn(indexName: string, value: IDBValidKey): Promise<STORE_T>{
+        return new Promise<STORE_T>((resolve, reject) => {  // TODO: see if can just pass on the promise from one fun to another
             let store = this.getStoreObject('readonly');
 
             var req = store.index(indexName).get(value);
@@ -111,24 +107,21 @@ export default abstract class DBStore<STORE_T extends StoreObjectInterface>
                     resolve(null);
                 }else{
 
-                    resolve(evt.target.result.id);
+                    resolve(evt.target.result);
                 }
             };
             req.onerror = this.onFailedRequest;
         });
     }
 
-    getAllStoreObject(): Promise<Array<STORE_T>>{
+    getAllObjects(): Promise<Array<STORE_T>>{
         let store = this.getStoreObject('readonly');
-    
-        let allTagsReq = store.getAll();
 
         return new Promise((resolve, reject) => {
-            allTagsReq.onsuccess = function(event: any & Event) {
+            let allTagsReq = store.getAll();
 
-                // var cursor = event.target.result;
+            allTagsReq.onsuccess = function(event: any & Event) {
                 resolve(event.target.result)
-                
             };
     
             allTagsReq.onerror = function (evt: any & Event) {
@@ -138,15 +131,14 @@ export default abstract class DBStore<STORE_T extends StoreObjectInterface>
         });
     }
 
-    deleteStoreObjectById(elementId: number){
+    deleteObjectById(elementId: number): void{
         let store = this.getStoreObject('readwrite');
-        
+
         store.delete(elementId);
     }
 
-    updateStoreObject(storeObject: STORE_T){
+    updateObject(storeObject: STORE_T): void{
         let store = this.getStoreObject('readwrite');
-
         store.put(storeObject);
     }
 

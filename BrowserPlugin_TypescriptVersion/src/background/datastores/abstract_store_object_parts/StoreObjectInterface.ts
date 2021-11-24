@@ -1,5 +1,5 @@
 
 export default interface StoreObjectInterface {
-    ID: number
+    ID?: number
 }
 

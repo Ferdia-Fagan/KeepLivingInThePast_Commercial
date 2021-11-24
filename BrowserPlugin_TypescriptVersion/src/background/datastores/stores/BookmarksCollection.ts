@@ -1,5 +1,5 @@
 import DBCollection from "../DBCollection";
-import {DBCache,IndexStore} from "../abstract_object_store_parts/DBCache";
+import {DBWithCache,IndexStore} from "../abstract_object_store_parts/DBWithCache";
 import MapCache from "../../utils/MapCache";
 
 interface BookmarkAddedReportCollection {
@@ -30,7 +30,7 @@ interface Bookmark extends IndexStore {
 const BOOKMARK_KEY = "bookmarkKey";
 const PARENT_ID = "parentId";
 
-class BookmarksCollection extends DBCache<string, Bookmark> {
+class BookmarksCollection extends DBWithCache<string, Bookmark> {
     
     cache: MapCache<string,number>;
 
@@ -153,7 +153,7 @@ class BookmarksCollection extends DBCache<string, Bookmark> {
             webpageLoggingId
         }
 
-        super.addElement(newBookmarkToAdd);
+        super.addObject(newBookmarkToAdd);
 
     }
 

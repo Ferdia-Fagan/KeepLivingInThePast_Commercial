@@ -1,4 +1,4 @@
-import DBStore from "../abstract_object_store_parts/DBStore";
+import DB from "../abstract_object_store_parts/DB";
 import StoreObjectInterface from "../abstract_store_object_parts/StoreObjectInterface";
 import { ID, KEY } from "../stores/Utils";
 
@@ -8,7 +8,7 @@ import { ID, KEY } from "../stores/Utils";
  *  The sub class will want to fetch a id by a key.
  *  E.g. Tags, bookmarks, etc.
  */
-export default class BasicStoreWithKeyColumn<StoreObjType extends StoreObjectInterface> extends DBStore<StoreObjType> {
+export default class BasicStoreWithKeyColumn<StoreObjType extends StoreObjectInterface> extends DB<StoreObjType> {
     
     // private readonly KEY_NAME: string
     
@@ -25,7 +25,7 @@ export default class BasicStoreWithKeyColumn<StoreObjType extends StoreObjectInt
     }
 
     async getByKey(key: IDBValidKey){
-        return this.getStoreObjectByColumn(KEY, key);
+        return this.getObjectByIndexColumn(KEY, key);
     }
 
     
