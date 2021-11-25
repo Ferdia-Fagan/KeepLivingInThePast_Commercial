@@ -1,9 +1,9 @@
 import MapCache from "../../../utils/MapCache";
 import { DBCache } from "../../abstract_object_store_parts/DBCache";
-import BasicStoreWithKeyColumn from "../abstract_stores/BasicStoreWithKeyColumn";
-import StoreObjectInterface from "../../abstract_store_object_parts/StoreObjectInterface";
+import BasicStoreWithKeyColumn from "../../abstract_stores/BasicStoreWithKeyColumn";
+import IndexObject from "../../DTOs/baseDTOs/IndexObject";
 
-interface Hostname extends StoreObjectInterface {
+interface Hostname extends IndexObject {
     id: number,
     hostname: string
 }

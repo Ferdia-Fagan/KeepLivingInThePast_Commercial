@@ -1,12 +1,8 @@
 import MapCache from "../../utils/MapCache";
-import StoreKeyIndexObjectInterface from "../abstract_store_object_parts/StoreKeyIndexInterface";
+import IndexKeyObject from "../DTOs/baseDTOs/StoreKeyIndexInterface";
 import DB from "./DB";
-import StoreObjectInterface from "../abstract_store_object_parts/StoreObjectInterface";
-
-export interface IndexStore {
-    id?: number,
-    key: any & IDBValidKey
-}
+import IndexObject from "../DTOs/baseDTOs/IndexObject";
+import {ID, KEY} from "../stores/Utils";
 
 // TODO: make DBSTore, DBCache and DBReport and compoenents so are composable, rather than extendable.
 
@@ -16,22 +12,17 @@ export interface IndexStore {
  * store is assumed to have atleast:
  * {id, key,...}
  */
-export abstract class DBWithCache<STORE_T extends StoreKeyIndexObjectInterface> extends DB<STORE_T> {
-    cache: MapCache<IDBValidKey, number>;
-
-    // getObjectStore(mode: IDBTransactionMode): IDBObjectStore;
-
-    // onSuccessfullAdd_ValueForKey(evt: any): void;
-
-    // onFailedRequest(evt: any): void;
+export abstract class DBWithCache<STORE_T extends IndexKeyObject, KEY_T extends IDBValidKey> extends DB<STORE_T> {
+    cache = new MapCache<IDBValidKey, number>(100, 10);
 
     /**
-     * Add new element for system to indexdb and cache
+     * Add new element (must not exist with key already) for system to indexdb and cache
      * (does not check cache)
      * @param value 
      */
     addObject(value: STORE_T): Promise<number>{
 
+        // TODO: remove code
         // function onSuccessfullBookmarkAdd(evt: any & Event){ // TODO: update evt interface
         //     // const bookmarkId = req.result;
         //     const bookmarkId = evt.target.result;
@@ -51,39 +42,15 @@ export abstract class DBWithCache<STORE_T extends StoreKeyIndexObjectInterface> 
         )
     }
 
-    // async getIdFromKey(key_value: K): Promise<IDBValidKey>{
-    //     if(this.cache.has(key_value)){
-    //         return this.cache.get(key_value);
-    //     } else {
-
-    //         // const self = this;
-
-    //         // function onSuccessfullBookmarkGet(evt: any){ // TODO: update evt interface
-    //         //     // const bookmarkId = req.result; 
-    //         //     if (typeof evt.target.result == 'undefined') {
-    //         //         const bookmarkId = evt.target.result; 
-            
-    //         //         self.cache.set(key_value,bookmarkId);
-    //         //     }
-                
-    //         // }
-
-    //         return super.getStoreObjectByColumn('key', key_value, this.onSuccessfullBookmarkGet);
-    //     }
-    // }
-
-    // deleteElement(bookmarkKey: ){
-
-    // }
-
-    // DB Cache callback handlers:
-
-    // private onSuccessfullBookmarkGet(evt: any){
-    //     if (typeof evt.target.result == 'undefined') {
-    //         const bookmarkId = evt.target.result;
-    //
-    //         this.cache.set(key_value,bookmarkId);
-    //     }
-    // }
+    async getObjectByKey(key_value: KEY_T): Promise<STORE_T>{
+        if(this.cache.has(key_value)){
+            let cachedIdValue = this.cache.get(key_value);
+            return super.getObjectById(cachedIdValue)
+        } else {
+            return super.getObjectByIndexColumn(
+                KEY, key_value
+            );
+        }
+    }
 } 
 

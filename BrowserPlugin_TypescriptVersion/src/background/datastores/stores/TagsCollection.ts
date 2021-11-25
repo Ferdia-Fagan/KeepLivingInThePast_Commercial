@@ -1,9 +1,9 @@
 import BasicStoreWithKeyColumn from "../abstract_stores/BasicStoreWithKeyColumn";
-import StoreKeyIndexInterface from "../abstract_store_object_parts/StoreKeyIndexInterface";
-import StoreObjectInterface from "../abstract_store_object_parts/StoreObjectInterface";
+import StoreKeyIndexInterface from "../DTOs/baseDTOs/StoreKeyIndexInterface";
+import IndexObject from "../DTOs/baseDTOs/IndexObject";
 import { AddMultipleKeysAndGetIndexesInterface,AddMultipleKeysAndGetIndexes } from "./mixins/AddMultipleKeysAndGetIndexes";
 
-interface Tag extends StoreObjectInterface {
+interface Tag extends IndexObject {
     id: number,
     tag: string
 }

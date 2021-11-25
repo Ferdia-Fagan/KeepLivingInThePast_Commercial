@@ -1,5 +1,5 @@
 import DB from "../abstract_object_store_parts/DB";
-import StoreObjectInterface from "../abstract_store_object_parts/StoreObjectInterface";
+import IndexObject from "../DTOs/baseDTOs/IndexObject";
 import { ID, KEY } from "../stores/Utils";
 
 /**
@@ -8,7 +8,7 @@ import { ID, KEY } from "../stores/Utils";
  *  The sub class will want to fetch a id by a key.
  *  E.g. Tags, bookmarks, etc.
  */
-export default class BasicStoreWithKeyColumn<StoreObjType extends StoreObjectInterface> extends DB<StoreObjType> {
+export default class BasicStoreWithKeyColumn<StoreObjType extends IndexObject> extends DB<StoreObjType> {
     
     // private readonly KEY_NAME: string
     

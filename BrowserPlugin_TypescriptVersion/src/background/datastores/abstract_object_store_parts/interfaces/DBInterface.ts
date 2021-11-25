@@ -1,6 +1,6 @@
-import StoreObjectInterface from "../../abstract_store_object_parts/StoreObjectInterface";
+import IndexObject from "../../DTOs/baseDTOs/IndexObject";
 
-export default interface DBInterface<STORE_T extends StoreObjectInterface> {
+export default interface DBInterface<STORE_T extends IndexObject> {
     // addElementAndThenDoSomething(newElementToStore: STORE_T,
     //     onSuccessfullReq: ((evt: any & Event) => void)): void
     addObject(newElementToStore: STORE_T): Promise<number>

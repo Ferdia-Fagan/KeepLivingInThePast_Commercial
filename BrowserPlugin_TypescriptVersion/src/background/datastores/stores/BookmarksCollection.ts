@@ -1,34 +1,34 @@
-import DBCollection from "../DBCollection";
-import {DBWithCache,IndexStore} from "../abstract_object_store_parts/DBWithCache";
-import MapCache from "../../utils/MapCache";
+// import DBCollection from "../DBCollection";
+// import {DBWithCache,IndexStore} from "../abstract_object_store_parts/DBWithCache";
+// import MapCache from "../../utils/MapCache";
 
-interface BookmarkAddedReportCollection {
-    parentId: number;
-    webpageLoggingId: number;
-}
+// interface BookmarkAddedReportCollection {
+//     parentId: number;
+//     webpageLoggingId: number;
+// }
+//
+// type bookmarkId = number;
+// type newParentId = number;
+//
+// type bookmarkUID = string;
 
-type bookmarkId = number;
-type newParentId = number;
+// type Bookmark_Key_Cache = MapCache<bookmarkUID, number>
 
-type bookmarkUID = string;
+// enum BookmarkType {
+//     BookmarkFolder,
+//     BookmarkWebpage
+// }
 
-type Bookmark_Key_Cache = MapCache<bookmarkUID, number>
+// interface Bookmark extends IndexStore {
+//     id?: number,
+//     key: string,
+//     bookmarkType: BookmarkType,
+//     parentId: number,
+//     webpageLoggingId?: number
+// }
 
-enum BookmarkType {
-    BookmarkFolder,
-    BookmarkWebpage
-}
-
-interface Bookmark extends IndexStore {
-    id?: number,
-    key: string, 
-    bookmarkType: BookmarkType,
-    parentId: number,
-    webpageLoggingId?: number
-}
-
-const BOOKMARK_KEY = "bookmarkKey";
-const PARENT_ID = "parentId";
+// const BOOKMARK_KEY = "bookmarkKey";
+// const PARENT_ID = "parentId";
 
 class BookmarksCollection extends DBWithCache<string, Bookmark> {
     

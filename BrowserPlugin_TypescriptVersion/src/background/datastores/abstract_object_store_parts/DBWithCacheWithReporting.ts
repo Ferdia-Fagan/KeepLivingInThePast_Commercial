@@ -1,11 +1,11 @@
 // TODO: abstract reporting behavior to modular components.
 
 import {DBWithCache} from "./DBWithCache";
-import StoreKeyIndexObjectInterface from "../abstract_store_object_parts/StoreKeyIndexInterface";
-import StoreObjectInterface from "../abstract_store_object_parts/StoreObjectInterface";
+import IndexKeyObject from "../DTOs/baseDTOs/StoreKeyIndexInterface";
 import {ID} from "../../../utils/Aliases";
 
-export abstract class DBWithCacheWithReporting<STORE_T extends StoreKeyIndexObjectInterface> extends DBWithCache<STORE_T> {
+export abstract class DBWithCacheWithReporting<STORE_T extends IndexKeyObject, KEY_T extends IDBValidKey>
+    extends DBWithCache<STORE_T, KEY_T> {
 
     newObjectsReport = new Map<ID, STORE_T>()  // TODO: STORE_T mite have to become a transofrmation interface for what is wanted to be reported/saved
     updatedObjectReport = new Map<ID, STORE_T>()

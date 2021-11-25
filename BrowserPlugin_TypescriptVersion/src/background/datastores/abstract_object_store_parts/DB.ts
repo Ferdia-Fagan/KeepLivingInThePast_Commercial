@@ -4,11 +4,11 @@
 //     onFailedRequest(evt: any): void
 // }
 
-import StoreObjectInterface  from "../abstract_store_object_parts/StoreObjectInterface";
+import IndexObject  from "../DTOs/baseDTOs/IndexObject";
 import DBInterface from "./interfaces/DBInterface";
 
 
-export default abstract class DB<STORE_T extends StoreObjectInterface>
+export default abstract class DB<STORE_T extends IndexObject>
                         implements DBInterface<STORE_T> {
 
     private STORE_NAME: string; 
@@ -112,6 +112,21 @@ export default abstract class DB<STORE_T extends StoreObjectInterface>
             };
             req.onerror = this.onFailedRequest;
         });
+    }
+
+    getObjectById(id: number): Promise<STORE_T>{
+        return new Promise((resolve, reject) => {
+            let store = this.getStoreObject('readonly');
+
+            let getById = store.get(id)
+            getById.onsuccess = function(event: any & Event) {
+                resolve(event.target.result)
+            };
+            getById.onerror = function (evt: any & Event) {
+                console.error("geting similar results did not work")
+                resolve(null);
+            };
+        })
     }
 
     getAllObjects(): Promise<Array<STORE_T>>{
