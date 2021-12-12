@@ -5,8 +5,9 @@
 import "mockzilla-webextension";
 require("fake-indexeddb/auto");
 
-import { ID, KEY } from "../../../../src/background/datastores/stores/Utils";
-import {DB_StoreDummy} from "./utils/DB_StoreDummy";
+import { ID_NAME, KEY_NAME } from "../../../../src/background/datastores/stores/utils/Utils";
+import {DB_StoreDummy, StoreObjectInterfaceExample} from "./utils/DB_StoreDummy";
+import IndexObject from "../../../../src/background/datastores/store_objects_interfaces/base_store_objects/IndexObject";
 
 var HAS_BEEN__CREATED: boolean = false;
 
@@ -25,8 +26,8 @@ describe("DBStore", function(){
         let storeInstance = await DB_StoreDummy.builder(
             "test", 3, "test");
 
-        const newObject = {
-            KEY: "testKey1"
+        const newObject: StoreObjectInterfaceExample = {
+            theKey: "testKey1"
         }
 
         let newObjectAddedToStore = await storeInstance.addObject(
@@ -42,27 +43,29 @@ describe("DBStore", function(){
         let storeInstance = await DB_StoreDummy.builder(
             "test", 3, "test",
             [
-                {KEY: "testKey"}
+                {theKey: "testKey"}
             ]
         );
 
-        let expectedResult = {ID: 1, KEY: "testKey"}
+        let expectedResult: StoreObjectInterfaceExample = {
+            id: 1, theKey: "testKey"
+        }
 
         let objectWithIndexColumnValue = await storeInstance.getObjectByIndexColumn(
-            "KEY", "testKey"
+            KEY_NAME, "testKey"
         );
 
         console.log("hello" + objectWithIndexColumnValue)
-        expect(objectWithIndexColumnValue.KEY).toBe(expectedResult.KEY)
+        expect(objectWithIndexColumnValue. theKey).toBe(expectedResult.theKey)
     })
 
     it("getAllObjects(..)", async () => {
         let storeInstance = await DB_StoreDummy.builder(
             "test", 3, "test",
             [
-                {KEY: "testKey1"},
-                {KEY: "testKey2"},
-                {KEY: "testKey3"}
+                {theKey: "testKey1"},
+                {theKey: "testKey2"},
+                {theKey: "testKey3"}
             ]
         );
 
@@ -78,7 +81,7 @@ describe("DBStore", function(){
         let storeInstance = await DB_StoreDummy.builder(
             "test", 3, "test",
             [
-                {KEY: "testKey1"}
+                {theKey: "testKey1"}
             ]
         );
 
@@ -93,19 +96,21 @@ describe("DBStore", function(){
         let storeInstance = await DB_StoreDummy.builder(
             "test", 3, "test",
             [
-                {KEY: "testKey1"}
+                {theKey: "testKey1"}
             ]
         );
 
-        let expectedTestKeyUpdated = {ID: 1, KEY: "testKey10"}
+        let expectedTestKeyUpdated: StoreObjectInterfaceExample = {
+            id: 1, theKey: "testKey10"
+        }
 
         storeInstance.updateObject(expectedTestKeyUpdated)
 
         let allObjects = await storeInstance.getAllObjects()
 
         expect(allObjects.length).toBe(1)
-        expect(allObjects[0].ID).toBe(expectedTestKeyUpdated.ID)
-        expect(allObjects[0].KEY).toBe(expectedTestKeyUpdated.KEY)
+        expect(allObjects[0].id).toBe(expectedTestKeyUpdated.id)
+        expect(allObjects[0].theKey).toBe(expectedTestKeyUpdated.theKey)
     })
 
 });

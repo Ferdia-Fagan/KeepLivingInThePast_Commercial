@@ -1,7 +1,7 @@
 import "mockzilla-webextension";
 require("fake-indexeddb/auto");
-import {DBWithCache} from "../../../../src/background/datastores/abstract_object_store_parts/DBWithCache";
-import {DBWithCache_StoreDummy} from "./utils/DBWIthCache__StoreDummy";
+import {DBWithCache} from "../../../../src/background/datastores/abstract_object_store_parts/layers/cache/DBWithCache";
+import {DBWithCache_StoreDummy, StoreObjectInterfaceExample} from "./utils/DBWIthCache__StoreDummy";
 
 describe("DBWithCache", function() {
 
@@ -15,8 +15,8 @@ describe("DBWithCache", function() {
             let storeInstance = await DBWithCache_StoreDummy.builder(
                 "test", 3, "test");
 
-            let testData = {
-                KEY: "testKey"
+            let testData: StoreObjectInterfaceExample = {
+                theKey: "testKey"
             }
 
             await storeInstance.addObject(testData)
@@ -24,49 +24,52 @@ describe("DBWithCache", function() {
             let results = await storeInstance.getAllObjects()
 
             expect(results.length).toBe(1)
-            expect(results[0].KEY).toBe("testKey")
+            expect(results[0].theKey).toBe("testKey")
         });
     })
 
     describe("getObjectByKey", function(){
         it("when object not cached - pull {ID,KEY} from store into cache", async() => {
-            let testDataSelecting = {ID: 1, KEY: "test1"}
+            let testDataSelecting = {id: 1, theKey: "test1"}
             let storeInstance = await DBWithCache_StoreDummy.builder(
                 "test", 3, "test",
                 [
                     testDataSelecting,
-                    {ID: 2, KEY: "test2"}
+                    {id: 2, theKey: "test2"}
                 ]);
-            jest.spyOn(storeInstance.cache, "get")
+            jest.spyOn(storeInstance["cache"], "get")
 
             // WHEN:
             let result = await storeInstance.getObjectByKey("test1")
 
             // THEN:
-            expect(storeInstance.cache.get).not.toHaveBeenCalled()
-            expect(result.ID).toBe(testDataSelecting.ID)
-            expect(result.KEY).toBe(testDataSelecting.KEY)
+            expect(storeInstance["cache"].get)
+                .not.toHaveBeenCalled()
+            expect(result.id).toBe(testDataSelecting.id)
+            expect(result.theKey).toBe(testDataSelecting.theKey)
         })
 
         it("when object cached", async() => {
-            let testDataSelecting = {ID: 1, KEY: "test1"}
+            let testDataSelecting: StoreObjectInterfaceExample = {
+                id: 1, theKey: "test1"
+            }
             let storeInstance = await DBWithCache_StoreDummy.builder(
                 "test", 3, "test",
                 [
                     testDataSelecting,
-                    {ID: 2, KEY: "test2"}
+                    {id: 2, theKey: "test2"}
                 ],[
                     testDataSelecting
                 ]);
-            jest.spyOn(storeInstance.cache, "get")
+            jest.spyOn(storeInstance["cache"], "get")
 
             // WHEN
             let result = await storeInstance.getObjectByKey("test1")
 
             // THEN
-            expect(storeInstance.cache.get).toHaveBeenCalled()
-            expect(result.ID).toBe(testDataSelecting.ID)
-            expect(result.KEY).toBe(testDataSelecting.KEY)
+            expect(storeInstance["cache"].get).toHaveBeenCalled()
+            expect(result.id).toBe(testDataSelecting.id)
+            expect(result.theKey).toBe(testDataSelecting.theKey)
         })
     })
 

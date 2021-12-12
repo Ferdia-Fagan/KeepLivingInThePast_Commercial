@@ -1,5 +1,5 @@
-// import StoreKeyIndexObjectInterface from "../../DTOs/StoreKeyIndexInterface";
-// import StoreObjectInterface from "../../DTOs/StoreObjectInterface";
+// import StoreKeyIndexObjectInterface from "../../store_objects_interfaces/StoreKeyIndexInterface";
+// import StoreObjectInterface from "../../store_objects_interfaces/StoreObjectInterface";
 //
 // export interface AddMultipleKeysAndGetIndexesInterface {
 //     addMultipleKeysAndGetIndexes: (newKeys: IDBValidKey[],
