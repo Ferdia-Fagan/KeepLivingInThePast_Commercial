@@ -1,31 +1,32 @@
-import DB from "../../../../../src/background/datastores/abstract_object_store_parts/DB";
-import {ID} from "../../../../../src/background/datastores/stores/Utils";
+import DB from "../../../../../src/background/datastores/abstract_object_store_parts/layers/db/DB";
+import {ID_NAME, KEY_NAME} from "../../../../../src/background/datastores/stores/utils/Utils";
 import IndexObject
-    from "../../../../../src/background/datastores/DTOs/baseDTOs/IndexObject";
-import IndexKeyObject
-    from "../../../../../src/background/datastores/DTOs/baseDTOs/StoreKeyIndexInterface";
+    from "../../../../../src/background/datastores/store_objects_interfaces/base_store_objects/IndexObject";
+import {DBInterface} from "../../../../../src/background/datastores/abstract_object_store_parts/layers/db/DBInterface";
+import { KEY_TYPE} from "../../../../../src/background/datastores/store_objects_interfaces/types/Types";
 
-// export interface StoreObjectInterfaceExample extends StoreObjectInterface{
-//     ID?: number,
-//     KEY: IDBValidKey
-// }
+export interface StoreObjectInterfaceExample extends IndexObject{
+    theKey: KEY_TYPE
+}
+const THE_KEY_NAME = "theKey"
 
-export class DB_StoreDummy extends DB<IndexKeyObject> {
+export class DB_StoreDummy extends DB<StoreObjectInterfaceExample>
+    implements DBInterface<StoreObjectInterfaceExample>{
 
     private constructor(STORE_NAME: string, DB: IDBDatabase){
         super(STORE_NAME, DB)
     }
 
     static async builder(DATABASE: string, DB_VERSION: number,STORE_NAME: string,
-                         testData?: IndexKeyObject[]){
+                         testData?: StoreObjectInterfaceExample[]){
 
         function onUpgradeNeededHandler(event: any){    // TODO: correct any
             var objectStore = event.currentTarget.result.createObjectStore(
-                STORE_NAME, { keyPath: ID, autoIncrement: true });
+                STORE_NAME, { keyPath: ID_NAME, autoIncrement: true });
 
             objectStore.createIndex(
-                "KEY",
-                "KEY",
+                KEY_NAME,
+                THE_KEY_NAME,
                 {unique: true}
             )
 
@@ -35,7 +36,7 @@ export class DB_StoreDummy extends DB<IndexKeyObject> {
             var openDBReq = indexedDB.open(DATABASE, DB_VERSION);
 
             openDBReq.onsuccess = function (evt: any & Event) {
-                // DB = evt.result;
+                // db = evt.result;
                 if(testData){
                     let transaction = openDBReq.result.transaction("test",'readwrite')
                     let store: any & IDBObjectStore = transaction.objectStore("test")
@@ -69,4 +70,21 @@ export class DB_StoreDummy extends DB<IndexKeyObject> {
         })
         return new DB_StoreDummy(STORE_NAME, DB);
     }
+
+    addObject = (newElementToStore: StoreObjectInterfaceExample): Promise<number> =>
+        super.addObject(newElementToStore)
+
+    getObjectByIndexColumn = (indexName: string, value: IDBValidKey): Promise<StoreObjectInterfaceExample> =>
+        super.getObjectByIndexColumn(indexName, value)
+
+    getAllObjects = (): Promise<Array<StoreObjectInterfaceExample>> =>
+        super.getAllObjects()
+
+    deleteObjectById = (objectId: number): void =>
+        super.deleteObjectById(objectId)
+
+    updateObject = (storeObject: StoreObjectInterfaceExample): void =>
+        super.updateObject(storeObject)
+
 }
+
