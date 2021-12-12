@@ -1,8 +1,8 @@
 import TagObject from "./TagObject";
 import {GetCreateDBStoreHandler} from "../../abstract_object_store_parts/factory/BuildDB";
 import {builder, DBWithCache} from "../../abstract_object_store_parts/layers/cache/DBWithCache";
-import {DBWithCacheWithReporting} from "../../abstract_object_store_parts/layers/reporting/DBWithCacheWithReporting";
 import BuildingSetupCheckInterface from "../../abstract_object_store_parts/factory/BuildingSetupCheckerInteface";
+import {KEY_NAME} from "../utils/Utils";
 
 interface TagsCollectionInterface {
     /**
@@ -68,7 +68,7 @@ class TagsCollectionBuildingManager implements BuildingSetupCheckInterface{
     static collectionDatabaseAndTableSetup = GetCreateDBStoreHandler(
         "TagsCollection",
         {
-            indexName: "tag", indexKeyPath: "tag",
+            indexName: KEY_NAME, indexKeyPath: "tag",
             options: {unique: true}
         }
     )
@@ -90,4 +90,5 @@ class TagsCollectionBuildingManager implements BuildingSetupCheckInterface{
         tagsCollectionBuildingManager = null
     }
 }
+
 export var tagsCollectionBuildingManager = new TagsCollectionBuildingManager()

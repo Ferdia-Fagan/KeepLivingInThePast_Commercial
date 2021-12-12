@@ -3,7 +3,6 @@ import {GetCreateDBStoreHandler} from "../../../abstract_object_store_parts/fact
 import DB from "../../../abstract_object_store_parts/layers/db/DB";
 import {builder} from "../../../abstract_object_store_parts/layers/cache/DBWithCache";
 import AutoAnnotatorSetupsObject, {AutoAnnotatorSetupsObjectUpdateInterface} from "./AutoAnnotatorSetupsObject";
-import tagsCollection from "../../tags/TagsCollection";
 
 interface AutoAnnotatorsCreatedCollectionInterface {
     addNewAutoAnnotator(newAutoAnnotator: AutoAnnotatorSetupsObject): Promise<number>
@@ -52,11 +51,7 @@ class AutoAnnotatorSetupsCollectionBuildingManager implements BuildingSetupCheck
     }
 
     static collectionDatabaseAndTableSetup = GetCreateDBStoreHandler(
-        "TagsCollection",
-        {
-            indexName: "tag", indexKeyPath: "tag",
-            options: {unique: true}
-        }
+        "AutoAnnotatorSetupsCollection"
     )
 
     static collectionBuilder = (): Promise<null> => builder<
@@ -79,6 +74,7 @@ class AutoAnnotatorSetupsCollectionBuildingManager implements BuildingSetupCheck
         autoAnnotatorsCreatedCollectionBuildingManager = null
     }
 }
+
 
 export var autoAnnotatorsCreatedCollectionBuildingManager = new AutoAnnotatorSetupsCollectionBuildingManager()
 

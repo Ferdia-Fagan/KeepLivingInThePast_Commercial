@@ -6,7 +6,7 @@ import {
     builder,
     DBWithCacheWithReporting
 } from "../../abstract_object_store_parts/layers/reporting/DBWithCacheWithReporting";
-import tagsCollection from "../tags/TagsCollection";
+import {KEY_NAME} from "../utils/Utils";
 
 interface BookmarksCollectionInterface {
 
@@ -67,11 +67,11 @@ class BookmarksCollectionBuildingManager implements BuildingSetupCheckInterface{
     }
 
     static collectionDatabaseAndTableSetup = GetCreateDBStoreHandler(
-        "TagsCollection",
+        "BookmarksCollection",
         {
-            indexName: "tag", indexKeyPath: "tag",
+            indexName: KEY_NAME, indexKeyPath: "key",
             options: {unique: true}
-        }
+        },
     )
 
     static collectionBuilder = (): Promise<null> => builder<BookmarkObject, string, BookmarkObjectUpdateReport,

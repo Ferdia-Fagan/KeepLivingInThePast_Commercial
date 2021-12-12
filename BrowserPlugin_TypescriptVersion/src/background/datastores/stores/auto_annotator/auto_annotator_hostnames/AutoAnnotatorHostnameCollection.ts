@@ -2,8 +2,7 @@ import {builder, DBWithCache} from "../../../abstract_object_store_parts/layers/
 import HostnameObject from "./HostnameObject";
 import BuildingSetupCheckInterface from "../../../abstract_object_store_parts/factory/BuildingSetupCheckerInteface";
 import {GetCreateDBStoreHandler} from "../../../abstract_object_store_parts/factory/BuildDB";
-import TagObject from "../../tags/TagObject";
-import tagsCollection from "../../tags/TagsCollection";
+import {KEY_NAME} from "../../utils/Utils";
 
 interface AutoAnnotatorHostnameCollectionInterface {
 
@@ -62,9 +61,9 @@ class AutoAnnotatorHostnameCollectionBuildingManager implements BuildingSetupChe
     }
 
     static collectionDatabaseAndTableSetup = GetCreateDBStoreHandler(
-        "TagsCollection",
+        "AutoAnnotatorHostnameCollection",
         {
-            indexName: "tag", indexKeyPath: "tag",
+            indexName: KEY_NAME, indexKeyPath: "hostname",
             options: {unique: true}
         }
     )
