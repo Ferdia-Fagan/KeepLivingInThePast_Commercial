@@ -64,7 +64,6 @@ class TagsCollectionBuildingManager implements BuildingSetupCheckInterface{
         this.request = TagsCollectionBuildingManager.collectionBuilder()
     }
 
-
     static collectionDatabaseAndTableSetup = GetCreateDBStoreHandler(
         "TagsCollection",
         {

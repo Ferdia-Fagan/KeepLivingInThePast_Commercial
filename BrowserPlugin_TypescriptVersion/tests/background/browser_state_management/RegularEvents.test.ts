@@ -1,13 +1,13 @@
-import BrowserStateManager from "../../../src/background/browser_state_management/BrowserStateManager";
+import BrowserStateManager_Settings from "../../../src/background/browser_state_management/junk/BrowserStateManager_Settings";
 
 import "mockzilla-webextension";
 import { DEFAULT_BOOKMARK_FOLDER_NAME, DEFAULT_SETTINGS } from "../../../src/background/settings/Settings";
 
 
 
-// // import BrowserStateManager from "../../../src/background/browser_state_management/BrowserStateManager";
+// // import BrowserStateManager_Settings from "../../../src/background/browser_state_management/BrowserStateManager_Settings";
 
-// describe('BrowserStateManager constructor should change settings')
+// describe('BrowserStateManager_Settings constructor should change settings')
 
 describe('constructor', function () {
 
@@ -23,7 +23,7 @@ describe('constructor', function () {
         }
         mockBrowser.storage.local.get.expect("Settings").andResolve(sampleSettings)
 
-        let inst = new BrowserStateManager()
+        let inst = new BrowserStateManager_Settings()
 
         await new Promise((r) => setTimeout(r, 1000));
 
@@ -41,7 +41,7 @@ describe('constructor', function () {
 
         mockBrowser.storage.local.set.expect(defaultSettings);
 
-        let inst = new BrowserStateManager();
+        let inst = new BrowserStateManager_Settings();
 
         await new Promise((r) => setTimeout(r, 1000));
 

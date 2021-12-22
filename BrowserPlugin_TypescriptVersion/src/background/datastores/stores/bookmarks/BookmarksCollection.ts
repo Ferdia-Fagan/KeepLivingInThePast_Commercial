@@ -1,7 +1,6 @@
 import BookmarkObject, {BookmarkObjectUpdateReport} from "./BookmarkObject";
 import BuildingSetupCheckInterface from "../../abstract_object_store_parts/factory/BuildingSetupCheckerInteface";
 import {GetCreateDBStoreHandler} from "../../abstract_object_store_parts/factory/BuildDB";
-import {ID_TYPE} from "../../store_objects_interfaces/types/Types";
 import {
     builder,
     DBWithCacheWithReporting

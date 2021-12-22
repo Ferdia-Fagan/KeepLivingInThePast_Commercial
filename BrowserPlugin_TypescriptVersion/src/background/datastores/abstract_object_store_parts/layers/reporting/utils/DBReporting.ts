@@ -5,8 +5,8 @@ import {
 } from "./ReportToCheckWhenReporting";
 import ReportToCheckWhenReportingDBDeletions from "./ReportToCheckWhenReportingDBDeletions";
 import ReportToCheckWhenReportingDBInsertionsOrUpdates from "./ReportToCheckWhenReportingDBInsertionsOrUpdates";
-import {ID} from "../../../../../../utils/Aliases";
 import {ReportName} from "./ReportName";
+import {ID_TYPE} from "../../../../store_objects_interfaces/types/Types";
 
 interface ReportFromDBReportingManager<STORE_T extends IndexObject> {
     newObjectAddedReports?: (STORE_T)[],
@@ -40,11 +40,11 @@ export class DBReportingManager<UPDATE_REPORT_INTERFACE extends IndexObject> {
     constructor(canIndividualExistingObjectsInThisStoreBeUpdated: boolean) {
         let reportsToCheckWhenReporting = new Array<ReportToCheckWhenReportingDBChangesInterface>()
         // this.newObjectAddedReports
-        this.newObjectAddedReports = new ReportToCheckWhenReportingDBInsertionsOrUpdates(new Map<ID, UPDATE_REPORT_INTERFACE>(), ReportName.NEW_OBJECT_ADDED_REPORTS)
+        this.newObjectAddedReports = new ReportToCheckWhenReportingDBInsertionsOrUpdates(new Map<ID_TYPE, UPDATE_REPORT_INTERFACE>(), ReportName.NEW_OBJECT_ADDED_REPORTS)
         reportsToCheckWhenReporting.push(this.newObjectAddedReports)
         if (canIndividualExistingObjectsInThisStoreBeUpdated) {
-            this.updatedObjectReports = new ReportToCheckWhenReportingDBInsertionsOrUpdates(new Map<ID, UPDATE_REPORT_INTERFACE>(), ReportName.UPDATED_OBJECT_REPORTS)
-            this.deletedObjectReports = new ReportToCheckWhenReportingDBDeletions(new Set<ID>(), ReportName.DELETED_OBJECT_REPORTS)
+            this.updatedObjectReports = new ReportToCheckWhenReportingDBInsertionsOrUpdates(new Map<ID_TYPE, UPDATE_REPORT_INTERFACE>(), ReportName.UPDATED_OBJECT_REPORTS)
+            this.deletedObjectReports = new ReportToCheckWhenReportingDBDeletions(new Set<ID_TYPE>(), ReportName.DELETED_OBJECT_REPORTS)
             reportsToCheckWhenReporting.push(this.updatedObjectReports)
             reportsToCheckWhenReporting.push(this.deletedObjectReports)
         }

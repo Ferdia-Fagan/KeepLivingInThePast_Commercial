@@ -2,7 +2,7 @@ const browser = require("webextension-polyfill");
 
 const webpageMetadataParser = require("page-metadata-parser");
 
-import WebpageScrapings from "../background/internal_plugin_messaging/messages/webpage_scraping/WebpageScrapings"
+import TellSystem_WebpageScrapings from "../background/internal_plugin_messaging/messages/dto/webpage_scraping/TellSystem_WebpageScrapings"
 
 console.log("WebpageExtrractionLayer has been imported")
 
@@ -28,9 +28,9 @@ browser.runtime.onMessage.addListener((request: any) => {
     return Promise.resolve({});
 });
 
-function getWebpageMetadata(): WebpageScrapings{
+function getWebpageMetadata(): TellSystem_WebpageScrapings{
     const metadata = webpageMetadataParser.getMetadata(document, window.location)
-    const webpageScrapings: WebpageScrapings = {
+    const webpageScrapings: TellSystem_WebpageScrapings = {
         "title": metadata.title,
         "webpageUrl": encodeURI(metadata.url),
         "webpageImgUrl": ((metadata.image !== undefined)? 

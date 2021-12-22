@@ -1,4 +1,4 @@
-// TODO: abstract reporting behavior to modular components.
+// TODO: abstract reporting behavior to modular dtos.tabs.
 
 import {DBWithCache} from "../cache/DBWithCache";
 import IndexObject from "../../../store_objects_interfaces/base_store_objects/IndexObject";

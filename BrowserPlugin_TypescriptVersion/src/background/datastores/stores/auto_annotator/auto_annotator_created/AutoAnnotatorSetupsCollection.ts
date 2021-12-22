@@ -2,35 +2,35 @@ import BuildingSetupCheckInterface from "../../../abstract_object_store_parts/fa
 import {GetCreateDBStoreHandler} from "../../../abstract_object_store_parts/factory/BuildDB";
 import DB from "../../../abstract_object_store_parts/layers/db/DB";
 import {builder} from "../../../abstract_object_store_parts/layers/cache/DBWithCache";
-import AutoAnnotatorSetupsObject, {AutoAnnotatorSetupsObjectUpdateInterface} from "./AutoAnnotatorSetupsObject";
+import AutoAnnotatorSetupObject, {AutoAnnotatorSetupObjectUpdateInterface} from "./AutoAnnotatorSetupObject";
 
 interface AutoAnnotatorsCreatedCollectionInterface {
-    addNewAutoAnnotator(newAutoAnnotator: AutoAnnotatorSetupsObject): Promise<number>
-    updateAutoAnnotator(updatedAutoAnnotator: AutoAnnotatorSetupsObjectUpdateInterface): void
-    getAllAutoAnnotators(): Promise<AutoAnnotatorSetupsObject[]>
-    getAutoAnnotator(id: number): Promise<AutoAnnotatorSetupsObject>
+    addNewAutoAnnotator(newAutoAnnotator: AutoAnnotatorSetupObject): Promise<number>
+    updateAutoAnnotator(updatedAutoAnnotator: AutoAnnotatorSetupObjectUpdateInterface): void
+    getAllAutoAnnotators(): Promise<AutoAnnotatorSetupObject[]>
+    getAutoAnnotator(id: number): Promise<AutoAnnotatorSetupObject>
     deleteAutoAnnotator(id: number): void
 
 }
 
 class AutoAnnotatorSetupsCollection extends DB<
-    AutoAnnotatorSetupsObject, AutoAnnotatorSetupsObjectUpdateInterface
+    AutoAnnotatorSetupObject, AutoAnnotatorSetupObjectUpdateInterface
 >
     implements AutoAnnotatorsCreatedCollectionInterface {
 
-    addNewAutoAnnotator(newAutoAnnotator: AutoAnnotatorSetupsObject): Promise<number> {
+    addNewAutoAnnotator(newAutoAnnotator: AutoAnnotatorSetupObject): Promise<number> {
         return super.addObject(newAutoAnnotator);
     }
 
-    getAllAutoAnnotators(): Promise<AutoAnnotatorSetupsObject[]> {
+    getAllAutoAnnotators(): Promise<AutoAnnotatorSetupObject[]> {
         return super.getAllObjects();
     }
 
-    getAutoAnnotator(id: number): Promise<AutoAnnotatorSetupsObject> {
+    getAutoAnnotator(id: number): Promise<AutoAnnotatorSetupObject> {
         return super.getObjectById(id);
     }
 
-    updateAutoAnnotator(updatedAutoAnnotator: AutoAnnotatorSetupsObjectUpdateInterface): void {
+    updateAutoAnnotator(updatedAutoAnnotator: AutoAnnotatorSetupObjectUpdateInterface): void {
         super.updateObject(updatedAutoAnnotator)
     }
 
@@ -55,7 +55,7 @@ class AutoAnnotatorSetupsCollectionBuildingManager implements BuildingSetupCheck
     )
 
     static collectionBuilder = (): Promise<null> => builder<
-        AutoAnnotatorSetupsObject, AutoAnnotatorSetupsObjectUpdateInterface,
+        AutoAnnotatorSetupObject, AutoAnnotatorSetupObjectUpdateInterface,
         AutoAnnotatorSetupsCollection
     >(
         "WebpageTags", 1, "TagsCollection",
