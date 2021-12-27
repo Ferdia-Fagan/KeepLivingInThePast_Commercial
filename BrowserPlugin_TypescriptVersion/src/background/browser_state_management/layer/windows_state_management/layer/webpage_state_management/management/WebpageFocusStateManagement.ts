@@ -1,4 +1,4 @@
-import Webpage from "../entities/Webpage";
+import Webpage from "../entities/webpage/Webpage";
 
 export default interface WebpageFocusStateManagementInterface
     extends Webpage {

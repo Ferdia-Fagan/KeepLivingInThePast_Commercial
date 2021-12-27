@@ -1,6 +1,6 @@
 import {TagId} from "../../../../datastores/stores/tags/Types";
 import WebpageData from "../layer/webpage_state_management/components.webpages/WebpageData";
-import {WebpageContracts} from "../layer/webpage_state_management/entities/Webpage";
+import {WebpageContracts} from "../layer/webpage_state_management/entities/webpage/Webpage";
 import {TabId} from "../values/Types";
 
 

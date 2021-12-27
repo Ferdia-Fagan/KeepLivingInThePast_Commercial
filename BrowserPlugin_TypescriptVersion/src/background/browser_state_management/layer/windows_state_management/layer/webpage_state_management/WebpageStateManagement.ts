@@ -3,10 +3,10 @@
 
 import {BookmarkId} from "../../../../../datastores/stores/bookmarks/values/Types";
 import {TagId} from "../../../../../datastores/stores/tags/Types";
-import UserAddedWebpageMetadata from "./entities/metadata/UserAddedWebpageMetadata";
-import {WebpageFlags} from "./entities/metadata/WebpageFlags";
-import {WebpageOptionalMeasurements} from "./entities/metadata/WebpageOptionalMeasurements";
-import Webpage from "./entities/Webpage";
+import UserAddedWebpageMetadata from "./entities/webpage/metadata/UserAddedWebpageMetadata";
+import {WebpageFlags} from "./entities/webpage/metadata/WebpageFlags";
+import {WebpageOptionalMeasurements} from "./entities/webpage/metadata/WebpageOptionalMeasurements";
+import Webpage from "./entities/webpage/Webpage";
 import WebpageFocusStateManagementInterface from "./management/WebpageFocusStateManagement";
 import WebpageTotalVisitTimeStateManagementInterface from "./management/WebpageMetaDataStateManagement";
 import WebpageMetaDataStateManagementInterface from "./management/WebpageTotalVisitTimeStateManagement";

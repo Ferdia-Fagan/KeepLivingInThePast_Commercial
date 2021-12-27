@@ -1,4 +1,4 @@
-import {TagReport} from "../../../../datastores/stores/tags/TagReport";
+import {WebpageTagReports} from "../../../../datastores/stores/tags/WebpageTagReports";
 import BaseInternalMessageDto from "../../base_dto/BaseInternalMessageDto";
 import {MessageType} from "../../base_dto/MessageType";
 

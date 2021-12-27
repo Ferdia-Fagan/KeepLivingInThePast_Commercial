@@ -3,9 +3,9 @@ import {TabChange} from "./dtos/TabStateChanges";
 import WebpageData from "./layer/webpage_state_management/components.webpages/WebpageData";
 
 import {CurrentSettings} from "../../../settings/Settings"
-import {WebpageContracts} from "./layer/webpage_state_management/entities/Webpage";
+import {WebpageContracts} from "./layer/webpage_state_management/entities/webpage/Webpage";
 import {OperationActions, UserActions} from "./management/Actions";
-import WindowTabs from "./entities/WindowTabs";
+import WindowTabs from "./entities/tabs/WindowTabs";
 import {TabId} from "./values/Types";
 
 // TODO: need to split this into : sections. (1) webpage action handlers (for users actions with browser, (2) Browser PLUGIN system actions. This is to request something directly from browser plugin)

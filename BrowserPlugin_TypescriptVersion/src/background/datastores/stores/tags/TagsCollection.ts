@@ -42,7 +42,7 @@ class TagsCollection extends DBWithCache<TagObject, TagObject>
 
     addNewTagsAndReturnTagIds(webpageLoggingId: number, newTags: TagObject[]): Promise<TagObject[]> {
         return super.addObjects(newTags)
-        // TODO: use webpage logging id and new tags with ids to add tags for webpage to native applicatiion
+        // TODO: use webpage logging id and new tags with ids to add tags for webpage to message applicatiion
     }
 
     getAllTags(): Promise<TagObject[]> {

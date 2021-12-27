@@ -28,7 +28,7 @@ interface ReportFromDBReportingManager<STORE_T extends IndexObject> {
 
 
 /**
- * TODO: eventually it is planned to have this "reporting manager" handle the reporting of information to the native application.
+ * TODO: eventually it is planned to have this "reporting manager" handle the reporting of information to the message application.
  */
 export class DBReportingManager<UPDATE_REPORT_INTERFACE extends IndexObject> {
     newObjectAddedReports: ReportToCheckWhenReportDBInsertionsAndUpdatesInterface<UPDATE_REPORT_INTERFACE> = null

@@ -1,7 +1,7 @@
 import {BookmarkId} from "../../../../../../datastores/stores/bookmarks/values/Types";
 import {UnaryReport} from "../../../../../handlers/reporting/UnaryReport";
 import {TagId} from "../../../../../../datastores/stores/tags/Types";
-import Webpage from "../entities/Webpage";
+import Webpage from "../entities/webpage/Webpage";
 
 export default interface WebpageMetaDataStateManagementInterface
     extends Webpage {

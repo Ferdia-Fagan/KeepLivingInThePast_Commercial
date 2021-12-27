@@ -17,7 +17,7 @@ import * as nativeMessaging from "./messages";
 //     }
 
 //     sendMessage(message: any){
-//         console.log("sned test message to native application")
+//         console.log("sned test message to message application")
 //         this.port.postMessage(message);
 //     }
 

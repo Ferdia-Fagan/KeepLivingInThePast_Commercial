@@ -1,5 +1,5 @@
-import {WebpageContracts} from "../layer/webpage_state_management/entities/Webpage";
-import {TabId} from "../values/Types";
+import {WebpageContracts} from "../../layer/webpage_state_management/entities/webpage/Webpage";
+import {TabId} from "../../values/Types";
 
 export default abstract class WindowTabs {
     tabs = new Map<TabId, WebpageContracts>();
