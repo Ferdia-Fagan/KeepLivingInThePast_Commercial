@@ -1,10 +1,11 @@
+import {StoreController} from "../utils/Types";
 import TagObject from "./TagObject";
 import {GetCreateDBStoreHandler} from "../../abstract_object_store_parts/factory/BuildDB";
 import {builder, DBWithCache} from "../../abstract_object_store_parts/layers/cache/DBWithCache";
 import BuildingSetupCheckInterface from "../../abstract_object_store_parts/factory/BuildingSetupCheckerInteface";
 import {KEY_NAME} from "../utils/Utils";
 
-interface TagsCollectionInterface {
+interface TagsStoreInterface {
     /**
      *
      * @description
@@ -12,7 +13,7 @@ interface TagsCollectionInterface {
      * @param newTags
      * @returns new tag objects (with there ids)
      */
-    addNewTagsAndReturnTagIds(webpageLoggingId: number, newTags: TagObject[]): Promise<TagObject[]>
+    addNewTagsAndReturnTagIds(webpageId: number, newTags: TagObject[]): Promise<TagObject[]>
 
     /**
      *
@@ -29,8 +30,8 @@ interface TagsCollectionInterface {
 
 }
 
-class TagsCollection extends DBWithCache<TagObject, TagObject>
-                        implements TagsCollectionInterface{
+class TagsStore extends DBWithCache<TagObject, TagObject>
+                        implements TagsStoreInterface {
 
     constructor(storeName: string, db: IDBDatabase) {
         super(storeName, db);
@@ -40,7 +41,7 @@ class TagsCollection extends DBWithCache<TagObject, TagObject>
         return object.tag;
     }
 
-    addNewTagsAndReturnTagIds(webpageLoggingId: number, newTags: TagObject[]): Promise<TagObject[]> {
+    addNewTagsAndReturnTagIds(webpageId: number, newTags: TagObject[]): Promise<TagObject[]> {
         return super.addObjects(newTags)
         // TODO: use webpage logging id and new tags with ids to add tags for webpage to message applicatiion
     }
@@ -54,40 +55,40 @@ class TagsCollection extends DBWithCache<TagObject, TagObject>
     }
 }
 
-let tagsCollection: TagsCollectionInterface = null;
-export default tagsCollection
+export let tagsStore: TagsStoreInterface = null;
 
-class TagsCollectionBuildingManager implements BuildingSetupCheckInterface{
+class TagsStoreBuildingManager
+    implements BuildingSetupCheckInterface {
 
     request: Promise<null>
     constructor() {
-        this.request = TagsCollectionBuildingManager.collectionBuilder()
+        this.request = this.constructionProcedure()
     }
 
-    static collectionDatabaseAndTableSetup = GetCreateDBStoreHandler(
-        "TagsCollection",
+    collectionDatabaseAndTableSetup = GetCreateDBStoreHandler(
+        "TagsStore",
         {
             indexName: KEY_NAME, indexKeyPath: "tag",
             options: {unique: true}
         }
     )
 
-    static collectionBuilder = (): Promise<null> => builder<TagObject, TagObject, TagsCollection>(
-        "WebpageTags", 1, "TagsCollection",
-        TagsCollectionBuildingManager.collectionDatabaseAndTableSetup,
-        TagsCollection
+    constructionProcedure = (): Promise<null> => builder<TagObject, TagObject, TagsStore>(
+        "WebpageTags", 1, "TagsStore",
+        this.collectionDatabaseAndTableSetup,
+        TagsStore
     ).then(tagsCollectionInstance => {
-        tagsCollection = tagsCollectionInstance
+        tagsStore = tagsCollectionInstance
         return null
     })
 
-    checkIsSetUp(): boolean {
-        return (tagsCollection != null);
+    checkBuildIsSetUp(): boolean {
+        return (tagsStore != null);
     }
 
-    deleteSelf(): void {
-        tagsCollectionBuildingManager = null
+    deleteBuildingManager(): void {
+        buildingManager_TagsStore = null
     }
 }
 
-export var tagsCollectionBuildingManager = new TagsCollectionBuildingManager()
+export var buildingManager_TagsStore = new TagsStoreBuildingManager()

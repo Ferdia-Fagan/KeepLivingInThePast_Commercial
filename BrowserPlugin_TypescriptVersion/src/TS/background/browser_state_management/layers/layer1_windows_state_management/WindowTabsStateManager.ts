@@ -236,8 +236,8 @@ export class WindowTabsStateManager
 
 
 export function createWindow(
-    tabs: Map<TabId, WebpageStateContainer>,
-    currentFocusedTabId: TabId, currentFocusedWebpage: WebpageStateContainer
+    currentFocusedTabId: TabId = 1, currentFocusedWebpage: WebpageStateContainer = null,
+    tabs: Map<TabId, WebpageStateContainer> = new Map([[currentFocusedTabId, currentFocusedWebpage]])
 ): WindowTabsStateManager{
     return new WindowTabsStateManager(
         tabs,

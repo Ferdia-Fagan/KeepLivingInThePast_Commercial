@@ -4,7 +4,7 @@ import BuildingSetupCheckInterface from "../../../abstract_object_store_parts/fa
 import {GetCreateDBStoreHandler} from "../../../abstract_object_store_parts/factory/BuildDB";
 import {KEY_NAME} from "../../utils/Utils";
 
-interface AutoAnnotatorHostnameCollectionInterface {
+interface AutoAnnotatorHostnameStoreInterface {
 
     addHostname(hostname: string): Promise<number>
 
@@ -21,8 +21,8 @@ interface AutoAnnotatorHostnameCollectionInterface {
     // getHostnames(hostnames) TODO: not very interesting
 }
 
-class AutoAnnotatorHostnameCollection extends DBWithCache<HostnameObject, HostnameObject>
-    implements AutoAnnotatorHostnameCollectionInterface {
+class AutoAnnotatorHostnameStore extends DBWithCache<HostnameObject, HostnameObject>
+    implements AutoAnnotatorHostnameStoreInterface {
 
     getStoreObjectKey(object: HostnameObject): IDBValidKey {
         return object.hostname;
@@ -50,17 +50,16 @@ class AutoAnnotatorHostnameCollection extends DBWithCache<HostnameObject, Hostna
 
 }
 
-let autoAnnotatorHostnameCollection: AutoAnnotatorHostnameCollectionInterface = null;
-export default autoAnnotatorHostnameCollection
+export let autoAnnotatorHostnameStore: AutoAnnotatorHostnameStoreInterface = null;
 
-class AutoAnnotatorHostnameCollectionBuildingManager implements BuildingSetupCheckInterface{
+class AutoAnnotatorHostnameStoreBuildingManager implements BuildingSetupCheckInterface{
 
     request: Promise<null>
     constructor() {
-        this.request = AutoAnnotatorHostnameCollectionBuildingManager.collectionBuilder()
+        this.request = this.constructionProcedure()
     }
 
-    static collectionDatabaseAndTableSetup = GetCreateDBStoreHandler(
+    collectionDatabaseAndTableSetup = GetCreateDBStoreHandler(
         "AutoAnnotatorHostnameCollection",
         {
             indexName: KEY_NAME, indexKeyPath: "hostname",
@@ -68,26 +67,26 @@ class AutoAnnotatorHostnameCollectionBuildingManager implements BuildingSetupChe
         }
     )
 
-    static collectionBuilder = (): Promise<null> => builder<
-        HostnameObject, HostnameObject, AutoAnnotatorHostnameCollection
+    constructionProcedure = (): Promise<null> => builder<
+        HostnameObject, HostnameObject, AutoAnnotatorHostnameStore
     >(
         "WebpageTags", 1, "TagsCollection",
-        AutoAnnotatorHostnameCollectionBuildingManager.collectionDatabaseAndTableSetup,
-        AutoAnnotatorHostnameCollection
+        this.collectionDatabaseAndTableSetup,
+        AutoAnnotatorHostnameStore
     ).then(autoAnnotatorHostnameCollectionInstance => {
-        autoAnnotatorHostnameCollection = autoAnnotatorHostnameCollectionInstance
+        autoAnnotatorHostnameStore = autoAnnotatorHostnameCollectionInstance
         return null
     })
 
-    checkIsSetUp(): boolean {
-        return (autoAnnotatorHostnameCollectionBuildingManager != null);
+    checkBuildIsSetUp(): boolean {
+        return (autoAnnotatorHostnameStore != null);
     }
 
-    deleteSelf(): void {
-        autoAnnotatorHostnameCollectionBuildingManager = null
+    deleteBuildingManager(): void {
+        buildingManager_AutoAnnotatorHostnameStore = null
     }
 }
 
-export var autoAnnotatorHostnameCollectionBuildingManager = new AutoAnnotatorHostnameCollectionBuildingManager()
+export var buildingManager_AutoAnnotatorHostnameStore = new AutoAnnotatorHostnameStoreBuildingManager()
 
 

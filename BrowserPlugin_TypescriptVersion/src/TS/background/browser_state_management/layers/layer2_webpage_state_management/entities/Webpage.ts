@@ -1,4 +1,4 @@
-import {FocusCheckUserBrowserControllerInterface} from "../../../trades/BrowserController_FocusCheckUser_Trade";
+import {FocusCheckUserBrowserControllerInterface} from "../../layer0_browser_state_management/trades/BrowserController_FocusCheckUser_Trade";
 import UserAddedWebpageMetadata from "./metadata/UserAddedWebpageMetadata";
 import {WebpageFlags} from "./metadata/WebpageFlags";
 import {WebpageOptionalMeasurements} from "./metadata/WebpageOptionalMeasurements";

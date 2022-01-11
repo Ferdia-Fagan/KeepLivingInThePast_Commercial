@@ -1,22 +1,27 @@
 import {Bookmarks} from "webextension-polyfill";
-import {StoreController_BookmarkManager} from "../../../datastores/stores/bookmarks/BookmarksCollection";
-import {BookmarkFolderTypeCheck, BookmarkId, BookmarkTypeCheck} from "../../../datastores/stores/bookmarks/Types";
+import {bookmarksStore, StoreController_BookmarkManager} from "../../../datastores/stores/bookmarks/BookmarksStore";
+import {
+    BookmarkFolderTypeCheck,
+    BookmarkId,
+    BookmarkKey,
+    BookmarkTypeCheck
+} from "../../../datastores/stores/bookmarks/Types";
 import {BookmarkType} from "../../../datastores/stores/bookmarks/values/BookmarkType";
 import {WebpageId} from "../../layers/layer2_webpage_state_management/entities/Types";
 import {
+    browserController_Bookmarks,
     BrowserController_Bookmarks,
-    BrowserController_Bookmarks_Trade, get_BrowserController_Bookmarks_Trade
-} from "../../trades/BrowserController_Bookmarks_Trade";
+} from "../../layers/layer0_browser_state_management/trades/BrowserController_Bookmarks_Trade";
 import {BookmarkDataChangedInfo, BookmarkMovedInfo, BookmarkRemovedInfo} from "./dtos/BookmarkStateChanges";
 import BookmarkTreeNode = Bookmarks.BookmarkTreeNode;
 
-const browser = require("webextension-polyfill");
+import browser from "webextension-polyfill";
 
 interface BookmarksControllerInterface {
-    bookmarkCreated(bookmarkKey: string, bookmarkInfo: BookmarkTreeNode): void
-    bookmarkDataChanged(bookmarkKey: string, changeInfo: BookmarkDataChangedInfo): void
-    bookmarkMoved(bookmarkKey: string, moveInfo: BookmarkMovedInfo): void
-    bookmarkRemoved(bookmarkKey: string, bookmarkInfo: BookmarkRemovedInfo): void
+    bookmarkCreated(bookmarkKey: BookmarkKey, bookmarkInfo: Bookmarks.BookmarkTreeNode): void
+    bookmarkDataChanged(bookmarkKey: BookmarkKey, changeInfo: Bookmarks.OnChangedChangeInfoType): void
+    bookmarkMoved(bookmarkKey: string, moveInfo: Bookmarks.OnMovedMoveInfoType): void
+    bookmarkRemoved(bookmarkKey: string, bookmarkInfo: Bookmarks.OnRemovedRemoveInfoType): void
 }
 
 class BookmarkStateManager
@@ -34,6 +39,11 @@ class BookmarkStateManager
     ) {
         this.browserController_Bookmarks = browserController_Bookmarks
         this.storeController_Bookmarks = storeController_Bookmarks
+
+        browser.bookmarks.onCreated.addListener(this.bookmarkCreated.bind(this))
+        browser.bookmarks.onChanged.addListener(this.bookmarkDataChanged.bind(this))
+        browser.bookmarks.onMoved.addListener(this.bookmarkMoved.bind(this))
+        browser.bookmarks.onRemoved.addListener(this.bookmarkRemoved.bind(this))
     }
 
     bookmarkCreated(bookmarkKey: string, bookmarkInfo: Bookmarks.BookmarkTreeNode): void {
@@ -117,4 +127,9 @@ class BookmarkStateManager
     }
 
 }
+
+const bookmarkStateManager = new BookmarkStateManager(
+    browserController_Bookmarks,
+    bookmarksStore
+)
 

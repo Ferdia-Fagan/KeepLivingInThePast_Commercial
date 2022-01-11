@@ -8,11 +8,11 @@ import {
     DBWithCacheWithOptionalReportingOfInsertedObjects
 } from "../../abstract_object_store_parts/layers/reporting/DBWithCacheWithReporting";
 import {ID_TYPE} from "../../store_objects_interfaces/types/Types";
+import {StoreController} from "../utils/Types";
 import {KEY_NAME} from "../utils/Utils";
 import {BookmarkFolderObject, BookmarkObject, BookmarkObjectUpdateReport} from "./BookmarkObject";
 import {BookmarkFolderId, BookmarkId, BookmarkKey} from "./Types";
 import {BookmarkType} from "./values/BookmarkType";
-
 
 // TODO: complete next !!!!!! 
 
@@ -83,16 +83,20 @@ class BookmarksStore extends DBWithCacheWithOptionalReportingOfInsertedObjects<
 
 }
 
-let bookmarksCollection: StoreController_BookmarkManager = null;
+export let bookmarksStore: StoreController_BookmarkManager = null
 
-class BookmarksCollectionBuildingManager implements BuildingSetupCheckInterface{
+// export function get_StoreController_BookmarkManager(): StoreController_BookmarkManager {
+//     return bookmarksStore
+// }
+
+export class BookmarksCollectionBuildingManager implements BuildingSetupCheckInterface{
 
     request: Promise<null>
     constructor() {
-        this.request = BookmarksCollectionBuildingManager.collectionBuilder()
+        this.request = this.constructionProcedure()
     }
 
-    static collectionDatabaseAndTableSetup = GetCreateDBStoreHandler(
+    collectionDatabaseAndTableSetup = GetCreateDBStoreHandler(
         "BookmarksStore",
         {
             indexName: KEY_NAME, indexKeyPath: "key",
@@ -100,24 +104,24 @@ class BookmarksCollectionBuildingManager implements BuildingSetupCheckInterface{
         },
     )
 
-    static collectionBuilder = (): Promise<null> => builder<
+    constructionProcedure = (): Promise<null> => builder<
         BookmarkObject, string, BookmarkObjectUpdateReport, BookmarksStore
     >(
         "WebpageTags", 1, "TagsCollection",
-        BookmarksCollectionBuildingManager.collectionDatabaseAndTableSetup,
+        this.collectionDatabaseAndTableSetup,
         BookmarksStore
     ).then(bookmarksCollectionInstance => {
-        bookmarksCollection = bookmarksCollectionInstance
+        bookmarksStore = bookmarksCollectionInstance
         return null
     })
 
-    checkIsSetUp(): boolean {
-        return (bookmarksCollection != null);
+    checkBuildIsSetUp(): boolean {
+        return (bookmarksStore != null);
     }
 
-    deleteSelf(): void {
-        bookmarksCollectionBuildingManager = null
+    deleteBuildingManager(): void {
+        buildingManager_BookmarksStore = null
     }
 }
 
-export var bookmarksCollectionBuildingManager = new BookmarksCollectionBuildingManager()
+export var buildingManager_BookmarksStore = new BookmarksCollectionBuildingManager()

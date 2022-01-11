@@ -120,4 +120,16 @@ class WebpageStateManager
 
 }
 
+function createWebpage(
+    webpageLoggingId: number,
+    metaData: UserAddedWebpageMetadata, metaData_UpdateTrackers: WebpageOptionalMeasurements,
+    webpageFlags: WebpageFlags
+): WebpageStateContainer {
+    return new WebpageStateManager(
+        webpageLoggingId,
+        metaData, metaData_UpdateTrackers,
+        webpageFlags
+    )
+}
+
 

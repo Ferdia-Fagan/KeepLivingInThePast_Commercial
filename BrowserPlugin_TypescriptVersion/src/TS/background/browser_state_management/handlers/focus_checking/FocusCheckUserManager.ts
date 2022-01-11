@@ -1,5 +1,8 @@
 import browser, {Idle, Tabs} from "webextension-polyfill";
-import {BrowserController_FocusCheckUser} from "../../trades/BrowserController_FocusCheckUser_Trade";
+import {
+    browserController_FocusCheckUser,
+    BrowserController_FocusCheckUser
+} from "../../layers/layer0_browser_state_management/trades/BrowserController_FocusCheckUser_Trade";
 import IdleState = Idle.IdleState;
 import Tab = Tabs.Tab;
 
@@ -26,6 +29,7 @@ export class FocusCheckUserManager {
      * @param {*} state
      */
     private handleBrowserStateChange(state: IdleState): void {
+        // TODO: refactor
         if(state == "idle"){
             browser.tabs.query({currentWindow: true, active: true})
                 .then(tabsInfo => this.pauseLoggingTimeIfCurrentTabIsNotActive(tabsInfo))
@@ -41,6 +45,7 @@ export class FocusCheckUserManager {
      * @param {*} tabInfo
      */
     private pauseLoggingTimeIfCurrentTabIsNotActive(tabInfo: Tab[]): void {
+        // TODO: refactor
         // if(!tabInfo[0].audible || tabInfo[0].mutedInfo.muted){
         if(!tabInfo[0].audible){
             this.browserController.unfocusOnCurrentTab()
@@ -51,8 +56,9 @@ export class FocusCheckUserManager {
 
 }
 
-
-
+const focusCheckUserManager = new FocusCheckUserManager(
+    browserController_FocusCheckUser
+)
 
 
 

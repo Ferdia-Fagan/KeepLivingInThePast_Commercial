@@ -1,4 +1,3 @@
-import {BookmarkId} from "../../../datastores/stores/bookmarks/Types";
 import {
     create_Command_LogWebpageVisit
 } from "../../../native_application_communication/messages/message/webpage/Command_LogWebpageVisit";
@@ -6,6 +5,7 @@ import {
     getNativeApplicationCommunicationLink, NativeApplicationCommunicationContract
 } from "../../../native_application_communication/NativeApplicationCommunicationLink";
 import MapCache from "../../../utils/MapCache";
+import {TabId} from "../layer1_windows_state_management/values/Types";
 import {WindowTabsStateManager} from "../layer1_windows_state_management/WindowTabsStateManager";
 import {
     getWebpageIdMap,
@@ -26,8 +26,8 @@ export abstract class BrowserState {
     protected webpageIdMap: MapCache<WebpageId, Webpage>
 
     constructor(
-        currentWindowsOpen: Map<number, WindowTabsStateManager> = new Map<number, WindowTabsStateManager>(),
-        currentWindowOpen: WindowTabsStateManager = new WindowTabsStateManager()
+        currentWindowOpen: WindowTabsStateManager = new WindowTabsStateManager(),
+        currentWindowsOpen: Map<number, WindowTabsStateManager> = new Map([[1, currentWindowOpen]])
     ) {
         this.windowsOpen = currentWindowsOpen
         this.currentWindowOpen = currentWindowOpen
@@ -105,26 +105,28 @@ export class BrowserStateManager
     focusOnCurrentTab = () => this.currentWindowOpen.focusOnCurrentTab()
     unfocusOnCurrentTab = () => this.currentWindowOpen.unfocusOnCurrentTab()
 
+    changeCurrentFocusedTab(windowId: WindowId, previousTabId: TabId, updatedCurrentTabId: TabId): void {
+    }
+
+    changeCurrentFocusedWindow(windowId: WindowId): void {
+    }
+
+    closeTab(windowId: WindowId, tabId: TabId): void {
+    }
+
+    closeWindow(windowId: WindowId): void {
+    }
+
+    newWebpageLoaded(url: string, tabId: TabId, timeStamp: number): void {
+    }
+
+    openNewTab(windowId: WindowId, tabId: TabId): void {
+    }
+
+    openNewWindow(windowId: WindowId): void {
+    }
+
 }
 
-export var browserStateManager: BrowserStateManagement = new BrowserStateManager()    // BrowserStateManagerImpl(currentWindowsOpen, currentWindowOpen)
-
-export function browserStateManagerHasBeenSetUp(): boolean {
-    return (browserStateManager == null)
-}
-
-export function getBrowserStateManager(): BrowserStateManagement {
-    return browserStateManager
-}
-
-
-export function createBrowserStateManager(
-    currentWindowsOpen: Map<number, WindowTabsStateManager> = new Map<number, WindowTabsStateManager>(),
-    currentWindowOpen: WindowTabsStateManager = null
-): void{
-    browserStateManager = new BrowserStateManager(currentWindowsOpen, currentWindowOpen)
-    // newBrowserStateManager.addNewWindowOpened(windowId,currentWindowOpen)
-    // newBrowserStateManager.changeActiveWindowOpened(currentWindowOpen)
-}
-
+export const browserStateManager: BrowserStateManagement = new BrowserStateManager()    // BrowserStateManagerImpl(currentWindowsOpen, currentWindowOpen)
 

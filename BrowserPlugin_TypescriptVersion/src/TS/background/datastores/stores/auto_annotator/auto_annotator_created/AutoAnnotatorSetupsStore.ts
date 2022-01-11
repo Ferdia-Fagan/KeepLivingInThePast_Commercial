@@ -4,19 +4,18 @@ import DB from "../../../abstract_object_store_parts/layers/db/DB";
 import {builder} from "../../../abstract_object_store_parts/layers/cache/DBWithCache";
 import AutoAnnotatorSetupObject, {AutoAnnotatorSetupObjectUpdateInterface} from "./AutoAnnotatorSetupObject";
 
-interface AutoAnnotatorsCreatedCollectionInterface {
+interface AutoAnnotatorsCreatedStoreInterface {
     addNewAutoAnnotator(newAutoAnnotator: AutoAnnotatorSetupObject): Promise<number>
     updateAutoAnnotator(updatedAutoAnnotator: AutoAnnotatorSetupObjectUpdateInterface): void
     getAllAutoAnnotators(): Promise<AutoAnnotatorSetupObject[]>
     getAutoAnnotator(id: number): Promise<AutoAnnotatorSetupObject>
     deleteAutoAnnotator(id: number): void
-
 }
 
-class AutoAnnotatorSetupsCollection extends DB<
+class AutoAnnotatorSetupsStore extends DB<
     AutoAnnotatorSetupObject, AutoAnnotatorSetupObjectUpdateInterface
 >
-    implements AutoAnnotatorsCreatedCollectionInterface {
+    implements AutoAnnotatorsCreatedStoreInterface {
 
     addNewAutoAnnotator(newAutoAnnotator: AutoAnnotatorSetupObject): Promise<number> {
         return super.addObject(newAutoAnnotator);
@@ -40,42 +39,45 @@ class AutoAnnotatorSetupsCollection extends DB<
 
 }
 
-let autoAnnotatorSetupsCollection: AutoAnnotatorsCreatedCollectionInterface = null;
-export default autoAnnotatorSetupsCollection
+export let autoAnnotatorSetupsStore: AutoAnnotatorsCreatedStoreInterface = null;
 
-class AutoAnnotatorSetupsCollectionBuildingManager implements BuildingSetupCheckInterface{
+// export function get_AutoAnnotatorSetupsStore(): AutoAnnotatorsCreatedStoreInterface {
+//     return autoAnnotatorSetupsStore
+// }
+
+class AutoAnnotatorSetupsStoreBuildingManager implements BuildingSetupCheckInterface{
 
     request: Promise<null>
     constructor() {
-        this.request = AutoAnnotatorSetupsCollectionBuildingManager.collectionBuilder()
+        this.request = this.constructionProcedure()
     }
 
-    static collectionDatabaseAndTableSetup = GetCreateDBStoreHandler(
+    collectionDatabaseAndTableSetup = GetCreateDBStoreHandler(
         "AutoAnnotatorSetupsCollection"
     )
 
-    static collectionBuilder = (): Promise<null> => builder<
+    constructionProcedure = (): Promise<null> => builder<
         AutoAnnotatorSetupObject, AutoAnnotatorSetupObjectUpdateInterface,
-        AutoAnnotatorSetupsCollection
+        AutoAnnotatorSetupsStore
     >(
         "WebpageTags", 1, "TagsCollection",
-        AutoAnnotatorSetupsCollectionBuildingManager.collectionDatabaseAndTableSetup,
-        AutoAnnotatorSetupsCollection
+        this.collectionDatabaseAndTableSetup,
+        AutoAnnotatorSetupsStore
     ).then(tagsCollectionInstance => {
-        autoAnnotatorSetupsCollection = tagsCollectionInstance
+        autoAnnotatorSetupsStore = tagsCollectionInstance
         return null
     })
 
-    checkIsSetUp(): boolean {
-        return (autoAnnotatorSetupsCollection != null);
+    checkBuildIsSetUp(): boolean {
+        return (autoAnnotatorSetupsStore != null);
     }
 
-    deleteSelf(): void {
-        autoAnnotatorsCreatedCollectionBuildingManager = null
+    deleteBuildingManager(): void {
+        buildingManager_AutoAnnotatorSetupsStore = null
     }
 }
 
 
-export var autoAnnotatorsCreatedCollectionBuildingManager = new AutoAnnotatorSetupsCollectionBuildingManager()
+export var buildingManager_AutoAnnotatorSetupsStore = new AutoAnnotatorSetupsStoreBuildingManager()
 
 
