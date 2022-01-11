@@ -7,18 +7,24 @@
         "noImplicitAny": true,
         "moduleResolution": "node",
         "sourceMap": true,
-        "outDir": "./CompleteBuild",
+        "outDir": "./extension/src",
         "baseUrl": "./node_modules",
-        "rootDirs": ["./src", "./tests"],
+        "rootDirs": ["./src/TS"],
         "strict": false,
         "alwaysStrict": false
     },
 
     "include": [
-        "./src/**/*.ts",
-        "./tests/**/*.ts",
-        "./src/**/*.d.ts", 
-        "fileTransformer.js"
-, "tests/SetupTests.ts"    ]
+        "./src/TS/**/*.ts",
+//        "./tests/**/*.ts",
+        "./src/TS/**/*.d.ts",
+//        "fileTransformer.js",
+//        "tests/SetupTests.ts"
+    ],
+
+    "exclude": [
+        "node_modules",
+        "**/*.test.ts"
+    ]
 
 }

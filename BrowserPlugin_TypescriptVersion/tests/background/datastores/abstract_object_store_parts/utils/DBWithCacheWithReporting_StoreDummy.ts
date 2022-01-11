@@ -1,13 +1,13 @@
-import {DBInterface} from "../../../../../src/background/datastores/abstract_object_store_parts/layers/db/DBInterface";
+import {DBInterface} from "../../../../../src/TS/background/datastores/abstract_object_store_parts/layers/db/DBInterface";
 import DBWithCacheInterface
-    from "../../../../../src/background/datastores/abstract_object_store_parts/layers/cache/DBWithCacheInterface";
-import {ID_NAME, KEY_NAME} from "../../../../../src/background/datastores/stores/utils/Utils";
-import {DBWithCacheWithReportingOfAllOperationsOnData} from "../../../../../src/background/datastores/abstract_object_store_parts/layers/reporting/DBWithCacheWithReporting";
+    from "../../../../../src/TS/background/datastores/abstract_object_store_parts/layers/cache/DBWithCacheInterface";
+import {ID_NAME, KEY_NAME} from "../../../../../src/TS/background/datastores/stores/utils/Utils";
+import {DBWithCacheWithReportingOfAllOperationsOnData} from "../../../../../src/TS/background/datastores/abstract_object_store_parts/layers/reporting/DBWithCacheWithReporting";
 import DBWithCacheWithReportingOfAllOperationsOnDataInterface
-    from "../../../../../src/background/datastores/abstract_object_store_parts/layers/reporting/interfaces/DBWithCacheWithReportingOfAllOperationsOnDataInterface";
+    from "../../../../../src/TS/background/datastores/abstract_object_store_parts/layers/reporting/interfaces/DBWithCacheWithReportingOfAllOperationsOnDataInterface";
 import IndexObject
-    from "../../../../../src/background/datastores/store_objects_interfaces/base_store_objects/IndexObject";
-import {ID_TYPE, KEY_TYPE} from "../../../../../src/background/datastores/store_objects_interfaces/types/Types";
+    from "../../../../../src/TS/background/datastores/store_objects_interfaces/base_store_objects/IndexObject";
+import {ID_TYPE, KEY_TYPE} from "../../../../../src/TS/background/datastores/store_objects_interfaces/types/Types";
 
 export interface StoreObjectInterfaceExample extends IndexObject{
     id?: ID_TYPE

@@ -1,5 +1,5 @@
 // import { assert } from "console";
-// import WindowTabsStateManager from "../../../../../src/background/browser_state_management/layer/windows_state_management/WindowTabsStateManager";
+// import WindowTabsStateManager from "../../../../../src/background/browser_state_management/layers/layer1_windows_state_management/WindowTabsStateManager";
 // import BrowserStateManager from "../../../../../src/background/browser_state_management/BrowserStateManager";
 //
 //

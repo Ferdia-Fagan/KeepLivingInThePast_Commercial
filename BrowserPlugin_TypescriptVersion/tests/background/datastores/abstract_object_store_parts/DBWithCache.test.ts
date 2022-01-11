@@ -1,6 +1,6 @@
 import "mockzilla-webextension";
 require("fake-indexeddb/auto");
-import {DBWithCache} from "../../../../src/background/datastores/abstract_object_store_parts/layers/cache/DBWithCache";
+import {DBWithCache} from "../../../../src/TS/background/datastores/abstract_object_store_parts/layers/cache/DBWithCache";
 import {DBWithCache_StoreDummy, StoreObjectInterfaceExample} from "./utils/DBWIthCache__StoreDummy";
 
 describe("DBWithCache", function() {

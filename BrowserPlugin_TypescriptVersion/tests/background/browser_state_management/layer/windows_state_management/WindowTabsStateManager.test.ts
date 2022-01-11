@@ -1,6 +1,6 @@
 import WebpageData
-    from "../../../../../src/background/browser_state_management/layer/windows_state_management/layer/webpage_state_management/components.webpages/WebpageData";
-import {SetSettings} from "../../../../../src/background/settings/Settings";
+    from "../../../../../src/TS/background/browser_state_management/layers/layer2_webpage_state_management/components.webpages/WebpageData";
+import {SetSettings} from "../../../../../src/TS/background/settings/Settings";
 
 describe('basic functionality', function () {
 

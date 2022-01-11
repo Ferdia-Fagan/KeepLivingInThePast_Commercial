@@ -1,7 +1,7 @@
-import BrowserStateManager_Settings from "../../../src/background/browser_state_management/junk/BrowserStateManager_Settings";
+import BrowserStateManager_Settings from "../../../src/TS/background/browser_state_management/junk/BrowserStateManager_Settings";
 
 import "mockzilla-webextension";
-import { DEFAULT_BOOKMARK_FOLDER_NAME, DEFAULT_SETTINGS } from "../../../src/background/settings/Settings";
+import { DEFAULT_BOOKMARK_FOLDER_NAME, DEFAULT_SETTINGS } from "../../../src/TS/background/settings/Settings";
 
 
 

@@ -1,59 +1,37 @@
-import assert from "assert";
-import DB from "../../src/background/datastores/abstract_object_store_parts/layers/db/DB";
-import IndexObject from "../../src/background/datastores/store_objects_interfaces/base_store_objects/IndexObject";
 
-
-const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
-
-interface XInterface {
-    testFunction(): string
-}
-
-interface XSetup {
-    returnWhenSetUp(): void
-}
-
-class X{
-    a: string = null
-
-    constructor(a: string) {
-            this.doAction(a)
+class X {
+    value: number;
+    constructor(v: number) {
+        this.value = v
     }
 
-    async returnWhenSetUp(){
-        while (this.a == null){
-            await delay(10)
+}
+
+function delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
+}
+
+async function createX(): Promise<X> {
+    await delay(20)
+    return new X(10)
+}
+
+describe("test", () => {
+    it("test", async () => {
+        var x = null
+
+        createX().then(xInstance => {
+            x = xInstance
+        })
+
+        let i = 0
+        while(true){
+            console.log(i++)
+            await delay(2)
+            if(x){
+                break
+            }
         }
-        return
-    }
-
-    async doAction(a: string) {
-        await delay(100)
-        this.a = a
-    }
-
-    testFunction(): string {
-        return this.a + " world";
-    }
-
-}
-
-describe("test", function() {
-
-    it("test", async() => {
-
-        var instance = new X("hello")
-
-        await instance.returnWhenSetUp()
-
-        console.log()
-
-        delete instance.returnWhenSetUp
-
-        let y = <XInterface> instance
-
-        console.log()
-
-    });
-
+        console.log("done")
+    })
 })

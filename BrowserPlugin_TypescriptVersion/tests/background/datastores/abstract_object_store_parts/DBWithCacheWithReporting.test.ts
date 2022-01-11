@@ -6,9 +6,9 @@ import {
     StoreObjectInterfaceExample,
     StoreObjectUpdateReportInterfaceExample
 } from "./utils/DBWithCacheWithReporting_StoreDummy";
-import {DBWithCache} from "../../../../src/background/datastores/abstract_object_store_parts/layers/cache/DBWithCache";
-import IndexObject from "../../../../src/background/datastores/store_objects_interfaces/base_store_objects/IndexObject";
-import DB from "../../../../src/background/datastores/abstract_object_store_parts/layers/db/DB";
+import {DBWithCache} from "../../../../src/TS/background/datastores/abstract_object_store_parts/layers/cache/DBWithCache";
+import IndexObject from "../../../../src/TS/background/datastores/store_objects_interfaces/base_store_objects/IndexObject";
+import DB from "../../../../src/TS/background/datastores/abstract_object_store_parts/layers/db/DB";
 import {DB_StoreDummy} from "./utils/DB_StoreDummy";
 
 // jest.mock('../../../../src/background/datastores/abstract_object_store_parts/layers/cache/DBWithCache')

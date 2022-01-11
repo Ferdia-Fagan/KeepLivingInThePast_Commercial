@@ -4,12 +4,12 @@ import { assert } from "console";
 import {
     createBrowserStateManager,
     getBrowserStateManager
-} from "../../../src/background/browser_state_management/BrowserStateManager";
+} from "../../../src/TS/background/browser_state_management/layers/layer0_browser_state_management/BrowserStateManager";
 import {
     createWindow,
     WindowTabsStateManager
-} from "../../../src/background/browser_state_management/layer/windows_state_management/WindowTabsStateManager";
-import BrowserStateManager from "../../../src/background/browser_state_management/management/BrowserStateManager";
+} from "../../../src/TS/background/browser_state_management/layers/layer1_windows_state_management/WindowTabsStateManager";
+import BrowserStateManager from "../../../src/TS/background/browser_state_management/layers/layer0_browser_state_management/management/Actions";
 
 beforeAll(function () {
     createBrowserStateManager()
@@ -22,7 +22,7 @@ describe('constructor', function () {
         let sampleBrowserStateManager: BrowserStateManager = getBrowserStateManager()
         sampleBrowserStateManager.addNewWindowOpened(1,windowToAdd)
 
-        let currentWindowsOpenFromWindowsStateManager = sampleBrowserStateManager['currentWindowsOpen']
+        let currentWindowsOpenFromWindowsStateManager = sampleBrowserStateManager['windowsOpen']
         expect(currentWindowsOpenFromWindowsStateManager.get(1)).toEqual(windowToAdd)
     });
 
@@ -91,7 +91,7 @@ describe('constructor', function () {
         sampleBrowserStateManager.removeWindow(1);
 
         // then
-        let currentWindowsOpenFromWindowsStateManager = sampleBrowserStateManager['currentWindowsOpen'];
+        let currentWindowsOpenFromWindowsStateManager = sampleBrowserStateManager['windowsOpen'];
         expect(currentWindowsOpenFromWindowsStateManager.has(1)).toEqual(false);
         expect(currentWindowsOpenFromWindowsStateManager.size).toEqual(1);
         expect(currentWindowsOpenFromWindowsStateManager.get(2)).toEqual(window2);
