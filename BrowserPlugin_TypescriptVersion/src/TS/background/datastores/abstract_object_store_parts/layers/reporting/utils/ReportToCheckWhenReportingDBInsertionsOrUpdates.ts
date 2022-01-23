@@ -1,4 +1,4 @@
-import IndexObject from "../../../../store_objects_interfaces/base_store_objects/IndexObject";
+import {IndexObject} from "../../../../store_objects_interfaces/base_store_objects/IndexObject";
 import {ReportName} from "./ReportName";
 import ReportToCheckWhenReportingDBStoreChanges from "./ReportToCheckWhenReportingDBStoreChanges";
 import {ReportToCheckWhenReportDBInsertionsAndUpdatesInterface} from "./ReportToCheckWhenReporting";

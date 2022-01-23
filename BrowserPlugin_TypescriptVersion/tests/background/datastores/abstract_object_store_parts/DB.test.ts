@@ -7,7 +7,6 @@ require("fake-indexeddb/auto");
 
 import { ID_NAME, KEY_NAME } from "../../../../src/TS/background/datastores/stores/utils/Utils";
 import {DB_StoreDummy, StoreObjectInterfaceExample} from "./utils/DB_StoreDummy";
-import IndexObject from "../../../../src/TS/background/datastores/store_objects_interfaces/base_store_objects/IndexObject";
 
 var HAS_BEEN__CREATED: boolean = false;
 
@@ -100,7 +99,7 @@ describe("DBStore", function(){
             ]
         );
 
-        let expectedTestKeyUpdated: StoreObjectInterfaceExample = {
+        let expectedTestKeyUpdated = {
             id: 1, theKey: "testKey10"
         }
 

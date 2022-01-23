@@ -1,7 +1,9 @@
 import "mockzilla-webextension";
 import {mockEvent, MockzillaEventOf} from "mockzilla-webextension";
-import {Idle, Tabs} from "webextension-polyfill";
-import {FocusCheckUserBrowserControllerInterface} from "../../../layers/layer0_browser_state_management/trades/BrowserController_FocusCheckUser_Trade";
+import {Idle, Tabs} from "webextension-polyfill-ts";
+import {
+    BrowserController_FocusCheckUser
+} from "../../../layers/layer0_browser_state_management/trades/BrowserController_FocusCheckUser_Trade";
 
 import {
     DETECTION_INTERVAL,
@@ -15,7 +17,7 @@ let idleStateIdle: IdleState = "idle"
 describe("FocusCheckUserManager", () => {
 
     let onStateChanged: MockzillaEventOf<typeof mockBrowser.idle.onStateChanged>
-    let browserController: FocusCheckUserBrowserControllerInterface
+    let browserController: BrowserController_FocusCheckUser
 
     beforeEach(() => {
         onStateChanged  = mockEvent(mockBrowser.idle.onStateChanged)

@@ -1,8 +1,5 @@
 import {
-    create_Command_LogWebpageVisit
-} from "../../../native_application_communication/messages/message/webpage/Command_LogWebpageVisit";
-import {
-    getNativeApplicationCommunicationLink, NativeApplicationCommunicationContract
+    NativeApplicationCommunicationContract, nativeApplicationCommunicationLink
 } from "../../../native_application_communication/NativeApplicationCommunicationLink";
 import MapCache from "../../../utils/MapCache";
 import {TabId} from "../layer1_windows_state_management/values/Types";
@@ -48,7 +45,7 @@ export class BrowserStateManager
 
     webpagesCache: WebpagesCache = getWebpagesCache()
 
-    nativeApp: NativeApplicationCommunicationContract = getNativeApplicationCommunicationLink()
+    nativeApp: NativeApplicationCommunicationContract = nativeApplicationCommunicationLink
 
     webpageIdMap: MapCache<WebpageId, WebpageStateContainer> = getWebpageIdMap()
 
@@ -68,13 +65,15 @@ export class BrowserStateManager
             )
         } else {
             return new Promise<WebpageId>((resolve,reject) => {
-                return this.nativeApp.sendRequest(
-                    create_Command_LogWebpageVisit({
-                        hostName: theUrl.hostname,
-                        pathName: theUrl.pathname
-                    }),
-                    resolve
-                )
+                throw new Error('Method not implemented.')
+                // TODO complete
+                // return this.nativeApp.sendRequest(
+                //     create_Command_LogWebpageVisit({
+                //         hostName: theUrl.hostname,
+                //         pathName: theUrl.pathname
+                //     }),
+                //     resolve
+                // )
             })
         }
     }

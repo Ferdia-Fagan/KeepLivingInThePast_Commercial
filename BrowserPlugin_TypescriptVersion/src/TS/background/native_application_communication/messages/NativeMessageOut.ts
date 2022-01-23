@@ -3,7 +3,7 @@ import {MessageType} from "./values/MessageType";
 
 export interface NativeMessageOut<T> {
     type: MessageType
-    message: T
+    messageData: T
 }
 
 export interface NativeRequestOut<T>

@@ -16,7 +16,7 @@ export function create_TellSystem_BookmarksFolderReport(
 ): NativeMessageOut<TellSystem_BookmarksFolderReport> {
     return {
         type: MessageType.Record_BookmarksReport,
-        message: {
+        messageData: {
             createdBookmarksReport,
             updatedBookmarksReport,
             deletedBookmarksReport

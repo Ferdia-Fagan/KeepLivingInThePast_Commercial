@@ -15,7 +15,7 @@ export function create_TellSystem_WebpageScrapings(
 ): NativeMessageOut<TellSystem_WebpageScrapings> {
     return {
         type: MessageType.Save_WebScrapings,
-        message: webpageScrapings
+        messageData: webpageScrapings
     }
 }
 

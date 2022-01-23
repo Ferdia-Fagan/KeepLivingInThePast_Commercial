@@ -1,5 +1,5 @@
 // import db from "../abstract_object_store_parts/db";
-// import IndexObject from "../store_objects_interfaces/base_store_objects/IndexObject";
+// import {IndexObject} from "../store_objects_interfaces/base_store_objects/IndexObject";
 // import { ID } from "../stores/utils/Utils";
 //
 // /**

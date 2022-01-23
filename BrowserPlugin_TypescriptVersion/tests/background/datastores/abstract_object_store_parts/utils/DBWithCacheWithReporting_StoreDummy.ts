@@ -1,12 +1,13 @@
 import {DBInterface} from "../../../../../src/TS/background/datastores/abstract_object_store_parts/layers/db/DBInterface";
 import DBWithCacheInterface
     from "../../../../../src/TS/background/datastores/abstract_object_store_parts/layers/cache/DBWithCacheInterface";
+import {
+    IndexObject, UpdateObjectIndex
+} from "../../../../../src/TS/background/datastores/store_objects_interfaces/base_store_objects/IndexObject";
 import {ID_NAME, KEY_NAME} from "../../../../../src/TS/background/datastores/stores/utils/Utils";
 import {DBWithCacheWithReportingOfAllOperationsOnData} from "../../../../../src/TS/background/datastores/abstract_object_store_parts/layers/reporting/DBWithCacheWithReporting";
-import DBWithCacheWithReportingOfAllOperationsOnDataInterface
-    from "../../../../../src/TS/background/datastores/abstract_object_store_parts/layers/reporting/interfaces/DBWithCacheWithReportingOfAllOperationsOnDataInterface";
-import IndexObject
-    from "../../../../../src/TS/background/datastores/store_objects_interfaces/base_store_objects/IndexObject";
+import {DBWithCacheWithReportingOfOperationsOnDataInterfaces}
+    from "../../../../../src/TS/background/datastores/abstract_object_store_parts/layers/reporting/interfaces/DBWithCacheWithReportingOfOperationsOnDataInterfaces";
 import {ID_TYPE, KEY_TYPE} from "../../../../../src/TS/background/datastores/store_objects_interfaces/types/Types";
 
 export interface StoreObjectInterfaceExample extends IndexObject{
@@ -14,17 +15,18 @@ export interface StoreObjectInterfaceExample extends IndexObject{
     theKey: KEY_TYPE,
     dataToHaveForUpdateReport?: number
 }
-export interface StoreObjectUpdateReportInterfaceExample extends IndexObject{
+export interface StoreObjectUpdateReportInterfaceExample extends UpdateObjectIndex{
     id: ID_TYPE
     dataToHaveForUpdateReport?: number
 }
 
 const THE_KEY_NAME = "theKey"
 
-export class DBWithCacheWithReporting_StoreDummy extends DBWithCacheWithReportingOfAllOperationsOnData<StoreObjectInterfaceExample, StoreObjectUpdateReportInterfaceExample>
-    implements  DBInterface<StoreObjectInterfaceExample>,
+export class DBWithCacheWithReporting_StoreDummy
+    extends DBWithCacheWithReportingOfAllOperationsOnData<StoreObjectInterfaceExample, StoreObjectUpdateReportInterfaceExample>
+    implements  DBInterface<StoreObjectInterfaceExample, StoreObjectUpdateReportInterfaceExample>,
                 DBWithCacheInterface<StoreObjectInterfaceExample>,
-                DBWithCacheWithReportingOfAllOperationsOnDataInterface<StoreObjectInterfaceExample> {
+                DBWithCacheWithReportingOfOperationsOnDataInterfaces<StoreObjectInterfaceExample, StoreObjectUpdateReportInterfaceExample> {
 
     private constructor(STORE_NAME: string, DB: IDBDatabase){
         super(STORE_NAME, DB)
@@ -114,7 +116,7 @@ export class DBWithCacheWithReporting_StoreDummy extends DBWithCacheWithReportin
     getObjectByKey = (key: string): Promise<StoreObjectInterfaceExample> =>
         super.getObjectByKey(key)
 
-    updateObject = (storeObject: StoreObjectInterfaceExample): void =>
+    updateObject = (storeObject: StoreObjectUpdateReportInterfaceExample): void =>
         super.updateObject(storeObject)
 
     deleteObjectById = (objectId: number): void =>

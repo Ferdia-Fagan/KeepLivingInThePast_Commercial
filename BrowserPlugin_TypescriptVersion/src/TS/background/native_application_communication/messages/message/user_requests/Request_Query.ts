@@ -16,7 +16,7 @@ export function create_Request_Query(
     return {
         type: MessageType.Request_Query,
         responseId: responseId,
-        message: queryReq
+        messageData: queryReq
     }
 }
 

@@ -1,11 +1,11 @@
-import IndexKeyObject from "../../store_objects_interfaces/base_store_objects/IndexKeyObject";
+import {IndexObject} from "../../store_objects_interfaces/base_store_objects/IndexObject";
 import {DBWithCache} from "../layers/cache/DBWithCache";
 import DBWithCacheWithReportingBuilderInterface from "./DBWithCacheWithReportingBuilderInterface";
 import DB from "../layers/db/DB";
 import {DBWithCacheWithReporting} from "../layers/reporting/DBWithCacheWithReporting";
 
 async function builder<
-    STORE_T extends IndexKeyObject,
+    STORE_T extends IndexObject,
     KEY_T extends IDBValidKey,
     T extends DBWithCacheWithReporting<STORE_T, KEY_T>
     >(DATABASE: string, DB_VERSION: number,STORE_NAME: string,

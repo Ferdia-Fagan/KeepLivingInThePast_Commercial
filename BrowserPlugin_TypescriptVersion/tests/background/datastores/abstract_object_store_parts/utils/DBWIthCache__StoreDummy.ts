@@ -1,23 +1,21 @@
-import DB from "../../../../../src/TS/background/datastores/abstract_object_store_parts/layers/db/DB";
 import {ID_NAME, KEY_NAME} from "../../../../../src/TS/background/datastores/stores/utils/Utils";
 import {DBWithCache} from "../../../../../src/TS/background/datastores/abstract_object_store_parts/layers/cache/DBWithCache";
-import IndexObject
+import {IndexObject, UpdateObjectIndex}
     from "../../../../../src/TS/background/datastores/store_objects_interfaces/base_store_objects/IndexObject";
 import {DBInterface} from "../../../../../src/TS/background/datastores/abstract_object_store_parts/layers/db/DBInterface";
 import {KEY_TYPE} from "../../../../../src/TS/background/datastores/store_objects_interfaces/types/Types";
 import DBWithCacheInterface
     from "../../../../../src/TS/background/datastores/abstract_object_store_parts/layers/cache/DBWithCacheInterface";
-import {DBWithCacheWithReportingOfAllOperationsOnData} from "../../../../../src/TS/background/datastores/abstract_object_store_parts/layers/reporting/DBWithCacheWithReporting";
-import DBWithCacheWithReportingOfAllOperationsOnDataInterface
-    from "../../../../../src/TS/background/datastores/abstract_object_store_parts/layers/reporting/interfaces/DBWithCacheWithReportingOfAllOperationsOnDataInterface";
 
 export interface StoreObjectInterfaceExample extends IndexObject{
     theKey: KEY_TYPE
 }
+type StoreObjectUpdateInterfaceExample = StoreObjectInterfaceExample & UpdateObjectIndex
 const THE_KEY_NAME = "theKey"
 
-export class DBWithCache_StoreDummy extends DBWithCache<StoreObjectInterfaceExample>
-        implements  DBInterface<StoreObjectInterfaceExample>,
+export class DBWithCache_StoreDummy
+    extends DBWithCache<StoreObjectInterfaceExample, StoreObjectUpdateInterfaceExample>
+        implements  DBInterface<StoreObjectInterfaceExample, StoreObjectUpdateInterfaceExample>,
                     DBWithCacheInterface<StoreObjectInterfaceExample>{
 
     private constructor(STORE_NAME: string, DB: IDBDatabase){
@@ -104,7 +102,7 @@ export class DBWithCache_StoreDummy extends DBWithCache<StoreObjectInterfaceExam
     getObjectByKey = (key: string): Promise<StoreObjectInterfaceExample> =>
         super.getObjectByKey(key)
 
-    updateObject = (storeObject: StoreObjectInterfaceExample): void =>
+    updateObject = (storeObject: StoreObjectUpdateInterfaceExample): void =>
         super.updateObject(storeObject)
 
     deleteObjectById = (objectId: number): void =>

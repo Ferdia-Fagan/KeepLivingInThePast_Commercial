@@ -11,7 +11,7 @@ export function create_TellSystem_TagsReport(
 ): NativeMessageOut<TellSystem_TagsReport> {
     return {
         type: MessageType.Record_TagsReport,
-        message: {
+        messageData: {
             tagsUpdateReport
         }
     }

@@ -1,6 +1,6 @@
 import DB from "../../../../../src/TS/background/datastores/abstract_object_store_parts/layers/db/DB";
 import {ID_NAME, KEY_NAME} from "../../../../../src/TS/background/datastores/stores/utils/Utils";
-import IndexObject
+import {IndexObject, UpdateObjectIndex}
     from "../../../../../src/TS/background/datastores/store_objects_interfaces/base_store_objects/IndexObject";
 import {DBInterface} from "../../../../../src/TS/background/datastores/abstract_object_store_parts/layers/db/DBInterface";
 import { KEY_TYPE} from "../../../../../src/TS/background/datastores/store_objects_interfaces/types/Types";
@@ -8,10 +8,12 @@ import { KEY_TYPE} from "../../../../../src/TS/background/datastores/store_objec
 export interface StoreObjectInterfaceExample extends IndexObject{
     theKey: KEY_TYPE
 }
+type StoreObjectUpdateInterfaceExample = StoreObjectInterfaceExample & UpdateObjectIndex
 const THE_KEY_NAME = "theKey"
 
-export class DB_StoreDummy extends DB<StoreObjectInterfaceExample>
-    implements DBInterface<StoreObjectInterfaceExample>{
+export class DB_StoreDummy
+    extends DB<StoreObjectInterfaceExample, StoreObjectUpdateInterfaceExample>
+    implements DBInterface<StoreObjectInterfaceExample, StoreObjectUpdateInterfaceExample>{
 
     private constructor(STORE_NAME: string, DB: IDBDatabase){
         super(STORE_NAME, DB)
@@ -83,7 +85,7 @@ export class DB_StoreDummy extends DB<StoreObjectInterfaceExample>
     deleteObjectById = (objectId: number): void =>
         super.deleteObjectById(objectId)
 
-    updateObject = (storeObject: StoreObjectInterfaceExample): void =>
+    updateObject = (storeObject: StoreObjectUpdateInterfaceExample): void =>
         super.updateObject(storeObject)
 
 }

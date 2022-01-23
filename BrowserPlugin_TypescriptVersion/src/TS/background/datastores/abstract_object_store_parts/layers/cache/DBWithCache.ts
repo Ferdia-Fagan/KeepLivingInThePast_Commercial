@@ -1,12 +1,9 @@
 import MapCache from "../../../../utils/MapCache";
 import DB from "../db/DB";
-import IndexObject from "../../../store_objects_interfaces/base_store_objects/IndexObject";
+import {IndexObject, UpdateObjectIndex} from "../../../store_objects_interfaces/base_store_objects/IndexObject";
 import {ID_NAME, KEY_NAME} from "../../../stores/utils/Utils";
 import {CreateDBStore, CreateDBStoreHandler, GetCreateDBStoreHandler} from "../../factory/BuildDB";
-import {DBWithCacheWithReporting} from "../reporting/DBWithCacheWithReporting";
-import TagObject from "../../../stores/tags/TagObject";
 import {KEY_TYPE} from "../../../store_objects_interfaces/types/Types";
-// import {TagsCollection} from "../stores/TagsCollection";
 
 // TODO: make DBSTore, DBCache and DBReport and compoenents so are composable, rather than extendable.
 
@@ -25,7 +22,7 @@ import {KEY_TYPE} from "../../../store_objects_interfaces/types/Types";
  */
 export abstract class DBWithCache<
     STORE_T extends IndexObject,
-    STORE_T_UPDATE_INTERFACE extends IndexObject
+    STORE_T_UPDATE_INTERFACE extends UpdateObjectIndex
 >
         extends DB<STORE_T, STORE_T_UPDATE_INTERFACE> {
 
@@ -92,7 +89,7 @@ export abstract class DBWithCache<
 
 export interface DBBuilderInterface<
     STORE_T extends IndexObject,
-    STORE_T_UPDATE_INTERFACE extends IndexObject,
+    STORE_T_UPDATE_INTERFACE extends UpdateObjectIndex,
     T extends DB<STORE_T, STORE_T_UPDATE_INTERFACE>
 > {
     new (storeName: string, db: IDBDatabase): T
@@ -100,7 +97,7 @@ export interface DBBuilderInterface<
 
 export async function builder<
     STORE_T extends IndexObject,
-    STORE_T_UPDATE_INTERFACE extends IndexObject,
+    STORE_T_UPDATE_INTERFACE extends UpdateObjectIndex,
     T extends DB<STORE_T, STORE_T_UPDATE_INTERFACE>
 >(
     DATABASE: string, DB_VERSION: number,STORE_NAME: string,

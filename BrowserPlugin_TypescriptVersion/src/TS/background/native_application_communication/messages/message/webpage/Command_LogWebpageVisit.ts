@@ -9,11 +9,12 @@ export interface Command_LogWebpageVisit {
 }
 
 export function create_Command_LogWebpageVisit(
+    responseId: ResponseId,
     data: Command_LogWebpageVisit
 ): NativeRequestOut<Command_LogWebpageVisit> {
     return {
         type: MessageType.Log_WebPageVisit,
-        message: data
+        responseId,
+        messageData: data
     }
 }
-

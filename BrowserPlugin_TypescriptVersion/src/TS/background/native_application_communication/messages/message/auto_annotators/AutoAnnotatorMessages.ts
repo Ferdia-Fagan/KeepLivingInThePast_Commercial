@@ -14,7 +14,7 @@ export function create_TellSystem_NewAutoAnnotatorReportMessage_Message(
 ): NativeMessageOut<TellSystem_NewAutoAnnotatorReport> {
     return {
         type: MessageType.Save_NewAutoAnnotatorReport,
-        message: newAutoAnnotatorReport
+        messageData: newAutoAnnotatorReport
     }
 }
 
@@ -32,7 +32,7 @@ export function create_TellSystem_UpdatedAutoAnnotatorReportMessage(
 ): NativeMessageOut<TellSystem_UpdatedAutoAnnotatorReport> {
     return {
         type: MessageType.Save_NewAutoAnnotatorReport,
-        message: updatedAutoAnnotatorReport
+        messageData: updatedAutoAnnotatorReport
     }
 }
 
@@ -42,7 +42,7 @@ export function create_TellSystem_DeleteAutoAnnotatorReport(
 ): NativeMessageOut<TellSystem_DeleteAutoAnnotatorReport> {
     return {
         type: MessageType.Save_NewAutoAnnotatorReport,
-        message: autoAnnotatorIds
+        messageData: autoAnnotatorIds
     }
 }
 

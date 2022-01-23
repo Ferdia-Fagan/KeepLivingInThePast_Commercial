@@ -1,4 +1,4 @@
-import IndexObject from "../../../../store_objects_interfaces/base_store_objects/IndexObject";
+import {IndexObject} from "../../../../store_objects_interfaces/base_store_objects/IndexObject";
 import {ID_TYPE} from "../../../../store_objects_interfaces/types/Types";
 
 export type REPORT_OUTPUT_T<STORE_T extends IndexObject> = (STORE_T | number)[]

@@ -1,6 +1,4 @@
 import {TagId} from "../../../../datastores/stores/tags/Types";
-import {FocusCheckUserBrowserControllerInterface} from "../../layer0_browser_state_management/trades/BrowserController_FocusCheckUser_Trade";
-import WebpageData from "../../layer2_webpage_state_management/components.webpages/WebpageData";
 import {WebpageStateContainer} from "../../layer2_webpage_state_management/WebpageStateManagement";
 import {TabId} from "../values/Types";
 

@@ -7,7 +7,6 @@ import {
     StoreObjectUpdateReportInterfaceExample
 } from "./utils/DBWithCacheWithReporting_StoreDummy";
 import {DBWithCache} from "../../../../src/TS/background/datastores/abstract_object_store_parts/layers/cache/DBWithCache";
-import IndexObject from "../../../../src/TS/background/datastores/store_objects_interfaces/base_store_objects/IndexObject";
 import DB from "../../../../src/TS/background/datastores/abstract_object_store_parts/layers/db/DB";
 import {DB_StoreDummy} from "./utils/DB_StoreDummy";
 
@@ -75,7 +74,7 @@ describe("DBWithCacheWithReporting_StoreDummy", function() {
             let dbWithCacheMockedUpdateObjectFunction = jest.spyOn(DB.prototype as any, "updateObject")
             dbWithCacheMockedUpdateObjectFunction.mockReturnValueOnce(Promise.resolve(1))
 
-            let updateData: StoreObjectInterfaceExample = {
+            let updateData = {
                 id: 1,
                 theKey: "testKey",
                 dataToHaveForUpdateReport: 5678 // changed

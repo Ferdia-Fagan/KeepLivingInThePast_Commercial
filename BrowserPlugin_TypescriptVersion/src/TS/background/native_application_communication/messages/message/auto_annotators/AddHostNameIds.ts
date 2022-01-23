@@ -15,7 +15,7 @@ export function create_TellSystem_AddTrackedHostnamesReport (
 ): NativeMessageOut<TellSystem_AddTrackedHostnamesReport> {
     return {
         type: MessageType.Save_AddedTrackedHostnamesReport,
-        message: {
+        messageData: {
             TrackedHostnamesAdded
         }
     }

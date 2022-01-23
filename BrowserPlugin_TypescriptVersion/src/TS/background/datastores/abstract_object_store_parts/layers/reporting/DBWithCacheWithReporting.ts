@@ -2,7 +2,7 @@
 
 import {ID_TYPE} from "../../../store_objects_interfaces/types/Types";
 import {DBWithCache} from "../cache/DBWithCache";
-import IndexObject from "../../../store_objects_interfaces/base_store_objects/IndexObject";
+import {IndexObject, UpdateObjectIndex} from "../../../store_objects_interfaces/base_store_objects/IndexObject";
 import {DBReportingManager} from "./utils/DBReporting";
 import {CreateDBStore, CreateDBStoreHandler} from "../../factory/BuildDB";
 
@@ -17,9 +17,9 @@ interface ReportingOnUpdateObjectsInterface<
 }
 
 
-abstract class DBWithCacheWithReporting<
+export abstract class DBWithCacheWithReporting<
     STORE_T extends IndexObject,
-    UPDATE_REPORT_INTERFACE extends IndexObject,
+    UPDATE_REPORT_INTERFACE extends UpdateObjectIndex,
 >
         extends DBWithCache<STORE_T, UPDATE_REPORT_INTERFACE> {
 
@@ -32,7 +32,7 @@ abstract class DBWithCacheWithReporting<
 
 export abstract class DBWithCacheWithReportingOfInsertedObjects<
     STORE_T extends IndexObject,
-    UPDATE_REPORT_INTERFACE extends IndexObject
+    UPDATE_REPORT_INTERFACE extends UpdateObjectIndex
 >
         extends DBWithCacheWithReporting<
             STORE_T,
@@ -58,7 +58,7 @@ export abstract class DBWithCacheWithReportingOfInsertedObjects<
 
 export abstract class DBWithCacheWithOptionalReportingOfInsertedObjects<
     STORE_T extends IndexObject,
-    UPDATE_REPORT_INTERFACE extends IndexObject
+    UPDATE_REPORT_INTERFACE extends UpdateObjectIndex
     >
     extends DBWithCacheWithReporting<
         STORE_T,
@@ -92,7 +92,7 @@ export abstract class DBWithCacheWithOptionalReportingOfInsertedObjects<
 
 export abstract class DBWithCacheWithReportingOfAllOperationsOnData<
     STORE_T extends IndexObject,
-    UPDATE_REPORT_INTERFACE extends IndexObject,
+    UPDATE_REPORT_INTERFACE extends UpdateObjectIndex,
 >
         extends DBWithCacheWithReportingOfInsertedObjects<
             STORE_T,
@@ -121,7 +121,7 @@ export abstract class DBWithCacheWithReportingOfAllOperationsOnData<
 export interface DBBuilderInterface<
     STORE_T extends IndexObject,
     KEY_T extends IDBValidKey,
-    STORE_T_UPDATE_INTERFACE extends IndexObject,
+    STORE_T_UPDATE_INTERFACE extends UpdateObjectIndex,
     T extends DBWithCacheWithReporting<STORE_T, STORE_T_UPDATE_INTERFACE>
     > {
     new (storeName: string, db: IDBDatabase): T
@@ -130,7 +130,7 @@ export interface DBBuilderInterface<
 export async function builder<
     STORE_T extends IndexObject,
     KEY_T extends IDBValidKey,
-    UPDATE_REPORT_INTERFACE extends IndexObject,
+    UPDATE_REPORT_INTERFACE extends UpdateObjectIndex,
     T extends DBWithCacheWithReporting<
         STORE_T,  UPDATE_REPORT_INTERFACE
     >
