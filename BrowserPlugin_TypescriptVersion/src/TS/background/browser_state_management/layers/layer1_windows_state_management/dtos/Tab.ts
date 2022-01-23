@@ -1,7 +1,12 @@
-import WebpageData from "../../layer2_webpage_state_management/components.webpages/WebpageData";
+import {Webpage} from "../../layer2_webpage_state_management/entities/Webpage";
+
+export interface TabTemp {
+    tabId: number,
+    webpageUrl: String
+}
 
 export default interface Tab {
     tabId: number,
-    webpage:WebpageData
+    webpage:Webpage
 }
 

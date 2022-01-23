@@ -10,24 +10,25 @@ import {
 } from "../layer2_webpage_state_management/components.webpages/WebpagesCache";
 import {WebpageId} from "../layer2_webpage_state_management/entities/Types";
 import {Webpage} from "../layer2_webpage_state_management/entities/Webpage";
-import {WebpageStateContainer} from "../layer2_webpage_state_management/WebpageStateManagement";
 import {BrowserStateManagement} from "./management/Actions";
+import browser from "webextension-polyfill";
 
 type WindowId = number
 
 export abstract class BrowserState {
-    protected windowsOpen = new Map<WindowId, WindowTabsStateManager>();
+
+    protected windows = new Map<WindowId, WindowTabsStateManager>();
 
     protected currentWindowOpen: WindowTabsStateManager;
-
-    protected webpageIdMap: MapCache<WebpageId, Webpage>
 
     constructor(
         currentWindowOpen: WindowTabsStateManager = new WindowTabsStateManager(),
         currentWindowsOpen: Map<number, WindowTabsStateManager> = new Map([[1, currentWindowOpen]])
     ) {
-        this.windowsOpen = currentWindowsOpen
         this.currentWindowOpen = currentWindowOpen
+
+        this.windows = currentWindowsOpen
+
     }
 
 }
@@ -47,7 +48,14 @@ export class BrowserStateManager
 
     nativeApp: NativeApplicationCommunicationContract = nativeApplicationCommunicationLink
 
-    webpageIdMap: MapCache<WebpageId, WebpageStateContainer> = getWebpageIdMap()
+    protected webpageIdMap: MapCache<WebpageId, Webpage> = getWebpageIdMap()
+
+    constructor(
+        currentWindowOpen: WindowTabsStateManager = new WindowTabsStateManager(),
+        currentWindowsOpen: Map<number, WindowTabsStateManager> = new Map([[1, currentWindowOpen]])
+    ) {
+        super(currentWindowOpen, currentWindowsOpen);
+    }
 
     // Bookmarks controll
     addWebpageBookmark(webpageId: number, bookmarkId: number): void {
@@ -82,11 +90,11 @@ export class BrowserStateManager
         windowId: number,
         windowTabsStateManager: WindowTabsStateManager
     ): void {
-        this.windowsOpen.set(windowId, windowTabsStateManager);
+        this.windows.set(windowId, windowTabsStateManager);
     }
 
     changeActiveWindowOpenedById(changedWindowId: number){
-        this.currentWindowOpen = this.windowsOpen.get(changedWindowId);
+        this.currentWindowOpen = this.windows.get(changedWindowId);
     }
 
     changeActiveWindowOpened(windowTabsStateManager: WindowTabsStateManager){
@@ -98,7 +106,7 @@ export class BrowserStateManager
     }
 
     removeWindow(deletedWindowId: number){
-        this.windowsOpen.delete(deletedWindowId);
+        this.windows.delete(deletedWindowId);
     }
 
     focusOnCurrentTab = () => this.currentWindowOpen.focusOnCurrentTab()
@@ -125,6 +133,19 @@ export class BrowserStateManager
     openNewWindow(windowId: WindowId): void {
     }
 
+}
+
+function CreateBrowserStateManager(currentBrowserWindow: browser.Windows.Window, currentWindows: Array<browser.Windows.Window>): BrowserStateManagement {
+    currentWindows.
+}
+
+function setup(): void {
+    Promise.all([
+        browser.windows.getCurrent(),
+        browser.windows.getAll()
+    ]).then(([currentWindow, currentWindows]) => {
+        CreateBrowserStateManager(currentWindow, currentWindows)
+    })
 }
 
 export const browserStateManager: BrowserStateManagement = new BrowserStateManager()    // BrowserStateManagerImpl(currentWindowsOpen, currentWindowOpen)

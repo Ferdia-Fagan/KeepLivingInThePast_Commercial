@@ -22,6 +22,6 @@ export interface UserActions {
     getCurrentTabWebpageTags(): Set<TagId>
 }
 
-export interface OperationActions
-        extends FocusCheckUserBrowserControllerInterface{
+export interface OperationActions {
+
 }
