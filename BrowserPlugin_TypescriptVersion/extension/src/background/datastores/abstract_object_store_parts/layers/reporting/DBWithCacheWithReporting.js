@@ -1,5 +1,5 @@
 "use strict";
-// TODO: abstract reporting behavior to modular dtos.tabs.
+// TODO: abstract layer2_reporting behavior to modular dtos.tabs.
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -66,9 +66,9 @@ exports.builder = builder;
 //     // new <
 //     //     STORE_T extends IndexObject, KEY_T extends IDBValidKey,
 //     //     T extends DBWithCacheWithReporting<STORE_T, KEY_T>,
-//     // > (storeName: string, db: IDBDatabase): T
+//     // > (storeName: string, layer0_db: IDBDatabase): T
 //     new<STORE_T extends IndexObject, KEY_T extends IDBValidKey>
-//         (storeName: string, db: IDBDatabase): DBWithCacheWithReporting<STORE_T, KEY_T>
+//         (storeName: string, layer0_db: IDBDatabase): DBWithCacheWithReporting<STORE_T, KEY_T>
 // }
 //
 // export async function builder<

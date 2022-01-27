@@ -30,7 +30,7 @@ class WebpagesCache {
                 return null;
             }
         }
-        // TODO: hostname is not in cache
+        // TODO: hostname is not in layer1_cache
         // else{ 
         //     let newHostPathsCache = new MapCache<>(150,MAX_HOSTS);
         //     newHostPathsCache.set(pathName, );

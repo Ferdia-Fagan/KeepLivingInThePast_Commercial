@@ -31,7 +31,7 @@ export default class MapCache<k,v>{
     }
 
     clearSpace(){
-        let keysToRemove = Array.from(this.cache.keys()).slice(0, this._CLEAR_SIZE);     // drop 10% of cache (KeyValues added first) 
+        let keysToRemove = Array.from(this.cache.keys()).slice(0, this._CLEAR_SIZE);     // drop 10% of layer1_cache (KeyValues added first)
         keysToRemove.forEach(
             keyToRemove => this.cache.delete(keyToRemove)
         );

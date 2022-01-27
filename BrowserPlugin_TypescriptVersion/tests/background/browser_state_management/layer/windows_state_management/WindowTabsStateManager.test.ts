@@ -1,5 +1,5 @@
 import WebpageData
-    from "../../../../../src/TS/background/browser_state_management/layers/layer2_webpage_state_management/components.webpages/WebpageData";
+    from "../../../../../src/TS/background/components/browser_state_management/layers/layer2_webpage_state_management/components.webpages/WebpageData";
 import {SetSettings} from "../../../../../src/TS/background/settings/Settings";
 
 describe('basic functionality', function () {

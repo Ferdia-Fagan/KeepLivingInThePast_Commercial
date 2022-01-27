@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class MapCache {
-    constructor(maxSize, clearSize) {
+    constructor(maxSize = 150, clearSize = 100) {
         /**
          *  hostName -> pathName -> webpageLoggingId
          */
@@ -22,7 +22,7 @@ class MapCache {
         return this.cache.has(key);
     }
     clearSpace() {
-        let keysToRemove = Array.from(this.cache.keys()).slice(0, this._CLEAR_SIZE); // drop 10% of cache (KeyValues added first) 
+        let keysToRemove = Array.from(this.cache.keys()).slice(0, this._CLEAR_SIZE); // drop 10% of layer1_cache (KeyValues added first)
         keysToRemove.forEach(keyToRemove => this.cache.delete(keyToRemove));
     }
 }

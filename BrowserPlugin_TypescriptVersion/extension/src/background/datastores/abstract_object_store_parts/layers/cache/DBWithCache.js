@@ -21,7 +21,7 @@ const BuildDB_1 = require("../../factory/BuildDB");
 // TODO: make DBSTore, DBCache and DBReport and compoenents so are composable, rather than extendable.
 // interface DBWithCacheInterface<STORE_T extends IndexObject, KEY_T extends IDBValidKey> extends
 //     DBInterface<STORE_T>{
-//     cache: MapCache<IDBValidKey, number>;
+//     layer1_cache: MapCache<IDBValidKey, number>;
 //
 //     getObjectByKey(key_value: KEY_T): Promise<STORE_T>
 // }
@@ -51,8 +51,8 @@ class DBWithCache extends DB_1.default {
     //     }
     // }
     /**
-     * Add new element (must not exist with key already) for system to indexdb and cache
-     * (does not check cache)
+     * Add new element (must not exist with key already) for system to indexdb and layer1_cache
+     * (does not check layer1_cache)
      * @param object
      */
     addObject(object) {

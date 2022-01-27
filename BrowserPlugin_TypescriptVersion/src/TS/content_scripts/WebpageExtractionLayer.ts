@@ -2,7 +2,7 @@ const browser = require("webextension-polyfill");
 
 const webpageMetadataParser = require("page-metadata-parser");
 
-import TellSystem_WebpageScrapings from "../background/internal_plugin_messaging/messages/dto/webpage_scraping/TellSystem_WebpageScrapings"
+import TellSystem_WebpageScrapings from "../background/components/internal_plugin_messaging/messages/dto/webpage_scraping/TellSystem_WebpageScrapings"
 
 console.log("WebpageExtrractionLayer has been imported")
 

@@ -1,14 +1,17 @@
-import {DBInterface} from "../../../../../src/TS/background/datastores/abstract_object_store_parts/layers/db/DBInterface";
+import {
+    DBInterface
+} from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer0_db/DB";
 import DBWithCacheInterface
-    from "../../../../../src/TS/background/datastores/abstract_object_store_parts/layers/cache/DBWithCacheInterface";
+    from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer1_cache/DBWithCache";
 import {
     IndexObject, UpdateObjectIndex
-} from "../../../../../src/TS/background/datastores/store_objects_interfaces/base_store_objects/IndexObject";
-import {ID_NAME, KEY_NAME} from "../../../../../src/TS/background/datastores/stores/utils/Utils";
-import {DBWithCacheWithReportingOfAllOperationsOnData} from "../../../../../src/TS/background/datastores/abstract_object_store_parts/layers/reporting/DBWithCacheWithReporting";
-import {DBWithCacheWithReportingOfOperationsOnDataInterfaces}
-    from "../../../../../src/TS/background/datastores/abstract_object_store_parts/layers/reporting/interfaces/DBWithCacheWithReportingOfOperationsOnDataInterfaces";
-import {ID_TYPE, KEY_TYPE} from "../../../../../src/TS/background/datastores/store_objects_interfaces/types/Types";
+} from "../../../../../src/TS/background/components/datastores/parts/store_objects_interfaces/base_store_objects/IndexObject";
+import {ID_NAME, KEY_NAME} from "../../../../../src/TS/background/components/datastores/components/stores/utils/Utils";
+import {
+    DBWithCacheWithReportingOfAllOperationsOnData,
+    DBWithCacheWithReportingOfOperationsOnDataInterfaces
+} from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer2_reporting/DBWithCacheWithReporting";
+import {ID_TYPE, KEY_TYPE} from "../../../../../src/TS/background/components/datastores/parts/store_objects_interfaces/types/Types";
 
 export interface StoreObjectInterfaceExample extends IndexObject{
     id?: ID_TYPE
@@ -57,7 +60,7 @@ export class DBWithCacheWithReporting_StoreDummy
             var openDBReq = indexedDB.open(DATABASE, DB_VERSION);
 
             openDBReq.onsuccess = function (evt: any & Event) {
-                // db = evt.result;
+                // layer0_db = evt.result;
                 if(testDataForDB){
                     let transaction = openDBReq.result.transaction("test",'readwrite')
                     let store: any & IDBObjectStore = transaction.objectStore("test")
@@ -83,7 +86,7 @@ export class DBWithCacheWithReporting_StoreDummy
             }
 
             openDBReq.onerror = function (evt) {
-                console.error("openDb:", "db request fail");
+                console.error("openDb:", "layer0_db request fail");
             };
 
             openDBReq.onupgradeneeded = onUpgradeNeededHandler

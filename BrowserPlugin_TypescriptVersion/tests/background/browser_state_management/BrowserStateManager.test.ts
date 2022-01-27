@@ -4,12 +4,12 @@ import { assert } from "console";
 import {
     createBrowserStateManager,
     getBrowserStateManager
-} from "../../../src/TS/background/browser_state_management/layers/layer0_browser_state_management/BrowserStateManager";
+} from "../../../src/TS/background/components/browser_state_management/layers/layer0_browser_state_management/BrowserStateManager";
 import {
     createWindow,
     WindowTabsStateManager
-} from "../../../src/TS/background/browser_state_management/layers/layer1_windows_state_management/WindowTabsStateManager";
-import BrowserStateManager from "../../../src/TS/background/browser_state_management/layers/layer0_browser_state_management/management/Actions";
+} from "../../../src/TS/background/components/browser_state_management/layers/layer1_windows_state_management/WindowTabsStateManager";
+import BrowserStateManager from "../../../src/TS/background/components/browser_state_management/layers/layer0_browser_state_management/management/Actions";
 
 beforeAll(function () {
     createBrowserStateManager()

@@ -1,9 +1,10 @@
-import DB from "../../../../../src/TS/background/datastores/abstract_object_store_parts/layers/db/DB";
-import {ID_NAME, KEY_NAME} from "../../../../../src/TS/background/datastores/stores/utils/Utils";
+import DB, {
+    DBInterface
+} from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer0_db/DB";
+import {ID_NAME, KEY_NAME} from "../../../../../src/TS/background/components/datastores/components/stores/utils/Utils";
 import {IndexObject, UpdateObjectIndex}
-    from "../../../../../src/TS/background/datastores/store_objects_interfaces/base_store_objects/IndexObject";
-import {DBInterface} from "../../../../../src/TS/background/datastores/abstract_object_store_parts/layers/db/DBInterface";
-import { KEY_TYPE} from "../../../../../src/TS/background/datastores/store_objects_interfaces/types/Types";
+    from "../../../../../src/TS/background/components/datastores/parts/store_objects_interfaces/base_store_objects/IndexObject";
+import { KEY_TYPE} from "../../../../../src/TS/background/components/datastores/parts/store_objects_interfaces/types/Types";
 
 export interface StoreObjectInterfaceExample extends IndexObject{
     theKey: KEY_TYPE
@@ -38,7 +39,7 @@ export class DB_StoreDummy
             var openDBReq = indexedDB.open(DATABASE, DB_VERSION);
 
             openDBReq.onsuccess = function (evt: any & Event) {
-                // db = evt.result;
+                // layer0_db = evt.result;
                 if(testData){
                     let transaction = openDBReq.result.transaction("test",'readwrite')
                     let store: any & IDBObjectStore = transaction.objectStore("test")
@@ -64,7 +65,7 @@ export class DB_StoreDummy
             }
 
             openDBReq.onerror = function (evt) {
-                console.error("openDb:", "db request fail");
+                console.error("openDb:", "layer0_db request fail");
             };
 
             openDBReq.onupgradeneeded = onUpgradeNeededHandler
