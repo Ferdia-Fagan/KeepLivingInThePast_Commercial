@@ -1,4 +1,5 @@
-import {TagId} from "../../../datastores/components/stores/tags/Types";
+import browser from "webextension-polyfill";
+import {TagId} from "../../../datastores/stores/tags/Types";
 import {WebpageStateContainer} from "../layer2_webpage_state_management/WebpageStateManagement";
 import {OperationActions, UserActions} from "./management/Actions";
 import WindowTabsState from "./entities/WindowTabsState";
@@ -234,6 +235,9 @@ export class WindowTabsStateManager
 
 }
 
+export function createWindowFromBrowserWindow(window: browser.Windows.Window): WindowTabsStateManager {
+
+}
 
 export function createWindow(
     currentFocusedTabId: TabId = 1, currentFocusedWebpage: WebpageStateContainer = null,

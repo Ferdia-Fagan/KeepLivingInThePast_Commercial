@@ -1,6 +1,6 @@
+import {BrowserState} from "../entities/BrowserWindows";
 import {BrowserController_Bookmarks_Trade} from "../trades/BrowserController_Bookmarks_Trade";
 import {BrowserController_FocusCheckUser_Trade} from "../trades/BrowserController_FocusCheckUser_Trade";
-import {BrowserState} from "../BrowserStateManager";
 import {TabChange} from "../../layer1_windows_state_management/dtos/TabStateChanges";
 import {WindowTabsStateManager} from "../../layer1_windows_state_management/WindowTabsStateManager";
 import NewWebpageOpenedDetails from "../../layer2_webpage_state_management/dtos/NewWebpageOpenedDetails";

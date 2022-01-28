@@ -1,16 +1,15 @@
-import {ID_NAME, KEY_NAME} from "../../../../../src/TS/background/components/datastores/components/stores/utils/Utils";
 import {
     DBInterface
-} from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer0_db/DB";
-import DBWithCacheInterface, {DBWithCache} from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer1_cache/DBWithCache";
-import {IndexObject, UpdateObjectIndex}
-    from "../../../../../src/TS/background/components/datastores/parts/store_objects_interfaces/base_store_objects/IndexObject";
-import {KEY_TYPE} from "../../../../../src/TS/background/components/datastores/parts/store_objects_interfaces/types/Types";
+} from "../../../../../src/TS/background/components/datastores/components/parts/abstract_object_store_parts/layers/layer0_db/DB";
+import DBWithCacheInterface, {DBWithCache} from "../../../../../src/TS/background/components/datastores/components/parts/abstract_object_store_parts/layers/layer1_cache/DBWithCache";
+import {ID_NAME, KEY_NAME, StoreObjectInterface, UpdatedStoreObjectInterface}
+    from "../../../../../src/TS/background/components/datastores/components/parts/abstract_object_store_parts/layers/layer0_db/store_object/StoreObject";
+import {KEY_TYPE} from "../../../../../src/TS/background/components/datastores/components/parts/abstract_object_store_parts/layers/layer0_db/store_object/DataTypes";
 
-export interface StoreObjectInterfaceExample extends IndexObject{
+export interface StoreObjectInterfaceExample extends StoreObjectInterface{
     theKey: KEY_TYPE
 }
-type StoreObjectUpdateInterfaceExample = StoreObjectInterfaceExample & UpdateObjectIndex
+type StoreObjectUpdateInterfaceExample = StoreObjectInterfaceExample & UpdatedStoreObjectInterface
 const THE_KEY_NAME = "theKey"
 
 export class DBWithCache_StoreDummy

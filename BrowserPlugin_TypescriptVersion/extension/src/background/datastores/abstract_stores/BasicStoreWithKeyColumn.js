@@ -1,5 +1,5 @@
 // import layer0_db from "../abstract_object_store_parts/layer0_db";
-// import {IndexObject} from "../store_objects_interfaces/base_store_objects/IndexObject";
+// import {Interfaces} from "../store_objects_interfaces/base_store_objects/Interfaces";
 // import { ID, KEY } from "../stores/utils/Utils";
 //
 // /**
@@ -8,7 +8,7 @@
 //  *  The sub class will want to fetch a id by a key.
 //  *  E.g. Tags, bookmarks, etc.
 //  */
-// export default class BasicStoreWithKeyColumn<StoreObjType extends IndexObject> extends layer0_db<StoreObjType> {
+// export default class BasicStoreWithKeyColumn<StoreObjType extends Interfaces> extends layer0_db<StoreObjType> {
 //
 //     // private readonly KEY_NAME: string
 //

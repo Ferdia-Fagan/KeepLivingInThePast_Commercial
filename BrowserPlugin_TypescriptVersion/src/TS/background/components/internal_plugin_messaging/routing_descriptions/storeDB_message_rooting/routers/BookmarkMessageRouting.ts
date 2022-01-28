@@ -1,4 +1,4 @@
-import BookmarkObject from "../../../../datastores/components/stores/bookmarks/BookmarkObject";
+import BookmarkObject from "../../../../datastores/stores/bookmarks/BookmarkObject";
 
 export default interface BookmarkMessageRouting {
     getAllBookmarks(): BookmarkObject[]

@@ -1,4 +1,4 @@
-import {TagId} from "../../../../datastores/components/stores/tags/Types";
+import {TagId} from "../../../../datastores/stores/tags/Types";
 import {WebpageStateContainer} from "../../layer2_webpage_state_management/WebpageStateManagement";
 import {TabId} from "../values/Types";
 

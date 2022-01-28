@@ -1,4 +1,4 @@
-import {BookmarkId} from "../../../../datastores/components/stores/bookmarks/Types";
+import {BookmarkId} from "../../../../datastores/stores/bookmarks/Types";
 import {browserStateManager} from "../BrowserStateManager";
 import {WebpageId} from "../../layer2_webpage_state_management/entities/Types";
 

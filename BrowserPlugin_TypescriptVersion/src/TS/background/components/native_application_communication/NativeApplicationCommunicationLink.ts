@@ -68,11 +68,7 @@ export class NativeApplicationCommunicator
 
 }
 
-// export const nativeApplicationCommunicationLink: NativeApplicationCommunicationContract = new NativeApplicationCommunicator()
-
-// export const c = () => {
-//     return nativeApplicationCommunicationLink
-// }
+export const nativeApplicationCommunicationLink: NativeApplicationCommunicationContract = new NativeApplicationCommunicator()
 
 export const getNativeApplicationCommunicationLink = () =>
     new NativeApplicationCommunicator()

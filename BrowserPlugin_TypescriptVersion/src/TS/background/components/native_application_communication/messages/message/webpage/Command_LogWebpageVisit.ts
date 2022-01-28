@@ -1,5 +1,5 @@
 import {
-    HostName, PathName,
+    Hostname, Pathname,
     WebpageId
 } from "../../../../browser_state_management/layers/layer2_webpage_state_management/entities/Types";
 import {Webpage} from "../../../../browser_state_management/layers/layer2_webpage_state_management/entities/Webpage";
@@ -28,7 +28,7 @@ export function create_Command_LogWebpageVisit(
 
 export interface WebpageDto
     extends Webpage {
-    hostName: HostName, pathName: PathName
+    hostName: Hostname, pathName: Pathname
 }
 
 export type Response_LogWebpageVisit = WebpageDto

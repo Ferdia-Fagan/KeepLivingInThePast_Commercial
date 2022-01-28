@@ -18,7 +18,7 @@ const DB_1 = __importDefault(require("../db/DB"));
 const Utils_1 = require("../../../stores/utils/Utils");
 const BuildDB_1 = require("../../factory/BuildDB");
 // TODO: make DBSTore, DBCache and DBReport and compoenents so are composable, rather than extendable.
-// interface DBWithCacheInterface<STORE_T extends IndexObject, KEY_T extends IDBValidKey> extends
+// interface DBWithCacheInterface<STORE_T extends Interfaces, KEY_T extends IDBValidKey> extends
 //     DBInterface<STORE_T>{
 //     layer1_cache: MapCache<IDBValidKey, number>;
 //

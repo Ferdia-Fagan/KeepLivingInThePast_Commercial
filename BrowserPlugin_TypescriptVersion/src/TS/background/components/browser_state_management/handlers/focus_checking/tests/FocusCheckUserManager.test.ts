@@ -1,6 +1,6 @@
 import "mockzilla-webextension";
 import {mockEvent, MockzillaEventOf} from "mockzilla-webextension";
-import {Idle, Tabs} from "webextension-polyfill-ts";
+import {Idle, Tabs} from "webextension-polyfill";
 import {
     BrowserController_FocusCheckUser
 } from "../../../layers/layer0_browser_state_management/trades/BrowserController_FocusCheckUser_Trade";

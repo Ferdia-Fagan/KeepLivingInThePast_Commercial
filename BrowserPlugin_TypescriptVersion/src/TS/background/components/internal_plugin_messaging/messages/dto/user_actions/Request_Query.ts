@@ -1,5 +1,5 @@
 import {BookmarkId} from "../../../../components/datastores/stores/bookmarks/values/Types";
-import {TagId} from "../../../../datastores/components/stores/tags/Types";
+import {TagId} from "../../../../datastores/stores/tags/Types";
 import BaseInternalMessageDto from "../../base_dto/BaseInternalMessageDto";
 import {MessageType} from "../../base_dto/MessageType";
 

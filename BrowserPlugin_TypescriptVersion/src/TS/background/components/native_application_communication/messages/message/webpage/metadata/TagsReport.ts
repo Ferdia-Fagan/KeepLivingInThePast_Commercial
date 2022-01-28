@@ -1,4 +1,4 @@
-import {WebpageTagReports} from "../../../../../datastores/components/stores/tags/WebpageTagReports";
+import {WebpageTagReports} from "../../../../../datastores/stores/tags/WebpageTagReports";
 import {NativeMessageOut} from "../../../NativeMessageOut";
 import {MessageType} from "../../../values/MessageType";
 

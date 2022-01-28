@@ -1,8 +1,8 @@
 
 // TODO: this will be were factories for dtos
 
-import {BookmarkId} from "../../../datastores/components/stores/bookmarks/Types";
-import {TagId} from "../../../datastores/components/stores/tags/Types";
+import {BookmarkId} from "../../../datastores/stores/bookmarks/Types";
+import {TagId} from "../../../datastores/stores/tags/Types";
 import UserAddedWebpageMetadata from "./entities/metadata/UserAddedWebpageMetadata";
 import {WebpageFlags} from "./entities/metadata/WebpageFlags";
 import {WebpageOptionalMeasurements} from "./entities/metadata/WebpageOptionalMeasurements";

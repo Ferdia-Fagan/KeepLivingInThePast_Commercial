@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-// export default interface DBInterface<STORE_T extends IndexObject> {
+// export default interface DBInterface<STORE_T extends Interfaces> {
 //     // addElementAndThenDoSomething(newElementToStore: STORE_T,
 //     //     onSuccessfullReq: ((evt: any & Event) => void)): void
 //     addObject(newElementToStore: STORE_T): Promise<number>

@@ -1,39 +1,26 @@
-import {
-    NativeApplicationCommunicationContract, nativeApplicationCommunicationLink
-} from "../../../native_application_communication/NativeApplicationCommunicationLink";
+import browser from "webextension-polyfill";
 import MapCache from "../../../../utils/MapCache";
+import {
+    NativeApplicationCommunicationContract,
+    nativeApplicationCommunicationLink
+} from "../../../native_application_communication/NativeApplicationCommunicationLink";
 import {TabId} from "../layer1_windows_state_management/values/Types";
 import {WindowTabsStateManager} from "../layer1_windows_state_management/WindowTabsStateManager";
 import {
     getWebpageIdMap,
-    getWebpagesCache, WebpagesCache
+    getWebpagesCache,
+    WebpagesCache
 } from "../layer2_webpage_state_management/components.webpages/WebpagesCache";
-import {WebpageId} from "../layer2_webpage_state_management/entities/Types";
-import {Webpage} from "../layer2_webpage_state_management/entities/Webpage";
+import {
+    getWebpageHostnameAndPathnameFromUrl,
+    WebpageId,
+    WebpageIdentifier,
+    WebpageUrl
+} from "../layer2_webpage_state_management/entities/Types";
 import {WebpageStateContainer} from "../layer2_webpage_state_management/WebpageStateManagement";
-import {Windows} from "./entities/Windows";
+import {BrowserState, BrowserWindows} from "./entities/BrowserWindows";
 import {BrowserStateManagement} from "./management/Actions";
-import browser from "webextension-polyfill";
-
-type WindowId = number
-
-export abstract class BrowserState {
-
-    protected windows: Windows = new Map<WindowId, WindowTabsStateManager>();
-
-    protected currentWindowOpen: WindowTabsStateManager;
-
-    constructor(
-        currentWindowOpen: WindowTabsStateManager = new WindowTabsStateManager(),
-        currentWindowsOpen: Map<number, WindowTabsStateManager> = new Map([[1, currentWindowOpen]])
-    ) {
-        this.currentWindowOpen = currentWindowOpen
-
-        this.windows = currentWindowsOpen
-
-    }
-
-}
+import {WindowId} from "./values/Types";
 
 export interface BrowserStateContainer
     extends BrowserState,
@@ -137,8 +124,34 @@ export class BrowserStateManager
 
 }
 
-function CreateBrowserStateManager(currentBrowserWindow: browser.Windows.Window, currentWindows: Array<browser.Windows.Window>): BrowserStateManagement {
-    currentWindows.
+interface WindowTabUrl {
+    windowId: WindowId
+    tabId: TabId
+    webpageIdentifier: WebpageIdentifier
+}
+
+const createWindowsFromBrowserWindows = (browserWindows: Array<browser.Windows.Window>): BrowserWindows => {
+    const windowTabUrls: WindowTabUrl[] = browserWindows.flatMap(window => {
+        return window.tabs.map(tab => ({
+            windowId: window.id,
+            tabId: tab.id,
+            webpageIdentifier: getWebpageHostnameAndPathnameFromUrl(tab.url)
+        }))
+    })
+    // TODO: use windowTabUrls to get webpages from native application
+    // use this to make webpages/tabs in windows
+    throw new Error("not implemented yet")
+}
+
+const createBrowserStateManager = (
+    currentBrowserWindow: browser.Windows.Window,
+    currentBrowserWindows: Array<browser.Windows.Window>
+) => {
+    const windows = createWindowsFromBrowserWindows(currentBrowserWindows)
+    return new BrowserStateManager(
+        windows.get(currentBrowserWindow.id),
+        windows
+    )
 }
 
 function setup(): void {
@@ -146,7 +159,7 @@ function setup(): void {
         browser.windows.getCurrent(),
         browser.windows.getAll()
     ]).then(([currentWindow, currentWindows]) => {
-        CreateBrowserStateManager(currentWindow, currentWindows)
+        createBrowserStateManager(currentWindow, currentWindows)
     })
 }
 

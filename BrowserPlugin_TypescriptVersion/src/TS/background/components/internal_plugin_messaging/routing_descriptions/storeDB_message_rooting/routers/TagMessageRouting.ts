@@ -1,4 +1,4 @@
-import TagObject from "../../../../datastores/components/stores/tags/TagObject";
+import TagObject from "../../../../datastores/stores/tags/TagObject";
 
 export default interface TagMessageRouting {
 

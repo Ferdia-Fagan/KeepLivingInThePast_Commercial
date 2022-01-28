@@ -64,15 +64,15 @@ function builder(DATABASE, DB_VERSION, STORE_NAME, createDBStore, objectToBuild)
 exports.builder = builder;
 // export interface DBBuilderInterface {
 //     // new <
-//     //     STORE_T extends IndexObject, KEY_T extends IDBValidKey,
+//     //     STORE_T extends Interfaces, KEY_T extends IDBValidKey,
 //     //     T extends DBWithCacheWithReporting<STORE_T, KEY_T>,
 //     // > (storeName: string, layer0_db: IDBDatabase): T
-//     new<STORE_T extends IndexObject, KEY_T extends IDBValidKey>
+//     new<STORE_T extends Interfaces, KEY_T extends IDBValidKey>
 //         (storeName: string, layer0_db: IDBDatabase): DBWithCacheWithReporting<STORE_T, KEY_T>
 // }
 //
 // export async function builder<
-//     STORE_T extends IndexObject, KEY_T extends IDBValidKey,
+//     STORE_T extends Interfaces, KEY_T extends IDBValidKey,
 //     T extends DBWithCacheWithReporting<STORE_T, KEY_T>
 // >(
 //     DATABASE: string, DB_VERSION: number,STORE_NAME: string,

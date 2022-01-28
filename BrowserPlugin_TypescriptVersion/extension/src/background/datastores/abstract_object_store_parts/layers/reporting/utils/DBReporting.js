@@ -7,15 +7,15 @@ exports.DBReportingManager = void 0;
 const ReportToCheckWhenReportingDBDeletions_1 = __importDefault(require("./ReportToCheckWhenReportingDBDeletions"));
 const ReportToCheckWhenReportingDBInsertionsOrUpdates_1 = __importDefault(require("./ReportToCheckWhenReportingDBInsertionsOrUpdates"));
 const ReportName_1 = require("./ReportName");
-// export interface DBReportingManager_AddOperation<STORE_T extends IndexObject> {
+// export interface DBReportingManager_AddOperation<STORE_T extends Interfaces> {
 //     reportAddObject(objectId: number, newObject: STORE_T): void
 // }
 //
-// export interface DBReportingManager_UpdateOperation<STORE_T extends IndexObject> {
+// export interface DBReportingManager_UpdateOperation<STORE_T extends Interfaces> {
 //     reportUpdateObject(objectId: number, newObject: STORE_T): void
 // }
 //
-// export interface DBReportingManager_DeleteOperation<STORE_T extends IndexObject> {
+// export interface DBReportingManager_DeleteOperation<STORE_T extends Interfaces> {
 //     reportDeleteObject(objectId: number): void
 // }
 /**

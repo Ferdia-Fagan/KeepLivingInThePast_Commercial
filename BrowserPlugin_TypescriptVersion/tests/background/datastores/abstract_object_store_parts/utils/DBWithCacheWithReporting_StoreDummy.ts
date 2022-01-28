@@ -1,24 +1,24 @@
 import {
     DBInterface
-} from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer0_db/DB";
+} from "../../../../../src/TS/background/components/datastores/components/parts/abstract_object_store_parts/layers/layer0_db/DB";
 import DBWithCacheInterface
-    from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer1_cache/DBWithCache";
+    from "../../../../../src/TS/background/components/datastores/components/parts/abstract_object_store_parts/layers/layer1_cache/DBWithCache";
 import {
-    IndexObject, UpdateObjectIndex
-} from "../../../../../src/TS/background/components/datastores/parts/store_objects_interfaces/base_store_objects/IndexObject";
-import {ID_NAME, KEY_NAME} from "../../../../../src/TS/background/components/datastores/components/stores/utils/Utils";
+    ID_NAME, KEY_NAME,
+    StoreObjectInterface, UpdatedStoreObjectInterface
+} from "../../../../../src/TS/background/components/datastores/components/parts/abstract_object_store_parts/layers/layer0_db/store_object/StoreObject";
 import {
     DBWithCacheWithReportingOfAllOperationsOnData,
     DBWithCacheWithReportingOfOperationsOnDataInterfaces
-} from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer2_reporting/DBWithCacheWithReporting";
-import {ID_TYPE, KEY_TYPE} from "../../../../../src/TS/background/components/datastores/parts/store_objects_interfaces/types/Types";
+} from "../../../../../src/TS/background/components/datastores/components/parts/abstract_object_store_parts/layers/layer2_reporting/DBWithCacheWithReporting";
+import {ID_TYPE, KEY_TYPE} from "../../../../../src/TS/background/components/datastores/components/parts/abstract_object_store_parts/layers/layer0_db/store_object/DataTypes";
 
-export interface StoreObjectInterfaceExample extends IndexObject{
+export interface StoreObjectInterfaceExample extends StoreObjectInterface{
     id?: ID_TYPE
     theKey: KEY_TYPE,
     dataToHaveForUpdateReport?: number
 }
-export interface StoreObjectUpdateReportInterfaceExample extends UpdateObjectIndex{
+export interface StoreObjectUpdateReportInterfaceExample extends UpdatedStoreObjectInterface{
     id: ID_TYPE
     dataToHaveForUpdateReport?: number
 }
