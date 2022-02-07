@@ -2,99 +2,103 @@ import "mockzilla-webextension";
 require("fake-indexeddb/auto");
 
 import {
-    DBWithCacheWithReporting_StoreDummy,
-    StoreObjectInterfaceExample,
-    StoreObjectUpdateReportInterfaceExample
+    DBWithCacheWithReporting_StoreDummy, StoreObjectInterfaceExample, StoreObjectUpdateReportInterfaceExample
 } from "../../../../../../../../../../../tests/background/datastores/abstract_object_store_parts/utils/DBWithCacheWithReporting_StoreDummy";
-import {DBWithCache} from "../../layer1_cache/DBWithCache";
-import DB from "../../layer0_db/DB";
-import {DB_StoreDummy} from "../../../../../../../../../../../tests/background/datastores/abstract_object_store_parts/utils/DB_StoreDummy";
+import {ID_TYPE} from "../../layer0_db/store_object/Types";
+import {DBCache} from "../../layer1_cache/DBCache";
+import {InsertReport} from "../Types";
 
-// jest.mock('../../../../src/background/datastores/abstract_object_store_parts/layers/layer1_cache/DBWithCache')
-// const DBWithCache = require('../../../../src/background/datastores/abstract_object_store_parts/layers/layer1_cache/DBWithCache');
-// TODO: tests for layer2_reporting
 describe("DBWithCacheWithReporting_StoreDummy", function() {
 
-    beforeAll(async() => {
-        await DB_StoreDummy.builder(
-            "test", 1, "test");
-    })
-
     describe("addObject", function() {
-        it('should add object to store and add to new objects report', async () => {
-            let storeInstance = await DBWithCacheWithReporting_StoreDummy.builder(
-                "test", 1, "test");
+        it('should add object to new objects report', async () => {
+            let storeInstance = DBWithCacheWithReporting_StoreDummy.builder();
 
             let testData: StoreObjectInterfaceExample = {
-                theKey: "testKey"
+                id: 0,
+                theKey: "testKey",
+                dataToHaveForUpdateReport: "testdata"
             }
-            let dbWithCacheMockedAddObjectFunction = jest.spyOn(DBWithCache.prototype as any, "addObject")
+            let dbWithCacheMockedAddObjectFunction = jest.spyOn(DBCache.prototype as any, "addObject")
             dbWithCacheMockedAddObjectFunction.mockReturnValueOnce(Promise.resolve(1))
 
             // when
-            let returnedResult = await storeInstance.addObject(testData)
+            storeInstance.reportAddedObject(testData)
             // then
-            expect(returnedResult).toBe(1)
-            let report = storeInstance.reportingManager.newObjectAddedReports.getUpdateReport(false)
-            expect(report.length).toBe(1)
-            let expectedReport: StoreObjectInterfaceExample = {
-                id: 1,
-                theKey: "testKey"
-            }
-            expect(report.pop()).toMatchObject(expectedReport)
+            // expect(returnedResult).toBe(1)
+            let newObjsReport = storeInstance.newObjectAddedReports
+            expect(newObjsReport.size).toBe(1)
+            let expectedReport: StoreObjectUpdateReportInterfaceExample = testData
+            expect(newObjsReport.get(testData.id)).toMatchObject(expectedReport)
         });
     });
 
     describe("updateObject", function() {
-        it('should update object in the store and add to update report', async () => {
-            let dataWillTryToUpdate = {
+        it('if object is not in new objects report -> should add update to update report', async () => {
+            let ogDataWillTryToUpdate: StoreObjectInterfaceExample = {
                 id: 1,
                 theKey: "testKey",
-                dataToHaveForUpdateReport: 1234
+                dataToHaveForUpdateReport: "1234"
             }
-            let testDataForDB = [
-                dataWillTryToUpdate
-            ]
-            let testDataForCache = [
-                {
-                    id: 1,
-                    theKey: "testKey"
-                }
-            ]
+            let sampleInitialUpdateReports: InsertReport<StoreObjectUpdateReportInterfaceExample> =
+                new Map([[ogDataWillTryToUpdate.id, ogDataWillTryToUpdate]])
 
-            // {
-            //     id: 1,
-            //         dataToHaveForUpdateReport: 1234
-            // }
+            let dbReportController = await DBWithCacheWithReporting_StoreDummy.builder(
+                new Map<ID_TYPE, StoreObjectUpdateReportInterfaceExample>(),
+                sampleInitialUpdateReports,
+                null
+            );
 
-            let storeInstance = await DBWithCacheWithReporting_StoreDummy.builder(
-                "test", 1, "test",
-                testDataForDB, testDataForCache);
-
-            let dbWithCacheMockedUpdateObjectFunction = jest.spyOn(DB.prototype as any, "updateObject")
-            dbWithCacheMockedUpdateObjectFunction.mockReturnValueOnce(Promise.resolve(1))
-
-            let updateData = {
+            let updatedObject: StoreObjectInterfaceExample = {
                 id: 1,
                 theKey: "testKey",
-                dataToHaveForUpdateReport: 5678 // changed
+                dataToHaveForUpdateReport: "5678" // changed
             }
             // when
-            await storeInstance.updateObject(updateData)
+            dbReportController.reportUpdateObject(updatedObject)
 
             // then
-            let report = storeInstance.reportingManager.updatedObjectReports.getUpdateReport(false)
-            expect(report.length).toBe(1)
-            let expectedReport = {
-                id: 1,
-                dataToHaveForUpdateReport: 5678
-            }
-            expect(report.pop()).toMatchObject(expectedReport)
+            let updatedObjsReport = dbReportController.updatedObjectReports
+
+            expect(updatedObjsReport.size).toBe(1)
+            let expectedUpdateReport: StoreObjectUpdateReportInterfaceExample = updatedObject
+            expect(updatedObjsReport.get(ogDataWillTryToUpdate.id)).toMatchObject(expectedUpdateReport)
         });
+
+        it("if object is in new objects added report -> then update that new objects report and not the update report", () => {
+            let ogDataWillTryToUpdate: StoreObjectInterfaceExample = {
+                id: 1,
+                theKey: "testKey",
+                dataToHaveForUpdateReport: "1234"
+            }
+            let sampleInitialUpdateReports: InsertReport<StoreObjectUpdateReportInterfaceExample> =
+                new Map([[ogDataWillTryToUpdate.id, ogDataWillTryToUpdate]])
+
+            let dbReportController = DBWithCacheWithReporting_StoreDummy.builder(
+                    sampleInitialUpdateReports,
+                null,
+                null
+            );
+
+            let updatedObject: StoreObjectInterfaceExample = {
+                id: 1,
+                theKey: "testKey",
+                dataToHaveForUpdateReport: "5678" // changed
+            }
+            // when
+            dbReportController.reportUpdateObject(updatedObject)
+
+            // then
+            let newObjsReport = dbReportController.newObjectAddedReports
+
+            expect(newObjsReport.size).toBe(1)
+            let expectedUpdateReport: StoreObjectUpdateReportInterfaceExample = updatedObject
+            expect(newObjsReport.get(ogDataWillTryToUpdate.id)).toMatchObject(expectedUpdateReport)
+        })
     });
 
     describe("deleteObjectById", function() {
-        it('should delete object from store and add delete object to report', async () => {
+        it('if object mutation to report is in any of the other report -> should add delete to delete report', async () => {
             let dataWillTryToDelete = {
                 id: 1,
                 theKey: "testKey",
@@ -103,22 +107,62 @@ describe("DBWithCacheWithReporting_StoreDummy", function() {
             let testDataForDb = [
                 dataWillTryToDelete
             ]
-            let storeInstance = await DBWithCacheWithReporting_StoreDummy.builder(
-                "test", 1, "test",
-                testDataForDb);
-
-            let dbWithCacheMockedAddObjectFunction = jest.spyOn(DBWithCache.prototype as any, "addObject")
-            dbWithCacheMockedAddObjectFunction.mockReturnValueOnce(Promise.resolve(1))
+            let dbReportController = DBWithCacheWithReporting_StoreDummy.builder();
 
             // when
-            storeInstance.deleteObjectById(1)
+            dbReportController.reportDeletedObject(dataWillTryToDelete.id)
             // then
-            let report = storeInstance.reportingManager.deletedObjectReports.getUpdateReport(false)
-            expect(report.length).toBe(1)
-            let expectedReport = 1
-            let actualReport = report.pop()
-            expect(actualReport).toBe(expectedReport)
-        });
+            let deletedObjsReport = dbReportController.deletedObjectReports
+            expect(deletedObjsReport.size).toBe(1)
+            expect(deletedObjsReport.has(dataWillTryToDelete.id)).toBe(true)
+        })
+        
+        it("if object mutation to report is in new objects added report -> remove from this list and dont add to delete report", () => {
+            let dataWillTryToDelete = {
+                id: 1,
+                theKey: "testKey",
+                dataToHaveForUpdateReport: "1234"
+            }
+            let sampleInitialUpdateReports: InsertReport<StoreObjectUpdateReportInterfaceExample> =
+                new Map([[dataWillTryToDelete.id, dataWillTryToDelete]]
+            )
+            
+            let dbReportController = DBWithCacheWithReporting_StoreDummy.builder(
+                sampleInitialUpdateReports,
+                null,
+                null
+            )
+            expect(dbReportController.newObjectAddedReports.size).toBe(1)
+
+            // when
+            dbReportController.reportDeletedObject(dataWillTryToDelete.id)
+            // then
+            expect(dbReportController.newObjectAddedReports.size).toBe(0)
+        })
+
+        it("if object mutation to report is in updated objs report -> remove from this report and add to delete report", () => {
+            let dataWillTryToDelete = {
+                id: 1,
+                theKey: "testKey",
+                dataToHaveForUpdateReport: "1234"
+            }
+            let sampleInitialUpdateReports: InsertReport<StoreObjectUpdateReportInterfaceExample> =
+                new Map([[dataWillTryToDelete.id, dataWillTryToDelete]]
+            )
+
+            let dbReportController = DBWithCacheWithReporting_StoreDummy.builder(
+                new Map<ID_TYPE, StoreObjectUpdateReportInterfaceExample>(),
+                sampleInitialUpdateReports,
+                new Set<ID_TYPE>()
+            )
+
+            // when
+            dbReportController.reportDeletedObject(dataWillTryToDelete.id)
+            // then
+            expect(dbReportController.updatedObjectReports.size).toBe(0)
+            expect(dbReportController.deletedObjectReports.size).toBe(1)
+            expect(dbReportController.deletedObjectReports.has(dataWillTryToDelete.id)).toBe(true)
+        })
     });
 
 })

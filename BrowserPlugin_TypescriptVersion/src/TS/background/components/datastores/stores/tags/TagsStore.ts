@@ -1,8 +1,8 @@
-import {KEY_NAME} from "../../components/parts/abstract_object_store_parts/layers/layer0_db/store_object/StoreObject";
+import {KEY_NAME} from "../../components/parts/abstract_object_store_parts/layers/layer0_db/store_object/Types";
 import {StoreController} from "../../components/parts/abstract_object_store_parts/layers/Types";
 import TagObject from "./TagObject";
 import {GetCreateDBStoreHandler} from "../../components/parts/abstract_object_store_parts/factory/BuildDBConstructionActions";
-import {builder, DBWithCache} from "../../components/parts/abstract_object_store_parts/layers/layer1_cache/DBWithCache";
+import {builder, DBCache} from "../../components/parts/abstract_object_store_parts/layers/layer1_cache/DBCache";
 import BuildingSetupCheckInterface from "../../management/StoreConstructionSetupCheckerInteface";
 
 interface TagsStoreInterface {
@@ -30,7 +30,7 @@ interface TagsStoreInterface {
 
 }
 
-class TagsStore extends DBWithCache<TagObject, TagObject>
+class TagsStore extends DBCache<TagObject, TagObject>
                         implements TagsStoreInterface {
 
     constructor(storeName: string, db: IDBDatabase) {
@@ -42,7 +42,7 @@ class TagsStore extends DBWithCache<TagObject, TagObject>
     }
 
     addNewTagsAndReturnTagIds(webpageId: number, newTags: TagObject[]): Promise<TagObject[]> {
-        return super.addObjects(newTags)
+        return super.cacheObjectsWithIds(newTags)
         // TODO: use webpage logging id and new tags with ids to add tags for webpage to message applicatiion
     }
 

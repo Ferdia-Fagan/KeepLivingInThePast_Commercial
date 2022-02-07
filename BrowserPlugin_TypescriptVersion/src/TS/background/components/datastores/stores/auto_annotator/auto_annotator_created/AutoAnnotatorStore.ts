@@ -1,7 +1,7 @@
 import BuildingSetupCheckInterface from "../../../management/StoreConstructionSetupCheckerInteface";
 import {GetCreateDBStoreHandler} from "../../../components/parts/abstract_object_store_parts/factory/BuildDBConstructionActions";
 import DB from "../../../components/parts/abstract_object_store_parts/layers/layer0_db/DB";
-import {builder} from "../../../components/parts/abstract_object_store_parts/layers/layer1_cache/DBWithCache";
+import {builder} from "../../../components/parts/abstract_object_store_parts/layers/layer1_cache/DBCache";
 import {AutoAnnotatorObject, AutoAnnotatorSetupObjectUpdateInterface} from "./AutoAnnotatorObject";
 
 interface AutoAnnotatorsCreatedStoreInterface {

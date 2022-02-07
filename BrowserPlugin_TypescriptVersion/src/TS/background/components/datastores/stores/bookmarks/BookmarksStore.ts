@@ -2,13 +2,15 @@ import {
     BookmarkDataChangedInfo
 } from "../../../browser_state_management/handlers/bookmarks_state_management/dtos/BookmarkStateChanges";
 import {GetCreateDBStoreHandler} from "../../components/parts/abstract_object_store_parts/factory/BuildDBConstructionActions";
-import {KEY_NAME} from "../../components/parts/abstract_object_store_parts/layers/layer0_db/store_object/StoreObject";
+import {
+    ID_TYPE,
+    KEY_NAME
+} from "../../components/parts/abstract_object_store_parts/layers/layer0_db/store_object/Types";
 import BuildingSetupCheckInterface from "../../management/StoreConstructionSetupCheckerInteface";
 import {
     builder,
     DBWithCacheWithOptionalReportingOfInsertedObjects
-} from "../../components/parts/abstract_object_store_parts/layers/layer2_reporting/DBWithCacheWithReporting";
-import {ID_TYPE} from "../../components/parts/abstract_object_store_parts/layers/layer0_db/store_object/DataTypes";
+} from "../../components/parts/abstract_object_store_parts/layers/layer2_reporting/DBReportingManager";
 import {StoreController} from "../../components/parts/abstract_object_store_parts/layers/Types";
 import {BookmarkFolderObject, BookmarkObject, BookmarkObjectUpdateReport} from "./BookmarkObject";
 import {BookmarkFolderId, BookmarkId, BookmarkKey} from "./Types";

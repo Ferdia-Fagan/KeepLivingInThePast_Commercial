@@ -1,7 +1,5 @@
-import {
-    KEY_NAME
-} from "../../../components/parts/abstract_object_store_parts/layers/layer0_db/store_object/StoreObject";
-import {builder, DBWithCache} from "../../../components/parts/abstract_object_store_parts/layers/layer1_cache/DBWithCache";
+import {KEY_NAME} from "../../../components/parts/abstract_object_store_parts/layers/layer0_db/store_object/Types";
+import {builder, DBCache} from "../../../components/parts/abstract_object_store_parts/layers/layer1_cache/DBCache";
 import HostnameObject from "./HostnameObject";
 import BuildingSetupCheckInterface from "../../../management/StoreConstructionSetupCheckerInteface";
 import {GetCreateDBStoreHandler} from "../../../components/parts/abstract_object_store_parts/factory/BuildDBConstructionActions";
@@ -23,7 +21,7 @@ interface AutoAnnotatorHostnameStoreInterface {
     // getHostnames(hostnames) TODO: not very interesting
 }
 
-class AutoAnnotatorHostnameStore extends DBWithCache<HostnameObject, HostnameObject>
+class AutoAnnotatorHostnameStore extends DBCache<HostnameObject, HostnameObject>
     implements AutoAnnotatorHostnameStoreInterface {
 
     getStoreObjectKey(object: HostnameObject): IDBValidKey {
@@ -31,13 +29,13 @@ class AutoAnnotatorHostnameStore extends DBWithCache<HostnameObject, HostnameObj
     }
 
     addHostname(hostname: string): Promise<number> {
-        return super.addObject({
+        return super.cacheObjectWithId({
             hostname: hostname
         });
     }
 
     checkIfHostnameHasBeenLogged(hostname: string): Promise<number> {
-        return super.getObjectByKey(hostname).then((hostnameObject): number => {
+        return super.getObjectIdByKey(hostname).then((hostnameObject): number => {
             return hostnameObject.id
         });
     }

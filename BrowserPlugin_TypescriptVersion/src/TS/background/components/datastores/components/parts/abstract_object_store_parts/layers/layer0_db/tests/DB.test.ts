@@ -3,10 +3,14 @@
  */
 
 import "mockzilla-webextension";
-import {ID_NAME, KEY_NAME} from "../store_object/StoreObject";
 require("fake-indexeddb/auto");
 
-import {DB_StoreDummy, StoreObjectInterfaceExample} from "../../../../../../../../../../../tests/background/datastores/abstract_object_store_parts/utils/DB_StoreDummy";
+import {
+    DB_StoreDummy,
+    PersistedStoreObjectInterfaceExample,
+    StoreObjectInterfaceExample
+} from "../../../../../../../../../../../tests/background/datastores/abstract_object_store_parts/utils/DB/DB_StoreDummy";
+import {ID_NAME, KEY_NAME} from "../store_object/Types";
 
 var HAS_BEEN__CREATED: boolean = false;
 
@@ -55,7 +59,7 @@ describe("DBStore", function(){
         );
 
         console.log("hello" + objectWithIndexColumnValue)
-        expect(objectWithIndexColumnValue. theKey).toBe(expectedResult.theKey)
+        expect(objectWithIndexColumnValue.theKey).toBe(expectedResult.theKey)
     })
 
     it("getAllObjects(..)", async () => {

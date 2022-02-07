@@ -14,3 +14,31 @@
 #    popup
 7) Complete settings popup
 8) Complete Sidebar + tests
+
+#   BASIC DEMO
+
+
+# HIGHLIGHTING + note-taking
+highlighting
+note-taking
+
+# Querying improvement
+combinations of tags, rules, etc.
+
+# MVP
+
+prepare
+release
+
+# After
+
+- Make documentation: uml, etc. Model of browser, events, etc. 
+- Make tickets from there.
+
+# New features:
+
+- Set up company
+- making Notebooks from highlights and notes of webpage 
+- Backend -> event sourcing system to distribute "notebooks"
+
+

@@ -1,8 +1,8 @@
-import {StoreObjectInterface} from "../layers/layer0_db/store_object/StoreObject";
-import {DBWithCache} from "../layers/layer1_cache/DBWithCache";
+import {StoreObjectStub} from "../layers/layer0_db/store_object/Types";
+import {DBCache} from "../layers/layer1_cache/DBCache";
 import DBWithCacheWithReportingBuilderInterface from "./DBWithCacheWithReportingBuilderInterface";
 import DB from "../layers/layer0_db/DB";
-import {DBWithCacheWithReporting} from "../layers/layer2_reporting/DBWithCacheWithReporting";
+import {DBWithCacheWithReporting} from "../layers/layer2_reporting/DBReportingManager";
 
 // async function builder<
 //     STORE_T extends StoreObjectInterface,

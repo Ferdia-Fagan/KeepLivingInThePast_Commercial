@@ -1,18 +1,22 @@
 
 export default class MapCache<k,v>{
 
+    /**
+     *  hostName -> pathName -> webpageLoggingId
+     */
     cache: Map<k,v>;
+
     readonly _MAX_SIZE: number;
     readonly _CLEAR_SIZE: number;
 
-    constructor(maxSize: number = 150, clearSize: number = 100){
-        /**
-         *  hostName -> pathName -> webpageLoggingId
-         */
-        this.cache = new Map();
+    constructor(
+        initialCache: Map<k,v> = new Map(),
+        maxSize: number = 150, clearSize: number = 100
+    ){
+        this.cache = initialCache
 
-        this._MAX_SIZE = maxSize;
-        this._CLEAR_SIZE = clearSize;
+        this._MAX_SIZE = maxSize
+        this._CLEAR_SIZE = clearSize
     }
 
     get(key: k){

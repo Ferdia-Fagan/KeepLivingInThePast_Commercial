@@ -33,7 +33,7 @@ class DBWithCacheWithReportingOfInsertedObjects extends DBWithCacheWithReporting
             return yield _super.addObject.call(this, object).then(objectId => {
                 object.id = objectId;
                 let newObjectReport = object;
-                this.reportingManager.reportAddObject(objectId, newObjectReport);
+                this.reportingManager.reportAddedObject(objectId, newObjectReport);
                 return objectId;
             });
         });
@@ -46,11 +46,11 @@ class DBWithCacheWithReportingOfAllOperationsOnData extends DBWithCacheWithRepor
     }
     updateObject(object) {
         let updateReport = object;
-        this.reportingManager.reportUpdateObject(object.id, updateReport);
+        this.reportingManager.updateObject(object.id, updateReport);
         super.updateObject(object);
     }
     deleteObjectById(objectId) {
-        this.reportingManager.reportDeleteObject(objectId);
+        this.reportingManager.deleteObject(objectId);
         super.deleteObjectById(objectId);
     }
 }

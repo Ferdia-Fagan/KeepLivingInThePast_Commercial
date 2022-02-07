@@ -1,55 +1,31 @@
-import {StoreObjectInterface, UpdatedStoreObjectInterface} from "./store_object/StoreObject";
+import {MethodNotYetImplemented} from "../../../../../../../utils/DevelopmentUtils";
+import {
+    KEY_TYPE,
+    Persisted,
+    PersistedStoreObject,
+    PersistedStoreObjectStub,
+    StoreObjectStub,
+    UpdatedStoreObjectStub
+} from "./store_object/Types";
 
-export interface DBInterface<STORE_T extends StoreObjectInterface,
-    STORE_T_UPDATE_INTERFACE extends UpdatedStoreObjectInterface> {
-    addObject(newElementToStore: STORE_T): Promise<number>
-
-    getObjectByIndexColumn(indexName: string, value: IDBValidKey): Promise<STORE_T>
-
-    getAllObjects(): Promise<Array<STORE_T>>
-
-    updateObject(storeObject: STORE_T_UPDATE_INTERFACE): void
-
-    deleteObjectById(elementId: number): void
+export {
+    // Interfaces
+    NonEditableStoreDBInterface, EditableStoreDBInterface,
+    // Generic type
+    A_Generic_DBController,
+    // Types
+    A_NonEditableDBController, A_EditableDBController,
+    // Abstract concrete
+    NonEditableDB, EditableDB
 }
 
-export default abstract class DB<
-    STORE_T extends StoreObjectInterface,
-    STORE_T_UPDATE_INTERFACE extends UpdatedStoreObjectInterface
+type A_Generic_DBController = A_NonEditableDBController<any> | A_EditableDBController<any, any>
+
+// type addObjectFuncInter<STORE_OBJECT_T extends StoreObjectStub> = (newElementToStore: STORE_OBJECT_T) => Promise<number>
+
+interface NonEditableStoreDBInterface<
+    STORE_OBJECT_T extends StoreObjectStub
 > {
-
-    private STORE_NAME: string; 
-
-    private DB: IDBDatabase;
-
-    constructor(storeName: string, db: IDBDatabase) {
-        this.STORE_NAME = storeName;
-        this.DB = db
-    }
-
-    /**
-     * @description
-     * Get the store within a database to then perform a request on
-     * 
-     * @param {string} store_name
-     * @param {string} mode either "readonly" or "readwrite"
-     */
-    protected getStoreObject(mode: IDBTransactionMode): IDBObjectStore {
-        var request: IDBTransaction = this.DB.transaction(this.STORE_NAME, mode);
-        return request.objectStore(this.STORE_NAME);
-    }
-
-    protected getObjectStoreFromTransaction(mode: IDBTransactionMode): [IDBTransaction, IDBObjectStore]{
-        var tx: IDBTransaction = this.DB.transaction([this.STORE_NAME], mode);
-        var objectStore: IDBObjectStore = tx.objectStore(this.STORE_NAME);
-        return [tx,objectStore]
-    }
-
-    protected onFailedRequest(evt: any): void{ // TODO: update evt interface
-        console.error("error with database request", evt.target.errorCode);
-    }
-
-    // ---------------------------------------------------------
 
     /**
      *  TODO: unhandled error if add what does exist for indexes.
@@ -57,10 +33,101 @@ export default abstract class DB<
      * @param onSuccessfullReq
      * @return promise containing id of new oobject added.
      */
-    protected addObject(newObjectToStore: STORE_T): Promise<number>{
+    addObject: (newElementToStore: STORE_OBJECT_T) => Promise<number>
+
+    /**
+     * TODO: write test
+     * @param newObjectsToAdd
+     * @protected
+     * @return promise containing new added objects ids.
+     */
+    addObjects: (newObjectsToAdd: Array<STORE_OBJECT_T>) => Promise<Persisted<STORE_OBJECT_T>[]>
+
+    getObjectByIndexColumn: (indexName: string, value: IDBValidKey) => Promise<Persisted<STORE_OBJECT_T>>
+    getObjectById: (id: number) => Promise<Persisted<STORE_OBJECT_T>>
+    getObjectByKey: (key: KEY_TYPE) => Promise<Persisted<STORE_OBJECT_T>>
+    getObjectByKeys: (keys: KEY_TYPE[]) => Promise<Persisted<STORE_OBJECT_T>[]>
+
+    getAllObjects: () => Promise<Persisted<STORE_OBJECT_T>[]>
+
+    deleteObjectById: (elementId: number) => void
+}
+
+/**
+ * This is a DB that does regular queries
+ * but does only inserts and deletes (no updates).
+ */
+type A_NonEditableDBController<STORE_OBJECT_T extends StoreObjectStub> = NonEditableStoreDBInterface<STORE_OBJECT_T>
+
+interface EditableStoreDBInterface<
+    STORE_OBJECT_T extends StoreObjectStub,
+    UPDATE_STORE_OBJECT_T extends UpdatedStoreObjectStub
+> extends NonEditableStoreDBInterface<STORE_OBJECT_T>{
+    updateObject: (storeObject: UPDATE_STORE_OBJECT_T) => void
+}
+
+/**
+ * This is a DB that does regular queries, and does all aswell as updates.
+ */
+type A_EditableDBController<
+    STORE_OBJECT_T extends StoreObjectStub,
+    UPDATE_STORE_OBJECT_T extends UpdatedStoreObjectStub
+> = EditableStoreDBInterface<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T>
+
+
+type ObjectStoreAndTransaction = [IDBTransaction, IDBObjectStore]
+
+abstract class DBConnectionBase {
+
+    private readonly STORE_NAME: string;
+
+    private DB_Connection: IDBDatabase;
+
+    constructor(storeName: string, db: IDBDatabase) {
+        this.STORE_NAME = storeName;
+        this.DB_Connection = db
+    }
+
+    /**
+     * @description
+     * Get the store within a database to then perform a request on
+     *
+     * @param {string} store_name
+     * @param {string} mode either "readonly" or "readwrite"
+     */
+    protected getObjectStore(mode: IDBTransactionMode): IDBObjectStore {
+        const request: IDBTransaction = this.DB_Connection.transaction(this.STORE_NAME, mode);
+        return request.objectStore(this.STORE_NAME);
+    }
+
+    protected getObjectStoreFromTransaction(mode: IDBTransactionMode): [IDBTransaction, IDBObjectStore]{
+        const tx: IDBTransaction = this.DB_Connection.transaction([this.STORE_NAME], mode);
+        return [
+            this.DB_Connection.transaction([this.STORE_NAME], mode),    // tx
+            tx.objectStore(this.STORE_NAME) // objectStore
+        ]
+    }
+
+    protected onFailedRequest(evt: any): void{ // TODO: update evt interface
+        console.error("error with database request", evt.target.errorCode);
+    }
+}
+
+class NonEditableDB<
+    STORE_OBJECT_T extends StoreObjectStub
+> extends DBConnectionBase 
+    implements NonEditableStoreDBInterface<STORE_OBJECT_T> {
+
+
+
+    // ------------ FUNCTIONALITY -------------------
+    
+    // Inserts:
+
+    addObject(newObjectToStore: STORE_OBJECT_T): Promise<number>{
         return new Promise<number>((resolve, reject) => {
-            let store = this.getStoreObject('readwrite');
-            var req = store.add(newObjectToStore);
+            let store = this.getObjectStore('readwrite');
+            const req = store.add(newObjectToStore);
 
             req.onsuccess = function(evt: any & Event) {
                 resolve(evt.target.result)
@@ -70,23 +137,17 @@ export default abstract class DB<
         })
     }
 
-    /**
-     * TODO: write test
-     * @param newObjectsToAdd
-     * @protected
-     * @return promise containing new added objects ids.
-     */
-    protected addObjects(newObjectsToAdd: Array<STORE_T>): Promise<STORE_T[]> {
-        return new Promise<STORE_T[]>((resolve, reject) => {
-            const store = this.getStoreObject('readwrite');
+    addObjects(newObjectsToAdd: Array<STORE_OBJECT_T>): Promise<Persisted<STORE_OBJECT_T>[]> {
+        return new Promise<Persisted<STORE_OBJECT_T>[]>((resolve, reject) => {
+            const store = this.getObjectStore('readwrite');
             const NUMBER_OF_OBJECTS_TO_ADD = newObjectsToAdd.length
-            let newObjectsAdded: STORE_T[] = []
+            let newObjectsAdded: Persisted<STORE_OBJECT_T>[] = []
             newObjectsToAdd.forEach(newObjectToAdd => {
                 let addReq = store.add(newObjectToAdd);
 
                 addReq.onsuccess = function (newTagId: any) {
                     newObjectToAdd.id = newTagId
-                    newObjectsAdded.push(newObjectToAdd);
+                    newObjectsAdded.push(newObjectToAdd as Persisted<STORE_OBJECT_T>);
                     if(newObjectsAdded.length == NUMBER_OF_OBJECTS_TO_ADD){
                         resolve(newObjectsAdded)
                     }
@@ -96,12 +157,14 @@ export default abstract class DB<
             })
         })
     }
+    
+    // retrievals
 
-    protected getObjectByIndexColumn(indexName: string, value: IDBValidKey): Promise<STORE_T>{
-        return new Promise<STORE_T>((resolve, reject) => {  // TODO: see if can just pass on the promise from one fun to another
-            let store = this.getStoreObject('readonly');
+    getObjectByIndexColumn(indexName: string, value: IDBValidKey): Promise<Persisted<STORE_OBJECT_T>>{
+        return new Promise<Persisted<STORE_OBJECT_T>>((resolve, reject) => {  // TODO: see if can just pass on the promise from one fun to another
+            let store = this.getObjectStore('readonly');
 
-            var req = store.index(indexName).get(value);
+            const req = store.index(indexName).get(value);
 
             req.onsuccess = function(evt: any & Event) {    // TODO: update type from any
                 if (typeof evt.target.result == 'undefined') {
@@ -115,9 +178,9 @@ export default abstract class DB<
         });
     }
 
-    protected getObjectById(id: number): Promise<STORE_T>{
-        return new Promise((resolve, reject) => {
-            let store = this.getStoreObject('readonly');
+    getObjectById(id: number): Promise<Persisted<STORE_OBJECT_T>> {
+        return new Promise<Persisted<STORE_OBJECT_T>>((resolve, reject) => {
+            let store = this.getObjectStore('readonly');
 
             let getById = store.get(id)
             getById.onsuccess = function(event: any & Event) {
@@ -130,9 +193,19 @@ export default abstract class DB<
         })
     }
 
-    protected getAllObjects(): Promise<Array<STORE_T>>{
+    getObjectByKey(key: KEY_TYPE): Promise<Persisted<STORE_OBJECT_T>> {
+        // TODO: complete
+        throw new MethodNotYetImplemented()
+    }
+
+    getObjectByKeys(keys: KEY_TYPE[]): Promise<Persisted<STORE_OBJECT_T>[]> {
+        // TODO: complete
+        throw new MethodNotYetImplemented()
+    }
+
+    getAllObjects(): Promise<Array<Persisted<STORE_OBJECT_T>>>{
         return new Promise((resolve, reject) => {
-            const store = this.getStoreObject('readonly');
+            const store = this.getObjectStore('readonly');
 
             let allTagsReq = store.getAll();
 
@@ -152,9 +225,9 @@ export default abstract class DB<
      * @param objectIds
      * @protected
      */
-    protected getObjectsWithIds(objectIds: number[]): Promise<STORE_T[]> {
-        return new Promise<STORE_T[]>((resolve, reject) => {
-            const store = this.getStoreObject('readonly');
+    getObjectsWithIds(objectIds: number[]): Promise<Persisted<STORE_OBJECT_T>[]> {
+        return new Promise<Persisted<STORE_OBJECT_T>[]>((resolve, reject) => {
+            const store = this.getObjectStore('readonly');
 
             let getObjectsWithIdsReq = store.getAll(objectIds)
 
@@ -165,31 +238,46 @@ export default abstract class DB<
             getObjectsWithIdsReq.onerror = this.onFailedRequest
         })
     }
+    
+    // deletions
 
-    protected updateObject(storeObject: STORE_T_UPDATE_INTERFACE): void{
-        let store = this.getStoreObject('readwrite');
-        store.put(storeObject);
-    }
-
-    protected deleteObjectById(elementId: number): void{
-        let store = this.getStoreObject('readwrite');
+    deleteObjectById(elementId: number): void{
+        let store = this.getObjectStore('readwrite');
 
         store.delete(elementId);
     }
 
 }
 
-// interface DBBuilderInterface {
-//     new <STORE_T extends Interfaces, T extends layer0_db<STORE_T>> (storeName: string, layer0_db: IDBDatabase): T
-// }
-//
-// export async function builder<STORE_T extends Interfaces, T extends layer0_db<STORE_T>>(
-//     DATABASE: string, DB_VERSION: number,STORE_NAME: string,
-//     createDBStore: CreateDBStoreHandler,
-//     objectToBuild: DBBuilderInterface
-// ): Promise<layer0_db<STORE_T>> {
-//     var createDB: IDBDatabase = await CreateDBStore(DATABASE, DB_VERSION, createDBStore)
-//
-//     // return new objectToBuild<STORE_T, T>(STORE_NAME, createDB);
-//     return TagsCollection()
-// }
+class EditableDB<
+    STORE_T extends StoreObjectStub,
+    STORE_T_UPDATE_INTERFACE extends UpdatedStoreObjectStub
+>
+    extends NonEditableDB<STORE_T>
+    implements EditableStoreDBInterface<STORE_T, STORE_T_UPDATE_INTERFACE> {
+
+    updateObject(storeObject: STORE_T_UPDATE_INTERFACE): void{
+        let store = this.getObjectStore('readwrite');
+        store.put(storeObject);
+    }
+}
+
+function createEditableDbController<STORE_OBJECT_T extends StoreObjectStub>(
+    storeName: string, db: IDBDatabase
+): A_NonEditableDBController<STORE_OBJECT_T> {
+    return new EditableDB(storeName, db)
+}
+
+function createNonEditableDbController<
+    STORE_T extends StoreObjectStub,
+    STORE_T_UPDATE_INTERFACE extends UpdatedStoreObjectStub
+>(
+    storeName: string, db: IDBDatabase
+): A_EditableDBController<STORE_T, STORE_T_UPDATE_INTERFACE> {
+    return new EditableDB(storeName, db)
+}
+
+
+
+
+

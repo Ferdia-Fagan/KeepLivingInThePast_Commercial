@@ -1,11 +1,13 @@
 import {
     WebpageId
 } from "../../../browser_state_management/layers/layer2_webpage_state_management/entities/Types";
-import {StoreObjectInterface} from "../../components/parts/abstract_object_store_parts/layers/layer0_db/store_object/StoreObject";
-import {ID_TYPE} from "../../components/parts/abstract_object_store_parts/layers/layer0_db/store_object/DataTypes";
+import {
+    ID_TYPE,
+    StoreObjectStub
+} from "../../components/parts/abstract_object_store_parts/layers/layer0_db/store_object/Types";
 import {BookmarkType} from "./values/BookmarkType";
 
-export interface BookmarkObject extends StoreObjectInterface {
+export interface BookmarkObject extends StoreObjectStub {
     id?: ID_TYPE,
     key: string,
     bookmarkType: BookmarkType,
@@ -13,13 +15,13 @@ export interface BookmarkObject extends StoreObjectInterface {
     webpageId?: WebpageId
 }
 
-export interface BookmarkFolderObject extends StoreObjectInterface {
+export interface BookmarkFolderObject extends StoreObjectStub {
     id?: ID_TYPE,
     key: string,
     bookmarkType: BookmarkType,
     parentId: number
 }
 
-export interface BookmarkObjectUpdateReport extends StoreObjectInterface {
+export interface BookmarkObjectUpdateReport extends StoreObjectStub {
     parentId: number
 }
