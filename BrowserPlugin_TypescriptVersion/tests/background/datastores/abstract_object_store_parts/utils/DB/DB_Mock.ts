@@ -12,19 +12,19 @@ export function createDBMock<
     STORE_T_UPDATE_INTERFACE extends UpdatedStoreObjectStub = PersistedStoreObjectInterfaceExample
 >(
     {
-        addObject = jest.fn(),
-        addObjects = jest.fn(),
-        getObjectByIndexColumn = jest.fn(),
-        getObjectById = jest.fn(),
-        getAllObjects = jest.fn(),
-        deleteObjectById = jest.fn(),
+        addObj = jest.fn(),
+        addObjs = jest.fn(),
+        getObjByIndexColumn = jest.fn(),
+        getObjById = jest.fn(),
+        getAllObjs = jest.fn(),
+        deleteObjById = jest.fn(),
         updateObject = jest.fn()
     }: EditableStoreDBInterface<STORE_T, STORE_T_UPDATE_INTERFACE>
 ): EditableStoreDBInterface<STORE_T, STORE_T_UPDATE_INTERFACE>{
     return {
-        addObject, addObjects,
-        getObjectByIndexColumn, getObjectById, getAllObjects,
-        deleteObjectById,
+        addObj: addObject, addObjs: addObjects,
+        getObjByIndexColumn: getObjectByIndexColumn, getObjById: getObjectById, getAllObjs: getAllObjects,
+        deleteObjById: deleteObjectById,
         updateObject
     }
 }

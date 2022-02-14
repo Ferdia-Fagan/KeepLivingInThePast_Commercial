@@ -9,18 +9,29 @@ import {
     ReportObjectBaseDataRequirements, UpdatesReport
 } from "./Types";
 
+export {
+    // Interface
+    DBInsertsReportingInterface, DBMutationOperations,
+    // Types
+    A_DBInsertsReportingController, A_DBAllOperationsReportingController,
+    // Abstract concrete
+    DBReportingControllerBase,
+    // concrete
+    InsertOperationsReporting, AllOperationsReporting
+}
+
 type ReportsData = {
     [reportName in ReportName]: DBOperationsReportGeneric;
 }
 
-export interface DBInsertsReportingInterface<P_STORE_REPORT_T extends PersistedStoreObject> {
+interface DBInsertsReportingInterface<P_STORE_REPORT_T extends PersistedStoreObject> {
     reportAddedObject(newSyncedObj: P_STORE_REPORT_T): void
 }
 
 type A_DBInsertsReportingController<P_STORE_REPORT_T extends PersistedStoreObject> =
     DBInsertsReportingInterface<P_STORE_REPORT_T>
 
-export interface DBMutationOperations<
+interface DBMutationOperations<
     R_STORE_REPORT_T extends PersistedStoreObject
 > extends DBInsertsReportingInterface<R_STORE_REPORT_T>{
     reportUpdateObject(updatedObject: R_STORE_REPORT_T): void
@@ -77,7 +88,7 @@ export const createDBReportingManagerForInsertOperations = <
     P_STORE_REPORT_T extends PersistedStoreObject
 >() => new InsertOperationsReporting<P_STORE_REPORT_T>()
 
-export class AllOperationsReporting<
+class AllOperationsReporting<
     R_STORE_REPORT_T extends PersistedStoreObject
 >
     extends InsertOperationsReporting<R_STORE_REPORT_T>

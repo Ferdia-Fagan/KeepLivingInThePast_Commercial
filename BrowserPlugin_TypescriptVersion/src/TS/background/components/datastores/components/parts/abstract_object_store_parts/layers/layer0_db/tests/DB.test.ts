@@ -33,7 +33,7 @@ describe("DBStore", function(){
             theKey: "testKey1"
         }
 
-        let newObjectAddedToStore = await storeInstance.addObject(
+        let newObjectAddedToStore = await storeInstance.addObj(
             newObject
         );
 
@@ -54,7 +54,7 @@ describe("DBStore", function(){
             id: 1, theKey: "testKey"
         }
 
-        let objectWithIndexColumnValue = await storeInstance.getObjectByIndexColumn(
+        let objectWithIndexColumnValue = await storeInstance.getObjByIndexColumn(
             KEY_NAME, "testKey"
         );
 
@@ -72,7 +72,7 @@ describe("DBStore", function(){
             ]
         );
 
-        let allObjectsFromStore = await storeInstance.getAllObjects()
+        let allObjectsFromStore = await storeInstance.getAllObjs()
 
         // assert(allObjectsFromStore.length == 3)
         console.log("results\n")
@@ -88,9 +88,9 @@ describe("DBStore", function(){
             ]
         );
 
-        storeInstance.deleteObjectById(1)
+        storeInstance.deleteObjById(1)
 
-        let allObjectsFromStore = await storeInstance.getAllObjects()
+        let allObjectsFromStore = await storeInstance.getAllObjs()
 
         expect(allObjectsFromStore.length).toBe(0)
     })
@@ -109,7 +109,7 @@ describe("DBStore", function(){
 
         storeInstance.updateObject(expectedTestKeyUpdated)
 
-        let allObjects = await storeInstance.getAllObjects()
+        let allObjects = await storeInstance.getAllObjs()
 
         expect(allObjects.length).toBe(1)
         expect(allObjects[0].id).toBe(expectedTestKeyUpdated.id)

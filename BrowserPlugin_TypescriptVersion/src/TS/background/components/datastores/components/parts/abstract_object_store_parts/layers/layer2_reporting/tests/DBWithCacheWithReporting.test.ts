@@ -5,7 +5,7 @@ import {
     DBWithCacheWithReporting_StoreDummy, StoreObjectInterfaceExample, StoreObjectUpdateReportInterfaceExample
 } from "../../../../../../../../../../../tests/background/datastores/abstract_object_store_parts/utils/DBWithCacheWithReporting_StoreDummy";
 import {ID_TYPE} from "../../layer0_db/store_object/Types";
-import {DBCache} from "../../layer1_cache/DBCache";
+import {A_DBInsertsReportingController, InsertOperationsReporting} from "../DBReporting";
 import {InsertReport} from "../Types";
 
 describe("DBWithCacheWithReporting_StoreDummy", function() {
@@ -19,9 +19,6 @@ describe("DBWithCacheWithReporting_StoreDummy", function() {
                 theKey: "testKey",
                 dataToHaveForUpdateReport: "testdata"
             }
-            let dbWithCacheMockedAddObjectFunction = jest.spyOn(DBCache.prototype as any, "addObject")
-            dbWithCacheMockedAddObjectFunction.mockReturnValueOnce(Promise.resolve(1))
-
             // when
             storeInstance.reportAddedObject(testData)
             // then

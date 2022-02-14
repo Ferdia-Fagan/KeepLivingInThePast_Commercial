@@ -1,7 +1,5 @@
 import MapCache from "../../../../../../../utils/MapCache";
-import {CreateDBStore, CreateDBStoreHandler} from "../../factory/BuildDBConstructionActions";
-import {NonEditableDB, NonEditableStoreDBInterface, EditableStoreDBInterface} from "../layer0_db/DB";
-import {ID_TYPE, KEY_NAME, KEY_TYPE, StoreObjectStub} from "../layer0_db/store_object/Types";
+import {ID_TYPE, KEY_TYPE, StoreObjectStub} from "../layer0_db/store_object/Types";
 
 /**
  * Notes:
@@ -22,12 +20,19 @@ interface DBCacheInterface<P_STORE_OBJECT_T extends StoreObjectStub> {
     cacheObjectWithId: (persistedObjId: ID_TYPE, newObj: P_STORE_OBJECT_T) => void
     cacheObjectsWithIds: (newObjs: Array<P_STORE_OBJECT_T>) => void
     getObjectIdByKey: (key: KEY_TYPE) => ID_TYPE | undefined
-    getObjectIdsByKeys(keys: KEY_TYPE[]): ID_TYPE[]
+    getObjectIdsByKeys: (keys: KEY_TYPE[]) => GetCachedIdsByKeys
+
+    deleteObjByKey: (key: KEY_TYPE) => void
 }
 
 type A_DBCacheController<STORE_T extends StoreObjectStub> = DBCacheInterface<STORE_T>
 
 export type StoreObjectKeyGetter<STORE_T extends StoreObjectStub> = (object: STORE_T) => IDBValidKey
+
+interface GetCachedIdsByKeys {
+    ids: ID_TYPE[],
+    keysNotCached: KEY_TYPE[]
+}
 
 /**
  * description:
@@ -79,8 +84,18 @@ class DBCache<
         return this.cache.get(key)
     }
 
-    getObjectIdsByKeys(keys: KEY_TYPE[]): ID_TYPE[] {
-        return keys.map(key => this.cache.get(key))
+    getObjectIdsByKeys(objKeys: KEY_TYPE[]): GetCachedIdsByKeys {
+        return objKeys.reduce((result,objKey) => {
+            if(this.cache.has(objKey)) {
+                result.ids.push(this.cache.get(objKey))
+            } else {
+                result.keysNotCached.push(objKey)
+            }
+            return result
+        }, {
+            ids: [],
+            keysNotCached: []
+        })
     }
 
 }

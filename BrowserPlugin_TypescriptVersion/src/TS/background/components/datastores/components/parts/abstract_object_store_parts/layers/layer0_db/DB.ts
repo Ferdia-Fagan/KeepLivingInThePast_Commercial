@@ -1,5 +1,6 @@
 import {MethodNotYetImplemented} from "../../../../../../../utils/DevelopmentUtils";
 import {
+    ID_TYPE,
     KEY_TYPE,
     Persisted,
     PersistedStoreObject,
@@ -33,7 +34,7 @@ interface NonEditableStoreDBInterface<
      * @param onSuccessfullReq
      * @return promise containing id of new oobject added.
      */
-    addObject: (newElementToStore: STORE_OBJECT_T) => Promise<number>
+    addObj: (newElementToStore: STORE_OBJECT_T) => Promise<number>
 
     /**
      * TODO: write test
@@ -41,16 +42,17 @@ interface NonEditableStoreDBInterface<
      * @protected
      * @return promise containing new added objects ids.
      */
-    addObjects: (newObjectsToAdd: Array<STORE_OBJECT_T>) => Promise<Persisted<STORE_OBJECT_T>[]>
+    addObjs: (newObjectsToAdd: Array<STORE_OBJECT_T>) => Promise<Persisted<STORE_OBJECT_T>[]>
 
-    getObjectByIndexColumn: (indexName: string, value: IDBValidKey) => Promise<Persisted<STORE_OBJECT_T>>
-    getObjectById: (id: number) => Promise<Persisted<STORE_OBJECT_T>>
-    getObjectByKey: (key: KEY_TYPE) => Promise<Persisted<STORE_OBJECT_T>>
-    getObjectByKeys: (keys: KEY_TYPE[]) => Promise<Persisted<STORE_OBJECT_T>[]>
+    getObjByIndexColumn: (indexName: string, value: IDBValidKey) => Promise<Persisted<STORE_OBJECT_T>>
+    getObjById: (id: number) => Promise<Persisted<STORE_OBJECT_T>>
+    getObjsByIds: (objectIds: number[]) => Promise<Persisted<STORE_OBJECT_T>[]>
+    getObjByKey: (key: KEY_TYPE) => Promise<Persisted<STORE_OBJECT_T>>
+    getObjByKeys: (keys: KEY_TYPE[]) => Promise<Persisted<STORE_OBJECT_T>[]>
 
-    getAllObjects: () => Promise<Persisted<STORE_OBJECT_T>[]>
+    getAllObjs: () => Promise<Persisted<STORE_OBJECT_T>[]>
 
-    deleteObjectById: (elementId: number) => void
+    deleteObjById: (objId: number) => void
 }
 
 /**
@@ -124,7 +126,7 @@ class NonEditableDB<
     
     // Inserts:
 
-    addObject(newObjectToStore: STORE_OBJECT_T): Promise<number>{
+    addObj(newObjectToStore: STORE_OBJECT_T): Promise<number>{
         return new Promise<number>((resolve, reject) => {
             let store = this.getObjectStore('readwrite');
             const req = store.add(newObjectToStore);
@@ -137,7 +139,7 @@ class NonEditableDB<
         })
     }
 
-    addObjects(newObjectsToAdd: Array<STORE_OBJECT_T>): Promise<Persisted<STORE_OBJECT_T>[]> {
+    addObjs(newObjectsToAdd: Array<STORE_OBJECT_T>): Promise<Persisted<STORE_OBJECT_T>[]> {
         return new Promise<Persisted<STORE_OBJECT_T>[]>((resolve, reject) => {
             const store = this.getObjectStore('readwrite');
             const NUMBER_OF_OBJECTS_TO_ADD = newObjectsToAdd.length
@@ -160,7 +162,7 @@ class NonEditableDB<
     
     // retrievals
 
-    getObjectByIndexColumn(indexName: string, value: IDBValidKey): Promise<Persisted<STORE_OBJECT_T>>{
+    getObjByIndexColumn(indexName: string, value: IDBValidKey): Promise<Persisted<STORE_OBJECT_T>>{
         return new Promise<Persisted<STORE_OBJECT_T>>((resolve, reject) => {  // TODO: see if can just pass on the promise from one fun to another
             let store = this.getObjectStore('readonly');
 
@@ -178,7 +180,7 @@ class NonEditableDB<
         });
     }
 
-    getObjectById(id: number): Promise<Persisted<STORE_OBJECT_T>> {
+    getObjById(id: number): Promise<Persisted<STORE_OBJECT_T>> {
         return new Promise<Persisted<STORE_OBJECT_T>>((resolve, reject) => {
             let store = this.getObjectStore('readonly');
 
@@ -193,17 +195,36 @@ class NonEditableDB<
         })
     }
 
-    getObjectByKey(key: KEY_TYPE): Promise<Persisted<STORE_OBJECT_T>> {
+    /**
+     * TODO: write test
+     * @param objIds
+     * @protected
+     */
+    getObjsByIds(objIds: ID_TYPE[]): Promise<Persisted<STORE_OBJECT_T>[]> {
+        return new Promise<Persisted<STORE_OBJECT_T>[]>((resolve, reject) => {
+            const store = this.getObjectStore('readonly');
+
+            let getObjectsWithIdsReq = store.getAll(objIds)
+
+            getObjectsWithIdsReq.onsuccess = function (objectsFound: any){
+                resolve(objectsFound.target.result)
+            }
+
+            getObjectsWithIdsReq.onerror = this.onFailedRequest
+        })
+    }
+
+    getObjByKey(key: KEY_TYPE): Promise<Persisted<STORE_OBJECT_T>> {
         // TODO: complete
         throw new MethodNotYetImplemented()
     }
 
-    getObjectByKeys(keys: KEY_TYPE[]): Promise<Persisted<STORE_OBJECT_T>[]> {
+    getObjByKeys(keys: KEY_TYPE[]): Promise<Persisted<STORE_OBJECT_T>[]> {
         // TODO: complete
         throw new MethodNotYetImplemented()
     }
 
-    getAllObjects(): Promise<Array<Persisted<STORE_OBJECT_T>>>{
+    getAllObjs(): Promise<Array<Persisted<STORE_OBJECT_T>>>{
         return new Promise((resolve, reject) => {
             const store = this.getObjectStore('readonly');
 
@@ -219,32 +240,13 @@ class NonEditableDB<
             };
         });
     }
-
-    /**
-     * TODO: write test
-     * @param objectIds
-     * @protected
-     */
-    getObjectsWithIds(objectIds: number[]): Promise<Persisted<STORE_OBJECT_T>[]> {
-        return new Promise<Persisted<STORE_OBJECT_T>[]>((resolve, reject) => {
-            const store = this.getObjectStore('readonly');
-
-            let getObjectsWithIdsReq = store.getAll(objectIds)
-
-            getObjectsWithIdsReq.onsuccess = function (objectsFound: any){
-                resolve(objectsFound.target.result)
-            }
-
-            getObjectsWithIdsReq.onerror = this.onFailedRequest
-        })
-    }
     
     // deletions
 
-    deleteObjectById(elementId: number): void{
+    deleteObjById(objId: number): void{
         let store = this.getObjectStore('readwrite');
 
-        store.delete(elementId);
+        store.delete(objId);
     }
 
 }
