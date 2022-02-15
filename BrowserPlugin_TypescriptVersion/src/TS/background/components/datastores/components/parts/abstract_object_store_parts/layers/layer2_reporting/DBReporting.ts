@@ -24,12 +24,7 @@ type ReportsData = {
     [reportName in ReportName]: DBOperationsReportGeneric;
 }
 
-interface ReportInterface {
-    getUpdateReport(willClear: boolean): DBOperationsReport
-}
-
-interface DBInsertsReportingInterface<P_STORE_REPORT_T extends PersistedStoreObject>
-    extends ReportInterface{
+interface DBInsertsReportingInterface<P_STORE_REPORT_T extends PersistedStoreObject> {
     reportAddedObject(newSyncedObj: P_STORE_REPORT_T): void
 }
 
@@ -38,9 +33,7 @@ type A_DBInsertsReportingController<P_STORE_REPORT_T extends PersistedStoreObjec
 
 interface DBMutationOperations<
     R_STORE_REPORT_T extends PersistedStoreObject
-> extends ReportInterface,
-    DBInsertsReportingInterface<R_STORE_REPORT_T>{
-
+> extends DBInsertsReportingInterface<R_STORE_REPORT_T>{
     reportUpdateObject(updatedObject: R_STORE_REPORT_T): void
     reportDeletedObject(id: number): void
 }

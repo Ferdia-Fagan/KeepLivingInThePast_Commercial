@@ -3,6 +3,8 @@ import {
     ID_TYPE,
     KEY_TYPE,
     Persisted,
+    PersistedStoreObject,
+    PersistedStoreObjectStub,
     StoreObjectStub,
     UpdatedStoreObjectStub
 } from "./store_object/Types";
@@ -15,7 +17,7 @@ export {
     // Types
     A_NonEditableDBController, A_EditableDBController,
     // Abstract concrete
-    DBConnectionBase, NonEditableDB, EditableDB
+    NonEditableDB, EditableDB
 }
 
 type A_Generic_DBController = A_NonEditableDBController<any> | A_EditableDBController<any, any>
@@ -43,14 +45,14 @@ interface NonEditableStoreDBInterface<
     addObjs: (newObjectsToAdd: Array<STORE_OBJECT_T>) => Promise<Persisted<STORE_OBJECT_T>[]>
 
     getObjByIndexColumn: (indexName: string, value: IDBValidKey) => Promise<Persisted<STORE_OBJECT_T>>
-    getObjById: (id: ID_TYPE) => Promise<Persisted<STORE_OBJECT_T>>
-    getObjsByIds: (objectIds: ID_TYPE[]) => Promise<Persisted<STORE_OBJECT_T>[]>
+    getObjById: (id: number) => Promise<Persisted<STORE_OBJECT_T>>
+    getObjsByIds: (objectIds: number[]) => Promise<Persisted<STORE_OBJECT_T>[]>
     getObjByKey: (key: KEY_TYPE) => Promise<Persisted<STORE_OBJECT_T>>
     getObjByKeys: (keys: KEY_TYPE[]) => Promise<Persisted<STORE_OBJECT_T>[]>
 
     getAllObjs: () => Promise<Persisted<STORE_OBJECT_T>[]>
 
-    deleteObjById: (objId: ID_TYPE) => void
+    deleteObjById: (objId: number) => void
 }
 
 /**
@@ -113,7 +115,7 @@ abstract class DBConnectionBase {
     }
 }
 
-abstract class NonEditableDB<
+class NonEditableDB<
     STORE_OBJECT_T extends StoreObjectStub
 > extends DBConnectionBase 
     implements NonEditableStoreDBInterface<STORE_OBJECT_T> {
@@ -249,7 +251,7 @@ abstract class NonEditableDB<
 
 }
 
-abstract class EditableDB<
+class EditableDB<
     STORE_T extends StoreObjectStub,
     STORE_T_UPDATE_INTERFACE extends UpdatedStoreObjectStub
 >
@@ -262,20 +264,20 @@ abstract class EditableDB<
     }
 }
 
-// function createEditableDbController<STORE_OBJECT_T extends StoreObjectStub>(
-//     storeName: string, db: IDBDatabase
-// ): A_NonEditableDBController<STORE_OBJECT_T> {
-//     return new EditableDB(storeName, db)
-// }
-//
-// function createNonEditableDbController<
-//     STORE_T extends StoreObjectStub,
-//     STORE_T_UPDATE_INTERFACE extends UpdatedStoreObjectStub
-// >(
-//     storeName: string, db: IDBDatabase
-// ): A_EditableDBController<STORE_T, STORE_T_UPDATE_INTERFACE> {
-//     return new EditableDB(storeName, db)
-// }
+function createEditableDbController<STORE_OBJECT_T extends StoreObjectStub>(
+    storeName: string, db: IDBDatabase
+): A_NonEditableDBController<STORE_OBJECT_T> {
+    return new EditableDB(storeName, db)
+}
+
+function createNonEditableDbController<
+    STORE_T extends StoreObjectStub,
+    STORE_T_UPDATE_INTERFACE extends UpdatedStoreObjectStub
+>(
+    storeName: string, db: IDBDatabase
+): A_EditableDBController<STORE_T, STORE_T_UPDATE_INTERFACE> {
+    return new EditableDB(storeName, db)
+}
 
 
 
