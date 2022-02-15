@@ -1,88 +1,132 @@
 
-// TODO: complete
-
-import {A_NonEditableDBController, NonEditableStoreDBInterface} from "../layers/layer0_db/DB";
-import {ID_TYPE, KEY_TYPE, Persisted, StoreObjectStub} from "../layers/layer0_db/store_object/Types";
+import {
+    A_EditableDBController,
+    A_NonEditableDBController, DBConnectionBase, EditableDB,
+    EditableStoreDBInterface, NonEditableDB,
+    NonEditableStoreDBInterface
+} from "../layers/layer0_db/DB";
+import {
+    ID_TYPE,
+    KEY_TYPE,
+    Persisted,
+    StoreObjectStub,
+    UpdatedStoreObjectStub
+} from "../layers/layer0_db/store_object/Types";
 import {DBCacheInterface} from "../layers/layer1_cache/DBCache";
 
-interface NonEditableDB_WithCache_Interface<
+type A_GenericDBController = A_NonEditableDBController<any> | A_EditableDBController<any, any>
+
+interface DB_Manager_DataRequirements<
     STORE_OBJECT_T extends StoreObjectStub
-> extends Omit<
-    NonEditableStoreDBInterface<STORE_OBJECT_T>,
-    'deleteObjById'
 > {
-    deleteObjById: (objId: number, objKey: KEY_TYPE) => void
+    cache: DBCacheInterface<STORE_OBJECT_T>
 }
 
-type A_NonEditableDB_WithCache<
+abstract class DB_WithCache_Manager_Base<
     STORE_OBJECT_T extends StoreObjectStub
-> = NonEditableDB_WithCache_Interface<STORE_OBJECT_T>
+> extends DBConnectionBase {
 
-class NonEditableDB_WithCache_Manager<
-    STORE_OBJECT_T extends StoreObjectStub
->
-    implements A_NonEditableDB_WithCache<STORE_OBJECT_T>{
+    cache: DBCacheInterface<STORE_OBJECT_T>
 
-    private db: A_NonEditableDBController<STORE_OBJECT_T>
-    private cache: DBCacheInterface<STORE_OBJECT_T>
-
-    constructor(db: A_NonEditableDBController<STORE_OBJECT_T>, cache: DBCacheInterface<STORE_OBJECT_T>) {
-        this.db = db
+    constructor(storeName: string, db: IDBDatabase, cache: DBCacheInterface<STORE_OBJECT_T>) {
+        super(storeName, db)
         this.cache = cache
     }
+}
+
+interface NonEditableDB_WithCache_Manager_Interface<
+    STORE_OBJECT_T extends StoreObjectStub
+    >
+    extends
+        DB_WithCache_Manager_Base<STORE_OBJECT_T>,
+        NonEditableDB<STORE_OBJECT_T>,
+        DB_Manager_DataRequirements<STORE_OBJECT_T>,
+        NonEditableStoreDBInterface<STORE_OBJECT_T> {
+
+    deleteObj: (objId: ID_TYPE, objKey: KEY_TYPE) => void
+
+}
+
+interface EditableDB_WithCache_Manager_Interface<
+    STORE_OBJECT_T extends StoreObjectStub,
+    UPDATE_STORE_OBJECT_T extends UpdatedStoreObjectStub
+    >
+    extends
+        DB_WithCache_Manager_Base<STORE_OBJECT_T>,
+        EditableDB<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T>,
+        DB_Manager_DataRequirements<STORE_OBJECT_T>,
+        NonEditableDB_WithCache_Manager_Interface<STORE_OBJECT_T>,
+        EditableStoreDBInterface<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T> {
+
+}
+
+// IMPLEMENTATIONS:
+
+export class NonEditableDB_WithCache_Manager<
+    STORE_OBJECT_T extends StoreObjectStub
+>
+    extends
+        NonEditableDB<STORE_OBJECT_T>
+    implements NonEditableDB_WithCache_Manager_Interface<STORE_OBJECT_T> {
+
+    cache: DBCacheInterface<STORE_OBJECT_T>
 
     getObjByIndexColumn: (indexName: string, value: IDBValidKey) => Promise<import("../../../../../../../../../tests/utils/Types").RequiredKeys<STORE_OBJECT_T, "id">>;
     getObjsByIds: (objectIds: number[]) => Promise<import("../../../../../../../../../tests/utils/Types").RequiredKeys<STORE_OBJECT_T, "id">[]>;
 
-    addObj: (newElementToStore: STORE_OBJECT_T) => Promise<number> = (newElementToStore: STORE_OBJECT_T) =>
-        this.db.addObj(newElementToStore).then(persistedObjectId => {
+    addObj = (newElementToStore: STORE_OBJECT_T) =>
+        super.addObj(newElementToStore).then(persistedObjectId => {
             this.cache.cacheObjectWithId(persistedObjectId, newElementToStore)
             return persistedObjectId
         })
 
-    addObjs: (newObjectsToAdd: Array<STORE_OBJECT_T>) => Promise<Persisted<STORE_OBJECT_T>[]> = (newObjectsToAdd: Array<STORE_OBJECT_T>) =>
-        this.db.addObjs(newObjectsToAdd).then((persistedNewObjs) => {
+    addObjs = (newObjectsToAdd: Array<STORE_OBJECT_T>) =>
+        super.addObjs(newObjectsToAdd).then((persistedNewObjs) => {
             this.cache.cacheObjectsWithIds(persistedNewObjs)
             return persistedNewObjs
         })
 
-    getAllObjs(): Promise<Persisted<STORE_OBJECT_T>[]> {
-        return this.db.getAllObjs()
-    }
-
-    getObjById: (id: number) => Promise<Persisted<STORE_OBJECT_T>> = (id: number) =>
-        this.db.getObjById(id)
-
     getObjByKey = (objKey: KEY_TYPE) => {
         const objId: ID_TYPE | null = this.cache.getObjectIdByKey(objKey)
         if(objId){
-            return this.db.getObjById(objId)
+            return super.getObjById(objId)
         } else {
-            return this.db.getObjByKey(objKey)
+            return super.getObjByKey(objKey)
         }
     }
 
     getObjByKeys = (objKeys: KEY_TYPE[]) => {
         const cacheResponse = this.cache.getObjectIdsByKeys(objKeys)
 
-        const cachedIds: Promise<Persisted<STORE_OBJECT_T>[]> | null = (!cacheResponse.ids.length)?
-            null : this.db.getObjsByIds(cacheResponse.ids)
-        const nonCachedKeys: Promise<Persisted<STORE_OBJECT_T>[]> | null = (!cacheResponse.keysNotCached)?
-            null : this.db.getObjByKeys(cacheResponse.keysNotCached)
-        nonCachedKeys.then()
         return Promise.all(
             [
                 (!cacheResponse.ids.length)?
-                    null : this.db.getObjsByIds(cacheResponse.ids),
+                    null : super.getObjsByIds(cacheResponse.ids),
                 (!cacheResponse.keysNotCached)?
-                    null : this.db.getObjByKeys(cacheResponse.keysNotCached)
+                    null : super.getObjByKeys(cacheResponse.keysNotCached)
             ].filter(v => v != null)
         ).then(result => result.flat())
     }
 
-    deleteObjById(objId: number, objKey: KEY_TYPE): void {
-        this.db.deleteObjById(objId)
+    deleteObj = (objId: ID_TYPE, objKey: KEY_TYPE) => {
+        this.deleteObjById(objId)
         this.cache.deleteObjByKey(objKey)
     }
+}
+
+export class EditableDB_WithCache_Manager<
+    STORE_OBJECT_T extends StoreObjectStub,
+    UPDATE_STORE_OBJECT_T extends UpdatedStoreObjectStub
+> extends
+    NonEditableDB_WithCache_Manager<STORE_OBJECT_T>
+
+    implements EditableDB_WithCache_Manager_Interface<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T>{
+
+    cache: DBCacheInterface<STORE_OBJECT_T>
+
+    updateObject(storeObject: UPDATE_STORE_OBJECT_T): void {
+
+    }
+
 
 }

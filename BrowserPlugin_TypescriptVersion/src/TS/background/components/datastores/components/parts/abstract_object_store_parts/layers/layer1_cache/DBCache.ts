@@ -98,6 +98,7 @@ class DBCache<
         })
     }
 
+    deleteObjByKey = (key: IDBValidKey) => this.cache.remove(key)
 }
 
 function createDbCache<STORE_T extends StoreObjectStub>(
