@@ -4,6 +4,7 @@
 import {A_NonEditableDBController, NonEditableStoreDBInterface} from "../layers/layer0_db/DB";
 import {ID_TYPE, KEY_TYPE, Persisted, StoreObjectStub} from "../layers/layer0_db/store_object/Types";
 import {DBCacheInterface} from "../layers/layer1_cache/DBCache";
+import {NonEditableDB_Manager} from "./DB_Manager";
 
 interface NonEditableDB_WithCache_Interface<
     STORE_OBJECT_T extends StoreObjectStub
@@ -21,13 +22,15 @@ type A_NonEditableDB_WithCache<
 class NonEditableDB_WithCache_Manager<
     STORE_OBJECT_T extends StoreObjectStub
 >
-    implements A_NonEditableDB_WithCache<STORE_OBJECT_T>{
+    extends
+        NonEditableDB_Manager<STORE_OBJECT_T>
+    implements
+        NonEditableDB_WithCache_Interface<STORE_OBJECT_T> {
 
-    private db: A_NonEditableDBController<STORE_OBJECT_T>
-    private cache: DBCacheInterface<STORE_OBJECT_T>
+    cache: DBCacheInterface<STORE_OBJECT_T>
 
     constructor(db: A_NonEditableDBController<STORE_OBJECT_T>, cache: DBCacheInterface<STORE_OBJECT_T>) {
-        this.db = db
+        super(db)
         this.cache = cache
     }
 
@@ -45,13 +48,6 @@ class NonEditableDB_WithCache_Manager<
             this.cache.cacheObjectsWithIds(persistedNewObjs)
             return persistedNewObjs
         })
-
-    getAllObjs(): Promise<Persisted<STORE_OBJECT_T>[]> {
-        return this.db.getAllObjs()
-    }
-
-    getObjById: (id: number) => Promise<Persisted<STORE_OBJECT_T>> = (id: number) =>
-        this.db.getObjById(id)
 
     getObjByKey = (objKey: KEY_TYPE) => {
         const objId: ID_TYPE | null = this.cache.getObjectIdByKey(objKey)
@@ -80,7 +76,7 @@ class NonEditableDB_WithCache_Manager<
         ).then(result => result.flat())
     }
 
-    deleteObjById(objId: number, objKey: KEY_TYPE): void {
+    deleteObjById(objId: number, objKey: KEY_TYPE): void {  // TODO: refactor
         this.db.deleteObjById(objId)
         this.cache.deleteObjByKey(objKey)
     }
