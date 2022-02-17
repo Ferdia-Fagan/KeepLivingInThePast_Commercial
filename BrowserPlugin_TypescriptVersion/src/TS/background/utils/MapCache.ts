@@ -30,6 +30,10 @@ export default class MapCache<k,v>{
         }
     }
 
+    deleteKey(key: k){
+        this.cache.delete(key)
+    }
+
     has(key: k){
         return this.cache.has(key);
     }

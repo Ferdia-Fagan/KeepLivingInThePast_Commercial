@@ -17,7 +17,7 @@ export {
     // Abstract concrete
     DBReportingControllerBase,
     // concrete
-    InsertOperationsReporting, AllOperationsReporting
+    DBInsertOperationsReporting, DBAllOperationsReporting
 }
 
 type ReportsData = {
@@ -65,7 +65,7 @@ abstract class DBReportingControllerBase {
     }
 }
 
-class InsertOperationsReporting<
+class DBInsertOperationsReporting<
     R_STORE_REPORT_T extends PersistedStoreObject
 >
     extends DBReportingControllerBase
@@ -84,14 +84,14 @@ class InsertOperationsReporting<
 
 }
 
-export const createDBReportingManagerForInsertOperations = <
+export const createDBInsertOperationsReportingComponent = <
     P_STORE_REPORT_T extends PersistedStoreObject
->() => new InsertOperationsReporting<P_STORE_REPORT_T>()
+>() => new DBInsertOperationsReporting<P_STORE_REPORT_T>()
 
-class AllOperationsReporting<
+class DBAllOperationsReporting<
     R_STORE_REPORT_T extends PersistedStoreObject
 >
-    extends InsertOperationsReporting<R_STORE_REPORT_T>
+    extends DBInsertOperationsReporting<R_STORE_REPORT_T>
     implements DBMutationOperations<R_STORE_REPORT_T> {
 
     updatedObjectReports: UpdatesReport<R_STORE_REPORT_T>
@@ -124,7 +124,7 @@ class AllOperationsReporting<
 
 }
 
-export const createDBReportingManagerForAllOperations = <
+export const createDBAllOperationsReportingComponent = <
     R_STORE_REPORT_T extends PersistedStoreObject
-> () => new AllOperationsReporting<R_STORE_REPORT_T>()
+> () => new DBAllOperationsReporting<R_STORE_REPORT_T>()
 

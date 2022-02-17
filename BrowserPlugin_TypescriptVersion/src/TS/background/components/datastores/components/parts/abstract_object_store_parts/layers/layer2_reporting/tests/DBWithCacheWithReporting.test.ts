@@ -5,7 +5,7 @@ import {
     DBWithCacheWithReporting_StoreDummy, StoreObjectInterfaceExample, StoreObjectUpdateReportInterfaceExample
 } from "../../../../../../../../../../../tests/background/datastores/abstract_object_store_parts/utils/DBWithCacheWithReporting_StoreDummy";
 import {ID_TYPE} from "../../layer0_db/store_object/Types";
-import {A_DBInsertsReportingController, InsertOperationsReporting} from "../DBReporting";
+import {A_DBInsertsReportingController, DBInsertOperationsReporting} from "../DBReporting";
 import {InsertReport} from "../Types";
 
 describe("DBWithCacheWithReporting_StoreDummy", function() {

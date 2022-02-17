@@ -12,7 +12,7 @@ interface NonEditableDB_WithCache_Interface<
     NonEditableStoreDBInterface<STORE_OBJECT_T>,
     'deleteObjById'
 > {
-    deleteObjById: (objId: number, objKey: KEY_TYPE) => void
+    deleteObj: (objId: number, objKey: KEY_TYPE) => void
 }
 
 type A_NonEditableDB_WithCache<
@@ -76,7 +76,7 @@ class NonEditableDB_WithCache_Manager<
         ).then(result => result.flat())
     }
 
-    deleteObjById(objId: number, objKey: KEY_TYPE): void {  // TODO: refactor
+    deleteObj(objId: number, objKey: KEY_TYPE): void {  // TODO: refactor
         this.db.deleteObjById(objId)
         this.cache.deleteObjByKey(objKey)
     }

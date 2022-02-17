@@ -98,6 +98,8 @@ class DBCache<
         })
     }
 
+    deleteObjByKey = (key: KEY_TYPE) => this.cache.deleteKey(key)
+
 }
 
 function createDbCache<STORE_T extends StoreObjectStub>(

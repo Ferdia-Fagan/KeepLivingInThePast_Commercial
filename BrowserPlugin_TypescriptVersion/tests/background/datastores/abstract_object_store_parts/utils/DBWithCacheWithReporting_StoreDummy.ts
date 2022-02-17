@@ -2,7 +2,7 @@ import {
     ID_TYPE, KEY_TYPE, PersistedStoreObject
 } from "../../../../../src/TS/background/components/datastores/components/parts/abstract_object_store_parts/layers/layer0_db/store_object/Types";
 import {
-    AllOperationsReporting
+    DBAllOperationsReporting
 } from "../../../../../src/TS/background/components/datastores/components/parts/abstract_object_store_parts/layers/layer2_reporting/DBReporting";
 import {
     DeleteReport, InsertReport,
@@ -24,7 +24,7 @@ const THE_KEY_NAME = "theKey"
 export class DBWithCacheWithReporting_StoreDummy<
     R_STORE_REPORT_T extends PersistedStoreObject
 >
-    extends AllOperationsReporting<R_STORE_REPORT_T>{
+    extends DBAllOperationsReporting<R_STORE_REPORT_T>{
 
     static builder<
         R_STORE_REPORT_T extends PersistedStoreObject = StoreObjectUpdateReportInterfaceExample,

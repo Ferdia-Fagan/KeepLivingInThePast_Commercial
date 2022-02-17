@@ -30,15 +30,3 @@ export type Persisted<STORE_OBJ_T extends StoreObjectStub> = RequiredKeys<STORE_
 
 // const x = Persisted<StoreObjectStub>
 
-interface X extends StoreObjectStub  {
-    value1: string,
-    value2: string
-}
-
-const x: Persisted<X> = {
-    id: 1,
-    value1: "l",
-    value2: "l"
-}
-
-x.

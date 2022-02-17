@@ -34,7 +34,7 @@ interface NonEditableStoreDBInterface<
      * @param onSuccessfullReq
      * @return promise containing id of new oobject added.
      */
-    addObj: (newElementToStore: STORE_OBJECT_T) => Promise<number>
+    addObj?: (newElementToStore: STORE_OBJECT_T) => Promise<number>
 
     /**
      * TODO: write test
@@ -42,24 +42,26 @@ interface NonEditableStoreDBInterface<
      * @protected
      * @return promise containing new added objects ids.
      */
-    addObjs: (newObjectsToAdd: Array<STORE_OBJECT_T>) => Promise<Persisted<STORE_OBJECT_T>[]>
+    addObjs?: (newObjectsToAdd: Array<STORE_OBJECT_T>) => Promise<Persisted<STORE_OBJECT_T>[]>
 
-    getObjByIndexColumn: (indexName: string, value: IDBValidKey) => Promise<Persisted<STORE_OBJECT_T>>
-    getObjById: (id: number) => Promise<Persisted<STORE_OBJECT_T>>
-    getObjsByIds: (objectIds: number[]) => Promise<Persisted<STORE_OBJECT_T>[]>
-    getObjByKey: (key: KEY_TYPE) => Promise<Persisted<STORE_OBJECT_T>>
-    getObjByKeys: (keys: KEY_TYPE[]) => Promise<Persisted<STORE_OBJECT_T>[]>
+    getObjByIndexColumn?: (indexName: string, value: IDBValidKey) => Promise<Persisted<STORE_OBJECT_T>>
+    getObjById?: (id: number) => Promise<Persisted<STORE_OBJECT_T>>
+    getObjsByIds?: (objectIds: number[]) => Promise<Persisted<STORE_OBJECT_T>[]>
+    getObjByKey?: (key: KEY_TYPE) => Promise<Persisted<STORE_OBJECT_T>>
+    getObjByKeys?: (keys: KEY_TYPE[]) => Promise<Persisted<STORE_OBJECT_T>[]>
 
-    getAllObjs: () => Promise<Persisted<STORE_OBJECT_T>[]>
+    getAllObjs?: () => Promise<Persisted<STORE_OBJECT_T>[]>
 
-    deleteObjById: (objId: number) => void
+    deleteObjById?: (objId: number) => void
 }
 
 /**
  * This is a DB that does regular queries
  * but does only inserts and deletes (no updates).
  */
-type A_NonEditableDBController<STORE_OBJECT_T extends StoreObjectStub> = NonEditableStoreDBInterface<STORE_OBJECT_T>
+type A_NonEditableDBController<STORE_OBJECT_T extends StoreObjectStub> = (
+    NonEditableStoreDBInterface<STORE_OBJECT_T>
+)
 
 interface EditableStoreDBInterface<
     STORE_OBJECT_T extends StoreObjectStub,
@@ -74,7 +76,9 @@ interface EditableStoreDBInterface<
 type A_EditableDBController<
     STORE_OBJECT_T extends StoreObjectStub,
     UPDATE_STORE_OBJECT_T extends UpdatedStoreObjectStub
-> = EditableStoreDBInterface<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T>
+> = (
+    EditableStoreDBInterface<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T>
+)
 
 
 type ObjectStoreAndTransaction = [IDBTransaction, IDBObjectStore]
@@ -118,7 +122,7 @@ abstract class DBConnectionBase {
 class NonEditableDB<
     STORE_OBJECT_T extends StoreObjectStub
 > extends DBConnectionBase 
-    implements NonEditableStoreDBInterface<STORE_OBJECT_T> {
+    implements A_NonEditableDBController<STORE_OBJECT_T> {
 
 
 
@@ -128,6 +132,7 @@ class NonEditableDB<
 
     addObj(newObjectToStore: STORE_OBJECT_T): Promise<number>{
         return new Promise<number>((resolve, reject) => {
+            this.addObjs
             let store = this.getObjectStore('readwrite');
             const req = store.add(newObjectToStore);
 
