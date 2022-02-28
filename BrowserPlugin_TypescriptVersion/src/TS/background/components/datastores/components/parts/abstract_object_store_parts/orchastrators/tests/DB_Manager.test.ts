@@ -4,12 +4,30 @@
 
 import "mockzilla-webextension";
 import {
-    DB_StoreDummy, StoreObjectInterfaceExample
+    DB_StoreDummy, PersistedStoreObjectInterfaceExample, StoreObjectInterfaceExample
 } from "../../../../../../../../../../tests/background/datastores/abstract_object_store_parts/utils/DB/DB_StoreDummy";
-import {KEY_NAME} from "../../layers/layer0_db/store_object/Types";
-import {EditableDB_Manager, NonEditableDB_Manager} from "../DB_Manager";
+import {A_EditableDBController, EditableStoreDBInterface} from "../../layers/layer0_db/DB";
+import {KEY_NAME, StoreObjectStub, UpdatedStoreObjectStub} from "../../layers/layer0_db/store_object/Types";
+import {createDBManager, EditableDB_Manager, NonEditableDB_Manager} from "../DB_Manager";
 
 require("fake-indexeddb/auto");
+
+function createDb<
+    STORE_T extends StoreObjectStub,
+    STORE_T_UPDATE_INTERFACE extends UpdatedStoreObjectStub
+>(
+    DATABASE: string, DB_VERSION: number,
+    STORE_NAME: string,
+    testData?: StoreObjectInterfaceExample[]
+) {
+    return DB_StoreDummy.builder(
+        DATABASE, DB_VERSION, STORE_NAME, testData
+    ).then(db => {
+        return createDBManager<
+            EditableStoreDBInterface<StoreObjectInterfaceExample, PersistedStoreObjectInterfaceExample>
+        >(db)
+    })
+}
 
 describe("DBStore", function(){
 
@@ -19,9 +37,9 @@ describe("DBStore", function(){
     })
 
     it("addObject(...) - add object with key that does not exist - successfully added object", async() => {
-        let storeInstance = await DB_StoreDummy.builder(
+        let storeInstance = await createDb(
             "test", 3, "test"
-        ).then(db => new NonEditableDB_Manager(db))
+        )
 
         const newObject: StoreObjectInterfaceExample = {
             theKey: "testKey1"
@@ -37,12 +55,12 @@ describe("DBStore", function(){
     });
 
     it("getObjectByIndexColumn(...) - get object by column index that exists", async () => {
-        let storeInstance = await DB_StoreDummy.builder(
+        let storeInstance = await createDb(
             "test", 3, "test",
             [
                 {theKey: "testKey"}
             ]
-        ).then(db => new NonEditableDB_Manager(db))
+        )
 
         let expectedResult: StoreObjectInterfaceExample = {
             id: 1, theKey: "testKey"
@@ -57,14 +75,14 @@ describe("DBStore", function(){
     })
 
     it("getAllObjects(..)", async () => {
-        let storeInstance = await DB_StoreDummy.builder(
+        let storeInstance = await createDb(
             "test", 3, "test",
             [
                 {theKey: "testKey1"},
                 {theKey: "testKey2"},
                 {theKey: "testKey3"}
             ]
-        ).then(db => new NonEditableDB_Manager(db))
+        )
 
         let allObjectsFromStore = await storeInstance.getAllObjs()
 
@@ -75,12 +93,12 @@ describe("DBStore", function(){
     })
 
     it("deleteObjectById", async () => {
-        let storeInstance = await DB_StoreDummy.builder(
+        let storeInstance = await createDb(
             "test", 3, "test",
             [
                 {theKey: "testKey1"}
             ]
-        ).then(db => new NonEditableDB_Manager(db))
+        )
 
         storeInstance.deleteObjById(1)
 
@@ -90,12 +108,12 @@ describe("DBStore", function(){
     })
 
     it("updateObject", async () => {
-        let storeInstance = await DB_StoreDummy.builder(
+        let storeInstance = await createDb(
             "test", 3, "test",
             [
                 {theKey: "testKey1"}
             ]
-        ).then(db => new EditableDB_Manager(db))
+        )
 
         let expectedTestKeyUpdated = {
             id: 1, theKey: "testKey10"

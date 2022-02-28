@@ -17,7 +17,7 @@ export {
     // Types
     A_NonEditableDBController, A_EditableDBController,
     // Abstract concrete
-    NonEditableDB, EditableDB
+    DBConnectionBase, NonEditableDB, EditableDB
 }
 
 type A_Generic_DBController = A_NonEditableDBController<any> | A_EditableDBController<any, any>
