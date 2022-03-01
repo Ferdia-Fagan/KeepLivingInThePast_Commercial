@@ -34,9 +34,6 @@ class NonEditableDB_WithCache_Manager<
         this.cache = cache
     }
 
-    getObjByIndexColumn: (indexName: string, value: IDBValidKey) => Promise<import("../../../../../../../../../tests/utils/Types").RequiredKeys<STORE_OBJECT_T, "id">>;
-    getObjsByIds: (objectIds: number[]) => Promise<import("../../../../../../../../../tests/utils/Types").RequiredKeys<STORE_OBJECT_T, "id">[]>;
-
     addObj: (newElementToStore: STORE_OBJECT_T) => Promise<number> = (newElementToStore: STORE_OBJECT_T) =>
         this.db.addObj(newElementToStore).then(persistedObjectId => {
             this.cache.cacheObjectWithId(persistedObjectId, newElementToStore)
