@@ -8,7 +8,7 @@ import {
 } from "../../../../../../../../../../tests/background/datastores/abstract_object_store_parts/utils/DB/DB_StoreDummy";
 import {A_EditableDBController, EditableStoreDBInterface} from "../../layers/layer0_db/DB";
 import {KEY_NAME, StoreObjectStub, UpdatedStoreObjectStub} from "../../layers/layer0_db/store_object/Types";
-import {createDBManager, EditableDB_Manager, NonEditableDB_Manager} from "../DB_Manager";
+import {createDBManager} from "../DB_Manager";
 
 require("fake-indexeddb/auto");
 

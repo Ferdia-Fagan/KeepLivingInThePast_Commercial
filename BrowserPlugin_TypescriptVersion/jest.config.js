@@ -11,11 +11,11 @@ module.exports = {
     testEnvironment: 'node',
     testRegex: '/tests/.*\\.(test|spec)?\\.(ts|tsx)$',
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-    setupFilesAfterEnv: ["./tests/SetupTests.ts"]
+    setupFilesAfterEnv: ["./tests/SetupTests.test.ts"]
     // transform: {
     //     ".+\\.ts$": "ts-jest",
     // },
     // testRegex: "(/tests/.*|(\\.|/)(test|spec))\\.ts$",
     // moduleFileExtensions: ["ts", "js"],
-    // setupFilesAfterEnv: ["./tests/SetupTests.ts"],
+    // setupFilesAfterEnv: ["./tests/SetupTests.test.ts"],
 };

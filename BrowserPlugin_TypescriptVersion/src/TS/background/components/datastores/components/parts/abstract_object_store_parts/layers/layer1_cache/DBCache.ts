@@ -51,7 +51,7 @@ class DBCache<
     // TODO: tunable (change cache size etc)
     constructor(
         storeObjectKeyGetter: StoreObjectKeyGetter<P_STORE_OBJECT_T>,
-        cache: MapCache<KEY_TYPE, ID_TYPE>
+        cache: MapCache<KEY_TYPE, ID_TYPE> = new MapCache<KEY_TYPE, ID_TYPE>()
     ) {
 
         this.cache = cache

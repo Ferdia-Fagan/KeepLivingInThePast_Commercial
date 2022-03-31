@@ -1,10 +1,21 @@
 
 // TODO: complete
 
-import {A_NonEditableDBController, NonEditableStoreDBInterface} from "../layers/layer0_db/DB";
-import {ID_TYPE, KEY_TYPE, Persisted, StoreObjectStub} from "../layers/layer0_db/store_object/Types";
+import {
+    A_EditableDBController,
+    A_NonEditableDBController,
+    EditableStoreDBInterface,
+    NonEditableStoreDBInterface
+} from "../layers/layer0_db/DB";
+import {
+    ID_TYPE,
+    KEY_TYPE,
+    Persisted,
+    StoreObjectStub,
+    UpdatedStoreObjectStub
+} from "../layers/layer0_db/store_object/Types";
 import {DBCacheInterface} from "../layers/layer1_cache/DBCache";
-import {NonEditableDB_Manager} from "./DB_Manager";
+import {EditableDB_Manager, stitchObjects} from "./DB_Manager";
 
 interface NonEditableDB_WithCache_Interface<
     STORE_OBJECT_T extends StoreObjectStub
@@ -19,18 +30,26 @@ type A_NonEditableDB_WithCache<
     STORE_OBJECT_T extends StoreObjectStub
 > = NonEditableDB_WithCache_Interface<STORE_OBJECT_T>
 
-class NonEditableDB_WithCache_Manager<
-    STORE_OBJECT_T extends StoreObjectStub
->
-    extends
-        NonEditableDB_Manager<STORE_OBJECT_T>
-    implements
-        NonEditableDB_WithCache_Interface<STORE_OBJECT_T> {
+export interface DBComponent<
+    STORE_OBJECT_T extends StoreObjectStub,
+    UPDATE_STORE_OBJECT_T extends UpdatedStoreObjectStub
+> {
+    db: A_EditableDBController<STORE_OBJECT_T,UPDATE_STORE_OBJECT_T>
+}
 
+
+export class EditableDB_WithCache_Manager<
+    STORE_OBJECT_T extends StoreObjectStub,
+    UPDATE_STORE_OBJECT_T extends UpdatedStoreObjectStub
+>
+    implements
+        NonEditableDB_WithCache_Interface<STORE_OBJECT_T>, DBComponent<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T> {
+
+    db: A_EditableDBController<STORE_OBJECT_T,UPDATE_STORE_OBJECT_T>
     cache: DBCacheInterface<STORE_OBJECT_T>
 
-    constructor(db: A_NonEditableDBController<STORE_OBJECT_T>, cache: DBCacheInterface<STORE_OBJECT_T>) {
-        super(db)
+    constructor(db: A_EditableDBController<STORE_OBJECT_T,UPDATE_STORE_OBJECT_T>, cache: DBCacheInterface<STORE_OBJECT_T>) {
+        this.db = db
         this.cache = cache
     }
 
@@ -79,3 +98,14 @@ class NonEditableDB_WithCache_Manager<
     }
 
 }
+
+export function create_DB_WithCache_Manager<
+    STORE_OBJECT_T extends StoreObjectStub,
+    UPDATE_STORE_OBJECT_T extends UpdatedStoreObjectStub
+>(db: A_EditableDBController<STORE_OBJECT_T,UPDATE_STORE_OBJECT_T>, cache: DBCacheInterface<STORE_OBJECT_T>): EditableDB_WithCache_Manager<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T> {
+    return stitchObjects(
+        new EditableDB_WithCache_Manager(db,cache),
+        db
+    ) as (EditableDB_WithCache_Manager<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T> & EditableStoreDBInterface<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T>)
+}
+

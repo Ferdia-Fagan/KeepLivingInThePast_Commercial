@@ -19,7 +19,7 @@
 //        "./tests/**/*.ts",
         "./src/TS/**/*.d.ts",
 //        "fileTransformer.js",
-//        "tests/SetupTests.ts"
+//        "tests/SetupTests.test.ts"
     ],
 
     "exclude": [
