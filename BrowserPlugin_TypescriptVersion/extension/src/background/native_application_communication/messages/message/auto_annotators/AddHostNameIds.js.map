@@ -1,1 +1,0 @@
-{"version":3,"file":"AddHostNameIds.js","sourceRoot":"","sources":["../../../../../../../src/TS/background/native_application_communication/messages/message/auto_annotators/AddHostNameIds.ts"],"names":[],"mappings":";;;AACA,0DAAqD;AAWrD,SAAgB,wCAAwC,CACpD,qBAA6C;IAE7C,OAAO;QACH,IAAI,EAAE,yBAAW,CAAC,gCAAgC;QAClD,OAAO,EAAE;YACL,qBAAqB;SACxB;KACJ,CAAA;AACL,CAAC;AATD,4FASC"}

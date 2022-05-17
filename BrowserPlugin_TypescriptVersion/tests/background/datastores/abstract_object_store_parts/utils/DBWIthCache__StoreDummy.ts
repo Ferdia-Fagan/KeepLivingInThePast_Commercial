@@ -1,18 +1,20 @@
 import {
-    NonEditableStoreDBInterface
-} from "../../../../../src/TS/background/components/datastores/components/parts/abstract_object_store_parts/layers/layer0_db/DB";
+    NonPersistedStoreObjectStub,
+    UpdatedStoreObjectStub
+} from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer0_db/store_object/StoreObject_Dtos";
 import {
-    ID_NAME, ID_TYPE,
-    KEY_NAME,
-    KEY_TYPE, StoreObjectStub, UpdatedStoreObjectStub
-} from "../../../../../src/TS/background/components/datastores/components/parts/abstract_object_store_parts/layers/layer0_db/store_object/Types";
+    ID_TYPE,
+    KEY_TYPE
+} from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer0_db/store_object/StoreObject_Types";
 import {
-    DBCache,
     StoreObjectKeyGetter
-} from "../../../../../src/TS/background/components/datastores/components/parts/abstract_object_store_parts/layers/layer1_cache/DBCache";
+} from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer1_cache/DBCache";
+import {
+    DBCache
+} from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer1_cache/DBCache_Implementations";
 import MapCache from "../../../../../src/TS/background/utils/MapCache";
 
-export interface StoreObjectInterfaceExample extends StoreObjectStub{
+export interface StoreObjectInterfaceExample extends NonPersistedStoreObjectStub{
     theKey: KEY_TYPE
 }
 type StoreObjectUpdateInterfaceExample = StoreObjectInterfaceExample & UpdatedStoreObjectStub
@@ -21,13 +23,13 @@ const THE_KEY_NAME = "theKey"
 export const DEFAULT_STORE_OBJECT_KEY_GETTER: StoreObjectKeyGetter<StoreObjectInterfaceExample> = (obj: StoreObjectInterfaceExample) => obj.theKey
 
 export class DBWithCache_StoreDummy<
-    STORE_T extends StoreObjectStub
+    STORE_T extends NonPersistedStoreObjectStub
 > extends DBCache<STORE_T> {
 
     static async builder<
-        STORE_T extends StoreObjectStub = StoreObjectInterfaceExample
+        STORE_T extends NonPersistedStoreObjectStub = StoreObjectInterfaceExample
     >(
-        storeObjectKeyGetter: StoreObjectKeyGetter<StoreObjectStub> = DEFAULT_STORE_OBJECT_KEY_GETTER,
+        storeObjectKeyGetter: StoreObjectKeyGetter<NonPersistedStoreObjectStub> = DEFAULT_STORE_OBJECT_KEY_GETTER,
         testDataForCache: STORE_T[] = []
     ) {
         const cacheInit = new Map<KEY_TYPE, ID_TYPE>(

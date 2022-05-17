@@ -1,0 +1,1 @@
+{"version":3,"file":"Request_GetAllTags.js","sourceRoot":"","sources":["../../../../../../../../../../../src/TS/background/components/internal_plugin_messaging/messages/dto/storeDB_messages/tags_messages/Request_GetAllTags.ts"],"names":[],"mappings":";;AACA,+DAA0D;AAM1D,SAAwB,wBAAwB;IAC5C,OAAO;QACH,WAAW,EAAE,yBAAW,CAAC,kBAAkB;KAC9C,CAAA;AACL,CAAC;AAJD,2CAIC"}

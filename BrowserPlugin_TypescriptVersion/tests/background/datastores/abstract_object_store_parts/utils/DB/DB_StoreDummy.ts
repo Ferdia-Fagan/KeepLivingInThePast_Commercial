@@ -1,13 +1,19 @@
 import {
     EditableDB
-} from "../../../../../../src/TS/background/components/datastores/components/parts/abstract_object_store_parts/layers/layer0_db/DB";
+} from "../../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer0_db/implementations/EditableDB";
 import {
     ID_NAME,
-    KEY_NAME,
-    KEY_TYPE, PersistedStoreObject, StoreObjectStub, UpdatedStoreObjectStub
-} from "../../../../../../src/TS/background/components/datastores/components/parts/abstract_object_store_parts/layers/layer0_db/store_object/Types";
+    KEY_NAME
+} from "../../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer0_db/store_object/StoreObject_Constants";
+import {
+    NonPersistedStoreObjectStub,
+    UpdatedStoreObjectStub
+} from "../../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer0_db/store_object/StoreObject_Dtos";
+import {
+    KEY_TYPE, PersistedStoreObject
+} from "../../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer0_db/store_object/StoreObject_Types";
 
-export interface StoreObjectInterfaceExample extends StoreObjectStub{
+export interface StoreObjectInterfaceExample extends NonPersistedStoreObjectStub{
     theKey: KEY_TYPE
 }
 
@@ -19,14 +25,14 @@ type StoreObjectUpdateInterfaceExample = StoreObjectInterfaceExample & UpdatedSt
 const THE_KEY_NAME = "theKey"
 
 export class DB_StoreDummy<
-    STORE_T extends StoreObjectStub,
+    STORE_T extends NonPersistedStoreObjectStub,
     STORE_T_UPDATE_INTERFACE extends UpdatedStoreObjectStub
 > extends EditableDB<STORE_T, STORE_T_UPDATE_INTERFACE> {
 
     // static async builder
 
     static async builder<
-        STORE_T extends StoreObjectStub = StoreObjectInterfaceExample,
+        STORE_T extends NonPersistedStoreObjectStub = StoreObjectInterfaceExample,
         STORE_T_UPDATE_INTERFACE extends UpdatedStoreObjectStub = PersistedStoreObjectInterfaceExample
     >(
         DATABASE: string, DB_VERSION: number,

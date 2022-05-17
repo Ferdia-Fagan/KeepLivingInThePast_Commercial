@@ -64,10 +64,6 @@ class HostImpl implements IntegrationDescriptionInterface {
 console.log()
 
 describe("sadf", () => {
-    it("fdsfds", () => {
-
-
-    })
     it("fdsa", () => {
         // const subjectInst = new ComponentImpl()
         const subjectInst = new ComponentImpl()

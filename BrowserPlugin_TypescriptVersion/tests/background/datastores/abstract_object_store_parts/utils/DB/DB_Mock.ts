@@ -1,14 +1,12 @@
+
 import {
-    EditableStoreDBInterface
-} from "../../../../../../src/TS/background/components/datastores/components/parts/abstract_object_store_parts/layers/layer0_db/DB";
-import {
-    StoreObjectStub,
+    NonPersistedStoreObjectStub,
     UpdatedStoreObjectStub
-} from "../../../../../../src/TS/background/components/datastores/components/parts/abstract_object_store_parts/layers/layer0_db/store_object/Types";
+} from "../../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer0_db/store_object/StoreObject_Dtos";
 import {PersistedStoreObjectInterfaceExample, StoreObjectInterfaceExample} from "./DB_StoreDummy";
 
 export function createDBMock<
-    STORE_T extends StoreObjectStub = StoreObjectInterfaceExample,
+    STORE_T extends NonPersistedStoreObjectStub = StoreObjectInterfaceExample,
     STORE_T_UPDATE_INTERFACE extends UpdatedStoreObjectStub = PersistedStoreObjectInterfaceExample
 >(
     {

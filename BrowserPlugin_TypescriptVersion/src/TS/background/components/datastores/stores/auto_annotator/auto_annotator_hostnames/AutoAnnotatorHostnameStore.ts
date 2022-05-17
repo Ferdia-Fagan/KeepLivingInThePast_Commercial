@@ -1,8 +1,10 @@
-import {KEY_NAME} from "../../../components/parts/abstract_object_store_parts/layers/layer0_db/store_object/Types";
-import {builder, DBCache} from "../../../components/parts/abstract_object_store_parts/layers/layer1_cache/DBCache";
+import {
+    KEY_NAME
+} from "../../../parts/abstract_object_store_parts/layers/layer0_db/store_object/StoreObject_Constants";
+import {builder} from "../../../parts/abstract_object_store_parts/layers/layer1_cache/DBCache";
 import HostnameObject from "./HostnameObject";
 import BuildingSetupCheckInterface from "../../../management/StoreConstructionSetupCheckerInteface";
-import {GetCreateDBStoreHandler} from "../../../components/parts/abstract_object_store_parts/factory/BuildDBConstructionActions";
+import {GetCreateDBStoreHandler} from "../../../parts/abstract_object_store_parts/factory/BuildDBConstructionActions";
 
 interface AutoAnnotatorHostnameStoreInterface {
 

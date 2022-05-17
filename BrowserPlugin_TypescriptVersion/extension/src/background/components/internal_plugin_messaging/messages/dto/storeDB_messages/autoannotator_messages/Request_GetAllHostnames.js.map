@@ -1,1 +1,0 @@
-{"version":3,"file":"Request_GetAllHostnames.js","sourceRoot":"","sources":["../../../../../../../../../src/TS/background/components/internal_plugin_messaging/messages/dto/storeDB_messages/autoannotator_messages/Request_GetAllHostnames.ts"],"names":[],"mappings":";;AACA,+DAA0D;AAK1D,SAAwB,6BAA6B;IACjD,OAAO;QACH,WAAW,EAAE,yBAAW,CAAC,uBAAuB;KACnD,CAAA;AACL,CAAC;AAJD,gDAIC"}

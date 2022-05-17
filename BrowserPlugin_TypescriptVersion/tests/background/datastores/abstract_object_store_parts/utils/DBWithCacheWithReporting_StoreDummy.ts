@@ -1,13 +1,13 @@
 import {
     ID_TYPE, KEY_TYPE, PersistedStoreObject
-} from "../../../../../src/TS/background/components/datastores/components/parts/abstract_object_store_parts/layers/layer0_db/store_object/Types";
+} from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer0_db/store_object/StoreObject_Types";
 import {
     DBAllOperationsReporting
-} from "../../../../../src/TS/background/components/datastores/components/parts/abstract_object_store_parts/layers/layer2_reporting/DBReporting";
+} from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer2_reporting/implementations/DBAllOperationsReporting";
 import {
     DeleteReport, InsertReport,
     UpdatesReport
-} from "../../../../../src/TS/background/components/datastores/components/parts/abstract_object_store_parts/layers/layer2_reporting/Types";
+} from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer2_reporting/reports/dtos/IndividualReports";
 
 export interface StoreObjectInterfaceExample
     extends PersistedStoreObject {

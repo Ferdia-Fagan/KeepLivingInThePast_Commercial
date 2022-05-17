@@ -14,3 +14,8 @@ const ThenChainManager = <INPUT extends any>(initialVal: INPUT) => ({
     }
 })
 
+function add(a: number): number {
+    return a + 10
+}
+
+
