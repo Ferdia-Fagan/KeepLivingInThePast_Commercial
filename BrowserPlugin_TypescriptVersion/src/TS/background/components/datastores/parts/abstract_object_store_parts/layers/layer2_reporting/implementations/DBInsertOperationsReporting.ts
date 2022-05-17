@@ -4,11 +4,15 @@ import {DBOperationsReportGenericWithMappedType} from "../reports/management/Typ
 import {ReportName} from "../reports/ReportName";
 import {InsertReport} from "../reports/dtos/IndividualReports";
 
-interface DBInsertsReportingInterface<P_STORE_REPORT_T extends PersistedStoreObject> {
+export interface DBInsertsReportingInterface<
+    P_STORE_REPORT_T extends PersistedStoreObject
+> {
+
     reportAddedObject(newSyncedObj: P_STORE_REPORT_T): void
+
 }
 
-class DBInsertOperationsReporting<R_STORE_REPORT_T extends PersistedStoreObject>
+export class DBInsertOperationsReporting<R_STORE_REPORT_T extends PersistedStoreObject>
     extends DBReportingControllerBase
     implements DBInsertsReportingInterface<R_STORE_REPORT_T> {
 
@@ -25,5 +29,3 @@ class DBInsertOperationsReporting<R_STORE_REPORT_T extends PersistedStoreObject>
 
 }
 
-export {DBInsertOperationsReporting};
-export {DBInsertsReportingInterface};

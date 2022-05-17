@@ -3,7 +3,7 @@ import browser, {Bookmarks} from "webextension-polyfill";
 import {DEFAULT_SETTINGS, UpdateSettingsForm, Settings, UpdateSettings, DEFAULT_BOOKMARK_FOLDER_NAME} from "../../../settings/Settings"
 import WebpageVisitDetails from "../layers/layer2_webpage_state_management/dtos/WebpageVisitDetails";
 import {Runtime} from "inspector";
-import {BookmarkType} from "../../datastores/stores/bookmarks/values/BookmarkType";
+import {BookmarkType} from "../../datastores/concrete_store_implementations/bookmarks/values/BookmarkType";
 import BookmarkTreeNode = Bookmarks.BookmarkTreeNode;
 
 interface WebpageDataStateManagerInterface {

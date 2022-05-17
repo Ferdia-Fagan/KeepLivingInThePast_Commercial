@@ -1,4 +1,4 @@
-import TagObject from "../../datastores/stores/tags/TagObject";
+import TagObject from "../../datastores/concrete_store_implementations/tags/TagObject";
 
 export default interface UserActions {
 

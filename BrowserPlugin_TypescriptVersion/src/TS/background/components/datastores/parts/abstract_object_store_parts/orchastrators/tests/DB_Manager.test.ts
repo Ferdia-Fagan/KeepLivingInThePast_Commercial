@@ -6,6 +6,7 @@ import "mockzilla-webextension";
 import {
     DB_StoreDummy, PersistedStoreObjectInterfaceExample, StoreObjectInterfaceExample
 } from "../../../../../../../../../tests/background/datastores/abstract_object_store_parts/utils/DB/DB_StoreDummy";
+import {EditableStoreDB_I} from "../../layers/layer0_db/implementations/EditableDB";
 import {KEY_NAME} from "../../layers/layer0_db/store_object/StoreObject_Constants";
 import {
     NonPersistedStoreObjectStub,
@@ -27,7 +28,7 @@ function createDb<
         DATABASE, DB_VERSION, STORE_NAME, testData
     ).then(db => {
         return createDBManager<
-            EditableStoreDBInterface<StoreObjectInterfaceExample, PersistedStoreObjectInterfaceExample>
+            EditableStoreDB_I<StoreObjectInterfaceExample, PersistedStoreObjectInterfaceExample>
         >(db)
     })
 }

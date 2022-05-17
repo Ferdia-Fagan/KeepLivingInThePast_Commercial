@@ -1,5 +1,5 @@
 import browser from "webextension-polyfill";
-import {TagId} from "../../../datastores/stores/tags/Types";
+import {TagId} from "../../../datastores/concrete_store_implementations/tags/Types";
 import {WebpageStateContainer} from "../layer2_webpage_state_management/WebpageStateManagement";
 import {OperationActions, UserActions} from "./management/Actions";
 import WindowTabsState from "./entities/WindowTabsState";

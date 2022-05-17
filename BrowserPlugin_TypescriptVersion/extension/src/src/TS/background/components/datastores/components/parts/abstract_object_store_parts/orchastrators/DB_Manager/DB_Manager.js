@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createDBManager = exports.EditableDB_Manager = exports.stitchObjects = void 0;
-const DB_1 = require("../layers/layer0_db/DB");
-const DB_WithCache_Manager_1 = require("./DB_WithCache_Manager");
+const DB_1 = require("../../layers/layer0_db/DB");
+const DB_WithCache_Manager_1 = require("../DB_WithCache_Manager/DB_WithCache_Manager");
 const BASE_DB_LAYER = DB_1.DBConnectionBase.name;
 const haveReachedBaseDBLayer = (dbLayerName) => dbLayerName === BASE_DB_LAYER;
 // export {

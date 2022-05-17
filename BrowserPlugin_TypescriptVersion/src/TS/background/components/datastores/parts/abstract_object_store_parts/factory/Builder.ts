@@ -1,7 +1,5 @@
 import {NonPersistedStoreObjectStub} from "../layers/layer0_db/store_object/StoreObject_Dtos";
 import DBWithCacheWithReportingBuilderInterface from "./DBWithCacheWithReportingBuilderInterface";
-import DB from "../layers/layer0_db/DB";
-import {DBWithCacheWithReporting} from "../layers/layer2_reporting/DBReportingManager";
 
 // async function builder<
 //     STORE_T extends StoreObjectInterface,

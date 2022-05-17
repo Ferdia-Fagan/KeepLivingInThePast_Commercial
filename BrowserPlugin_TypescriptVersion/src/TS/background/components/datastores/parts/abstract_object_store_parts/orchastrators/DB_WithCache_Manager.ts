@@ -1,6 +1,7 @@
 
 // TODO: complete
 
+import {EditableStoreDB_I} from "../layers/layer0_db/implementations/EditableDB";
 import {NonEditableStoreDB_I} from "../layers/layer0_db/implementations/NonEditableDB";
 import {
     NonPersistedStoreObjectStub,
@@ -11,6 +12,8 @@ import {
     KEY_TYPE,
     Persisted
 } from "../layers/layer0_db/store_object/StoreObject_Types";
+import {A_EditableDBController} from "../layers/layer0_db/types/DB_Types";
+import {DBCacheInterface} from "../layers/layer1_cache/DBCache_Implementations";
 import {EditableDB_Manager, stitchObjects} from "./DB_Manager";
 
 interface NonEditableDB_WithCache_Interface<
@@ -102,6 +105,6 @@ export function create_DB_WithCache_Manager<
     return stitchObjects(
         new EditableDB_WithCache_Manager(db,cache),
         db
-    ) as (EditableDB_WithCache_Manager<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T> & EditableStoreDBInterface<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T>)
+    ) as (EditableDB_WithCache_Manager<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T> & EditableStoreDB_I<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T>)
 }
 

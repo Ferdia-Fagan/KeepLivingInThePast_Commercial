@@ -4,13 +4,19 @@ import {ReportName} from "../reports/ReportName";
 import {DeleteReport, UpdatesReport} from "../reports/dtos/IndividualReports";
 import {DBInsertOperationsReporting, DBInsertsReportingInterface} from "./DBInsertOperationsReporting";
 
-export interface DBMutationOperations<R_STORE_REPORT_T extends PersistedStoreObject> extends DBInsertsReportingInterface<R_STORE_REPORT_T> {
+export interface DBMutationOperations<
+    R_STORE_REPORT_T extends PersistedStoreObject
+>
+    extends DBInsertsReportingInterface<R_STORE_REPORT_T> {
+
     reportUpdateObject(updatedObject: R_STORE_REPORT_T): void
 
     reportDeletedObject(id: number): void
 }
 
-export class DBAllOperationsReporting<R_STORE_REPORT_T extends PersistedStoreObject>
+export class DBAllOperationsReporting<
+    R_STORE_REPORT_T extends PersistedStoreObject
+>
     extends DBInsertOperationsReporting<R_STORE_REPORT_T>
     implements DBMutationOperations<R_STORE_REPORT_T> {
 

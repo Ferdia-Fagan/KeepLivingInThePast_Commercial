@@ -1,10 +1,10 @@
 import {
     DeleteAutoAnnotatorsReport,
     NewAutoAnnotatorReport
-} from "../../../../datastores/stores/auto_annotator/auto_annotator_created/AutoAnnotatorReport";
-import {AutoAnnotatorId} from "../../../../datastores/stores/auto_annotator/auto_annotator_created/Types";
-import {HostnameId} from "../../../../datastores/stores/auto_annotator/auto_annotator_hostnames/Types";
-import {TagId} from "../../../../datastores/stores/tags/Types";
+} from "../../../../datastores/concrete_store_implementations/auto_annotator/auto_annotator_created/AutoAnnotatorReport";
+import {AutoAnnotatorId} from "../../../../datastores/concrete_store_implementations/auto_annotator/auto_annotator_created/Types";
+import {HostnameId} from "../../../../datastores/concrete_store_implementations/auto_annotator/auto_annotator_hostnames/Types";
+import {TagId} from "../../../../datastores/concrete_store_implementations/tags/Types";
 import {NativeMessageOut} from "../../NativeMessageOut";
 import {MessageType} from "../../values/MessageType";
 

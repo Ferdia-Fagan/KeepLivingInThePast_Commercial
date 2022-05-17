@@ -1,13 +1,17 @@
 import {keys} from "ts-transformer-keys";
 import {DBConnection_A} from "../layers/layer0_db/DB_Abstract";
-import {EditableDB} from "../layers/layer0_db/implementations/EditableDB";
+import {EditableDB, EditableStoreDB_I} from "../layers/layer0_db/implementations/EditableDB";
 import {NonEditableDB, NonEditableStoreDB_I} from "../layers/layer0_db/implementations/NonEditableDB";
 import {
     NonPersistedStoreObjectStub,
     UpdatedStoreObjectStub
 } from "../layers/layer0_db/store_object/StoreObject_Dtos";
 import {KEY_TYPE, Persisted} from "../layers/layer0_db/store_object/StoreObject_Types";
-import {A_Generic_DBController} from "../layers/layer0_db/types/DB_Types";
+import {
+    A_EditableDBController,
+    A_Generic_DBController,
+    A_NonEditableDBController
+} from "../layers/layer0_db/types/DB_Types";
 import {DBComponent, EditableDB_WithCache_Manager} from "./DB_WithCache_Manager";
 
 const BASE_DB_LAYER = DBConnection_A.name
@@ -130,7 +134,7 @@ export function stitchObjects<
             .filter(l => l !== "constructor")
             .filter(l => l !in methodsToNotStitch)
             .forEach(funcName => {
-                const x = funcName as keyof EditableStoreDBInterface<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T>
+                const x = funcName as keyof EditableStoreDB_I<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T>
                 controller[x] = controller.db[x].bind(this.db)
             })
     }
@@ -141,7 +145,7 @@ export class EditableDB_Manager<
     STORE_OBJECT_T extends NonPersistedStoreObjectStub,
     UPDATE_STORE_OBJECT_T extends UpdatedStoreObjectStub
 > implements
-    EditableStoreDBInterface<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T> {
+    EditableStoreDB_I<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T> {
 
     db: A_EditableDBController<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T>
     constructor(
@@ -167,7 +171,7 @@ export class EditableDB_Manager<
                 .filter(l => l !== "constructor")
                 .filter(l => l !in methodsToNotStitch)
                 .forEach(funcName => {
-                    const x = funcName as keyof EditableStoreDBInterface<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T>
+                    const x = funcName as keyof EditableStoreDB_I<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T>
                     this[x] = this.db[x].bind(this.db)
             })
         }

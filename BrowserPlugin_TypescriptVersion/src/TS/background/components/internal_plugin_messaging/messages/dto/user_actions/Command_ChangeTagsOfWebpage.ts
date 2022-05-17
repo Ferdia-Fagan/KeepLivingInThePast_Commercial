@@ -1,5 +1,5 @@
 import {UnaryReport} from "../../../../browser_state_management/handlers/reporting/UnaryReport";
-import {WebpageTagReports} from "../../../../datastores/stores/tags/WebpageTagReports";
+import {WebpageTagReports} from "../../../../datastores/concrete_store_implementations/tags/WebpageTagReports";
 import BaseInternalMessageDto from "../../base_dto/BaseInternalMessageDto";
 import {MessageType} from "../../base_dto/MessageType";
 

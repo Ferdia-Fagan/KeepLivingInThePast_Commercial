@@ -1,12 +1,12 @@
 import {Bookmarks} from "webextension-polyfill";
-import {bookmarksStore, StoreController_BookmarkManager} from "../../../datastores/stores/bookmarks/BookmarksStore";
+import {bookmarksStore, StoreController_BookmarkManager} from "../../../datastores/concrete_store_implementations/bookmarks/BookmarksStore";
 import {
     BookmarkFolderTypeCheck,
     BookmarkId,
     BookmarkKey,
     BookmarkTypeCheck
-} from "../../../datastores/stores/bookmarks/Types";
-import {BookmarkType} from "../../../datastores/stores/bookmarks/values/BookmarkType";
+} from "../../../datastores/concrete_store_implementations/bookmarks/Types";
+import {BookmarkType} from "../../../datastores/concrete_store_implementations/bookmarks/values/BookmarkType";
 import {WebpageId} from "../../layers/layer2_webpage_state_management/entities/Types";
 import {
     browserController_Bookmarks,

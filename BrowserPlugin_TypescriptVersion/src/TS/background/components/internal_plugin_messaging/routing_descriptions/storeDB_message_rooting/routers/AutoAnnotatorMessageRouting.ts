@@ -1,6 +1,6 @@
-import HostnameObject from "../../../../datastores/stores/auto_annotator/auto_annotator_hostnames/HostnameObject";
+import HostnameObject from "../../../../datastores/concrete_store_implementations/auto_annotator/auto_annotator_hostnames/HostnameObject";
 import AutoAnnotatorObject
-    from "../../../../datastores/stores/auto_annotator/auto_annotator_created/AutoAnnotatorObject";
+    from "../../../../datastores/concrete_store_implementations/auto_annotator/auto_annotator_created/AutoAnnotatorObject";
 
 export interface AutoAnnotatorMessageRouting {
     // addHostnameToCollection(message: any)    TODO: complete this internal message handler description

@@ -1,5 +1,5 @@
-import {BookmarkId} from "../../../../datastores/stores/bookmarks/Types";
-import {TagId} from "../../../../datastores/stores/tags/Types";
+import {BookmarkId} from "../../../../datastores/concrete_store_implementations/bookmarks/Types";
+import {TagId} from "../../../../datastores/concrete_store_implementations/tags/Types";
 import {WebpageState} from "../entities/Webpage";
 
 export interface WebpageFocusStateManagementInterface

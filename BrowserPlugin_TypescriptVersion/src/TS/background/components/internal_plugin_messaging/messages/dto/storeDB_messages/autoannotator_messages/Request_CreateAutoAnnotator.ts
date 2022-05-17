@@ -1,6 +1,6 @@
 import {
     AutoAnnotatorSetup
-} from "../../../../../datastores/stores/auto_annotator/auto_annotator_created/AutoAnnotatorObject";
+} from "../../../../../datastores/concrete_store_implementations/auto_annotator/auto_annotator_created/AutoAnnotatorObject";
 import BaseInternalMessageDto from "../../../base_dto/BaseInternalMessageDto";
 import {MessageType} from "../../../base_dto/MessageType";
 

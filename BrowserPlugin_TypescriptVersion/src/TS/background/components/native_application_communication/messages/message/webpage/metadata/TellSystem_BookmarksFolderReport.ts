@@ -2,8 +2,8 @@ import {
     BookmarksReport,
     CreatedBookmarkReport,
     UpdatedBookmarkReport,
-} from "../../../../../datastores/stores/bookmarks/BookmarksReport";
-import {BookmarkId} from "../../../../../datastores/stores/bookmarks/Types";
+} from "../../../../../datastores/concrete_store_implementations/bookmarks/BookmarksReport";
+import {BookmarkId} from "../../../../../datastores/concrete_store_implementations/bookmarks/Types";
 import {NativeMessageOut} from "../../../NativeMessageOut";
 import {MessageType} from "../../../values/MessageType";
 

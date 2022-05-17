@@ -2,7 +2,7 @@
 // TODO: complete
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.create_DB_WithCache_Manager = exports.EditableDB_WithCache_Manager = void 0;
-const DB_Manager_1 = require("./DB_Manager");
+const DB_Manager_1 = require("../DB_Manager/DB_Manager");
 class EditableDB_WithCache_Manager {
     constructor(db, cache) {
         this.addObj = (newElementToStore) => this.db.addObj(newElementToStore).then(persistedObjectId => {

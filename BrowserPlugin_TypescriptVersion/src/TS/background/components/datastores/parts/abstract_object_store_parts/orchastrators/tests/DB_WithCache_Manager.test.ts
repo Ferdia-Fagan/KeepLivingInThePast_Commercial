@@ -11,6 +11,8 @@ import {
     NonPersistedStoreObjectStub,
     UpdatedStoreObjectStub
 } from "../../layers/layer0_db/store_object/StoreObject_Dtos";
+import {A_EditableDBController} from "../../layers/layer0_db/types/DB_Types";
+import {DBCache} from "../../layers/layer1_cache/DBCache_Implementations";
 import {createDBManager} from "../DB_Manager";
 import {create_DB_WithCache_Manager, EditableDB_WithCache_Manager} from "../DB_WithCache_Manager";
 
