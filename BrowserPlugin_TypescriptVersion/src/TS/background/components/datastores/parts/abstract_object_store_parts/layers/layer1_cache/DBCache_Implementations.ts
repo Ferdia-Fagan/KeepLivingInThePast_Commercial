@@ -1,20 +1,20 @@
 import MapCache from "../../../../../../utils/MapCache";
 import {NonPersistedStoreObjectStub} from "../layer0_db/store_object/StoreObject_Dtos";
 import {ID_TYPE, KEY_TYPE} from "../layer0_db/store_object/StoreObject_Types";
-import {StoreObjectKeyGetter} from "./DBCache";
+import {StoreObjectKeyGetter} from "./DBCache_Types";
 
-interface GetCachedIdsByKeys {
+export interface GetCachedIdsByKeys {
     ids: ID_TYPE[],
     keysNotCached: KEY_TYPE[]
 }
 
-interface DBCacheInterface<P_STORE_OBJECT_T extends NonPersistedStoreObjectStub> {
+export interface DBCacheInterface<P_STORE_OBJECT_T extends NonPersistedStoreObjectStub> {
     cacheObjectWithId: (persistedObjId: ID_TYPE, newObj: P_STORE_OBJECT_T) => void
-    cacheObjectsWithIds: (newObjs: Array<P_STORE_OBJECT_T>) => void
+    cacheObjectsWithIds: (newObjs: Array<P_STORE_OBJECT_T>) => void // TODO: test
     getObjectIdByKey: (key: KEY_TYPE) => ID_TYPE | undefined
-    getObjectIdsByKeys: (keys: KEY_TYPE[]) => GetCachedIdsByKeys
+    getObjectIdsByKeys: (keys: KEY_TYPE[]) => GetCachedIdsByKeys // TODO: test
 
-    deleteObjByKey: (key: KEY_TYPE) => void
+    deleteObjByKey: (key: KEY_TYPE) => void // TODO: test
 }
 
 /**
@@ -23,7 +23,7 @@ interface DBCacheInterface<P_STORE_OBJECT_T extends NonPersistedStoreObjectStub>
  * store is assumed to have atleast:
  * {id, key,...}
  */
-class DBCache<P_STORE_OBJECT_T extends NonPersistedStoreObjectStub> implements DBCacheInterface<P_STORE_OBJECT_T> {
+export class DBCache<P_STORE_OBJECT_T extends NonPersistedStoreObjectStub> implements DBCacheInterface<P_STORE_OBJECT_T> {
 
     protected cache: MapCache<KEY_TYPE, ID_TYPE>;
 
@@ -65,7 +65,7 @@ class DBCache<P_STORE_OBJECT_T extends NonPersistedStoreObjectStub> implements D
         return this.cache.get(key)
     }
 
-    getObjectIdsByKeys(objKeys: KEY_TYPE[]): GetCachedIdsByKeys {
+    getObjectIdsByKeys(objKeys: KEY_TYPE[]): GetCachedIdsByKeys | undefined {
         return objKeys.reduce((result, objKey) => {
             if (this.cache.has(objKey)) {
                 result.ids.push(this.cache.get(objKey))
@@ -83,5 +83,3 @@ class DBCache<P_STORE_OBJECT_T extends NonPersistedStoreObjectStub> implements D
 
 }
 
-export {DBCache};
-export {DBCacheInterface};

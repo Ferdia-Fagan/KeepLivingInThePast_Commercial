@@ -141,6 +141,26 @@ export function stitchObjects<
     return controller
 }
 
+export function stitch<T>(
+    _this: any,
+    methodsToNotStitch: Set<string> = null,
+    keyToObjectToSwitch: keyof T
+) {
+    const objToStitch = _this[keyToObjectToSwitch]
+    let currentLayerPrototype = Object.getPrototypeOf(objToStitch)
+    while(!haveReachedBaseDBLayer(currentLayerPrototype.constructor.name)){
+        currentLayerPrototype = Object.getPrototypeOf(currentLayerPrototype)
+        const currentLayerFuncNames = Object.getOwnPropertyNames(currentLayerPrototype)
+        currentLayerFuncNames
+            .filter(l => l !== "constructor")
+            .filter(l => methodsToNotStitch == null || !methodsToNotStitch.has(l))
+            .forEach(funcName => {
+                const x = funcName as keyof T
+                _this[x] = _this[keyToObjectToSwitch][x].bind(_this[keyToObjectToSwitch])
+            })
+    }
+}
+
 export class EditableDB_Manager<
     STORE_OBJECT_T extends NonPersistedStoreObjectStub,
     UPDATE_STORE_OBJECT_T extends UpdatedStoreObjectStub
@@ -151,33 +171,39 @@ export class EditableDB_Manager<
     constructor(
         db: A_NonEditableDBController<STORE_OBJECT_T>,
         methodsToNotStitch: Set<string> = null
-
     ) {
-        if(methodsToNotStitch == null){
-            const a0 = Object.getOwnPropertyNames(this)
-            const a = Object.getPrototypeOf(EditableDB_WithCache_Manager)
-            const a1 = Object.getOwnPropertyNames(a)
-            const b = Object.getPrototypeOf(a)
-            const b1 = Object.getOwnPropertyNames(b)
-            const c = Object.getPrototypeOf(b)
-            const c1 = Object.getOwnPropertyNames(c)
-            methodsToNotStitch = new Set(Object.getOwnPropertyNames(b))
-        }
-        let currentLayerPrototype = Object.getPrototypeOf(db)
-        while(!haveReachedBaseDBLayer(currentLayerPrototype.constructor.name)){
-            currentLayerPrototype = Object.getPrototypeOf(currentLayerPrototype)
-            const currentLayerFuncNames = Object.getOwnPropertyNames(currentLayerPrototype)
-            currentLayerFuncNames
-                .filter(l => l !== "constructor")
-                .filter(l => l !in methodsToNotStitch)
-                .forEach(funcName => {
-                    const x = funcName as keyof EditableStoreDB_I<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T>
-                    this[x] = this.db[x].bind(this.db)
-            })
-        }
+        // if(methodsToNotStitch == null){
+        //     const a0 = Object.getOwnPropertyNames(this)
+        //     const a = Object.getPrototypeOf(EditableDB_WithCache_Manager)
+        //     const a1 = Object.getOwnPropertyNames(a)
+        //     const b = Object.getPrototypeOf(a)
+        //     const b1 = Object.getOwnPropertyNames(b)
+        //     const c = Object.getPrototypeOf(b)
+        //     const c1 = Object.getOwnPropertyNames(c)
+        //     methodsToNotStitch = new Set(Object.getOwnPropertyNames(b))
+        // }
+        this.db = db
+        stitch<EditableDB_Manager<STORE_OBJECT_T,UPDATE_STORE_OBJECT_T>>(
+            this,
+            null,
+            "db"
+        )
+        // let currentLayerPrototype = Object.getPrototypeOf(db)
+        //
+        // while(!haveReachedBaseDBLayer(currentLayerPrototype.constructor.name)){
+        //     currentLayerPrototype = Object.getPrototypeOf(currentLayerPrototype)
+        //     const currentLayerFuncNames = Object.getOwnPropertyNames(currentLayerPrototype)
+        //     currentLayerFuncNames
+        //         .filter(l => l !== "constructor")
+        //         // .filter(l => l !in methodsToNotStitch)
+        //         .forEach(funcName => {
+        //             const x = funcName as keyof EditableStoreDB_I<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T>
+        //             this[x] = this.db[x].bind(this.db)
+        //     })
+        // }
     }
 
-    addObj: (newElementToStore: STORE_OBJECT_T) => Promise<number>
+    addObj: (newElementToStore: STORE_OBJECT_T) => Promise<Persisted<STORE_OBJECT_T>>
 
     addObjs: (newObjectsToAdd: Array<STORE_OBJECT_T>) => Promise<Persisted<STORE_OBJECT_T>[]>
 
@@ -189,7 +215,7 @@ export class EditableDB_Manager<
 
     getAllObjs: () => Promise<Persisted<STORE_OBJECT_T>[]>
 
-    deleteObjById: (objId: number) => void
+    deleteObjById: (objId: number) => Promise<void>
 
     updateObject: (storeObject: UPDATE_STORE_OBJECT_T) => void
 }

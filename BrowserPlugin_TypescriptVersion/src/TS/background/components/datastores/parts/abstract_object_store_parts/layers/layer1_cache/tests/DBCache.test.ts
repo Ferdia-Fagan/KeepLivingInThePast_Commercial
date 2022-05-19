@@ -6,7 +6,7 @@ require("fake-indexeddb/auto");
 
 describe("DBCache", function() {
 
-    describe("addObject", function() {
+    describe("cacheObjectWithId", function() {
         it("object does not exist yet", async() => {
             let storeInstance = await DBWithCache_StoreDummy.builder();
             const idOfCacheObj = 0
@@ -14,7 +14,7 @@ describe("DBCache", function() {
 
             let testData: StoreObjectInterfaceExample = {
                 id: idOfCacheObj,
-                theKey: keyOfCacheObj
+                key: keyOfCacheObj
             }
 
             await storeInstance.cacheObjectWithId(testData.id, testData)
@@ -26,13 +26,13 @@ describe("DBCache", function() {
         });
     })
 
-    describe("getObjectByKey", function(){
+    describe("getObjectIdByKey", function(){
         it("when object not cached - return undefined", async() => {
             const objectKeyThatDoesNotExist = "test2"
             let storeInstance = await DBWithCache_StoreDummy.builder(
                 DEFAULT_STORE_OBJECT_KEY_GETTER,
                 [
-                    {id: 1, theKey: "test1"}
+                    {id: 1, key: "test1"}
                 ]
             )
             jest.spyOn(storeInstance["cache"], "get")
@@ -46,13 +46,13 @@ describe("DBCache", function() {
 
         it("when object cached - return object id", async() => {
             let testDataSelecting: StoreObjectInterfaceExample = {
-                id: 1, theKey: "test1"
+                id: 1, key: "test1"
             }
             let storeInstance = await DBWithCache_StoreDummy.builder(
                 DEFAULT_STORE_OBJECT_KEY_GETTER,
                 [
                     testDataSelecting,
-                    {id: 2, theKey: "test2"}
+                    {id: 2, key: "test2"}
                 ]
             )
             jest.spyOn(storeInstance["cache"], "get")

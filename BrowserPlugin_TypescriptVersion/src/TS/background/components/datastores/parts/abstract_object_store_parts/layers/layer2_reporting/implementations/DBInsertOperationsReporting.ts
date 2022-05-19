@@ -4,7 +4,7 @@ import {DBOperationsReportGenericWithMappedType} from "../reports/management/Typ
 import {ReportName} from "../reports/ReportName";
 import {InsertReport} from "../reports/dtos/IndividualReports";
 
-export interface DBInsertsReportingInterface<
+export interface DBInsertsReporting_I<
     P_STORE_REPORT_T extends PersistedStoreObject
 > {
 
@@ -14,7 +14,7 @@ export interface DBInsertsReportingInterface<
 
 export class DBInsertOperationsReporting<R_STORE_REPORT_T extends PersistedStoreObject>
     extends DBReportingControllerBase
-    implements DBInsertsReportingInterface<R_STORE_REPORT_T> {
+    implements DBInsertsReporting_I<R_STORE_REPORT_T> {
 
     newObjectAddedReports: InsertReport<R_STORE_REPORT_T> = new Map<ID_TYPE, R_STORE_REPORT_T>()
 

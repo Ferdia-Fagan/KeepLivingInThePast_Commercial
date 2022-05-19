@@ -13,12 +13,12 @@ export interface EditableStoreDB_I<
 
 export class EditableDB<
     STORE_T extends NonPersistedStoreObjectStub,
-    STORE_T_UPDATE_INTERFACE extends UpdatedStoreObjectStub
+    UPDATE_STORE_OBJECT_T extends UpdatedStoreObjectStub
 >
     extends NonEditableDB<STORE_T>
-    implements EditableStoreDB_I<STORE_T, STORE_T_UPDATE_INTERFACE> {
+    implements EditableStoreDB_I<STORE_T, UPDATE_STORE_OBJECT_T> {
 
-    updateObject(storeObject: STORE_T_UPDATE_INTERFACE): void {
+    updateObject(storeObject: UPDATE_STORE_OBJECT_T): void {
         let store = this.getObjectStore('readwrite');
         store.put(storeObject);
     }

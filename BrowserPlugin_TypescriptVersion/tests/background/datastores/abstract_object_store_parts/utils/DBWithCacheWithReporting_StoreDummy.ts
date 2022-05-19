@@ -11,7 +11,6 @@ import {
 
 export interface StoreObjectInterfaceExample
     extends PersistedStoreObject {
-    theKey: KEY_TYPE,
     dataToHaveForUpdateReport: string
 }
 export interface StoreObjectUpdateReportInterfaceExample

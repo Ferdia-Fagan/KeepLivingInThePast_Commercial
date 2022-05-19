@@ -13,16 +13,14 @@ import {
     KEY_TYPE, PersistedStoreObject
 } from "../../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer0_db/store_object/StoreObject_Types";
 
-export interface StoreObjectInterfaceExample extends NonPersistedStoreObjectStub{
-    theKey: KEY_TYPE
-}
+export interface StoreObjectInterfaceExample
+    extends NonPersistedStoreObjectStub {}
 
-export interface PersistedStoreObjectInterfaceExample extends PersistedStoreObject{
-    theKey: KEY_TYPE
-}
+export interface PersistedStoreObjectInterfaceExample
+    extends PersistedStoreObject {}
 
 type StoreObjectUpdateInterfaceExample = StoreObjectInterfaceExample & UpdatedStoreObjectStub
-const THE_KEY_NAME = "theKey"
+const THE_KEY_NAME = "key"
 
 export class DB_StoreDummy<
     STORE_T extends NonPersistedStoreObjectStub,

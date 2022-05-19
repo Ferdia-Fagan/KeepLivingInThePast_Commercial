@@ -8,19 +8,18 @@ import {
 } from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer0_db/store_object/StoreObject_Types";
 import {
     StoreObjectKeyGetter
-} from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer1_cache/DBCache";
+} from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer1_cache/DBCache_Types";
 import {
     DBCache
 } from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer1_cache/DBCache_Implementations";
 import MapCache from "../../../../../src/TS/background/utils/MapCache";
 
-export interface StoreObjectInterfaceExample extends NonPersistedStoreObjectStub{
-    theKey: KEY_TYPE
-}
+export interface StoreObjectInterfaceExample extends NonPersistedStoreObjectStub{}
+
 type StoreObjectUpdateInterfaceExample = StoreObjectInterfaceExample & UpdatedStoreObjectStub
 const THE_KEY_NAME = "theKey"
 
-export const DEFAULT_STORE_OBJECT_KEY_GETTER: StoreObjectKeyGetter<StoreObjectInterfaceExample> = (obj: StoreObjectInterfaceExample) => obj.theKey
+export const DEFAULT_STORE_OBJECT_KEY_GETTER: StoreObjectKeyGetter<StoreObjectInterfaceExample> = (obj: StoreObjectInterfaceExample) => obj.key
 
 export class DBWithCache_StoreDummy<
     STORE_T extends NonPersistedStoreObjectStub

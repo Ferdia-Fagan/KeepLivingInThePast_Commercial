@@ -25,33 +25,31 @@ describe("DBStore", function(){
             "test", 3, "test");
     })
 
-    it("addObject(...) - add object with key that does not exist - successfully added object", async() => {
+    it("addObj - add object with key that does not exist - successfully added object", async() => {
         let storeInstance = await DB_StoreDummy.builder(
             "test", 3, "test");
 
         const newObject: StoreObjectInterfaceExample = {
-            theKey: "testKey1"
+            key: "testKey1"
         }
 
-        let newObjectAddedToStore = await storeInstance.addObj(
-            newObject
-        );
+        let newObjectAddedToStore = await storeInstance.addObj(newObject);
 
         // await FlushPromises();
 
-        expect(newObjectAddedToStore).toBe(1)
+        expect(newObjectAddedToStore).toMatchObject({ ...newObject, id: 1})
     });
 
-    it("getObjectByIndexColumn(...) - get object by column index that exists", async () => {
+    it("getObjectByIndexColumn - get object by column index that exists", async () => {
         let storeInstance = await DB_StoreDummy.builder(
             "test", 3, "test",
             [
-                {theKey: "testKey"}
+                {key: "testKey"}
             ]
         );
 
         let expectedResult: StoreObjectInterfaceExample = {
-            id: 1, theKey: "testKey"
+            id: 1, key: "testKey"
         }
 
         let objectWithIndexColumnValue = await storeInstance.getObjByIndexColumn(
@@ -59,16 +57,16 @@ describe("DBStore", function(){
         );
 
         console.log("hello" + objectWithIndexColumnValue)
-        expect(objectWithIndexColumnValue.theKey).toBe(expectedResult.theKey)
+        expect(objectWithIndexColumnValue.key).toBe(expectedResult.key)
     })
 
-    it("getAllObjects(..)", async () => {
+    it("getAllObjs", async () => {
         let storeInstance = await DB_StoreDummy.builder(
             "test", 3, "test",
             [
-                {theKey: "testKey1"},
-                {theKey: "testKey2"},
-                {theKey: "testKey3"}
+                {key: "testKey1"},
+                {key: "testKey2"},
+                {key: "testKey3"}
             ]
         );
 
@@ -80,11 +78,11 @@ describe("DBStore", function(){
         expect(allObjectsFromStore.length).toBe(3)
     })
 
-    it("deleteObjectById", async () => {
+    it("deleteObjById", async () => {
         let storeInstance = await DB_StoreDummy.builder(
             "test", 3, "test",
             [
-                {theKey: "testKey1"}
+                {key: "testKey1"}
             ]
         );
 
@@ -99,12 +97,12 @@ describe("DBStore", function(){
         let storeInstance = await DB_StoreDummy.builder(
             "test", 3, "test",
             [
-                {theKey: "testKey1"}
+                {key: "testKey1"}
             ]
         );
 
         let expectedTestKeyUpdated = {
-            id: 1, theKey: "testKey10"
+            id: 1, key: "testKey10"
         }
 
         storeInstance.updateObject(expectedTestKeyUpdated)
@@ -113,7 +111,7 @@ describe("DBStore", function(){
 
         expect(allObjects.length).toBe(1)
         expect(allObjects[0].id).toBe(expectedTestKeyUpdated.id)
-        expect(allObjects[0].theKey).toBe(expectedTestKeyUpdated.theKey)
+        expect(allObjects[0].key).toBe(expectedTestKeyUpdated.key)
     })
 
 });

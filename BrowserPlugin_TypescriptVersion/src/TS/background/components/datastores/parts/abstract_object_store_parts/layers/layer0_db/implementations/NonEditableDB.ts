@@ -1,5 +1,6 @@
 import {MethodNotYetImplemented} from "../../../../../../../utils/DevelopmentUtils";
 import {DBConnection_A} from "../DB_Abstract";
+import {KEY_NAME} from "../store_object/StoreObject_Constants";
 import {NonPersistedStoreObjectStub} from "../store_object/StoreObject_Dtos";
 import {A_NonEditableDBController} from "../types/DB_Types";
 import {ID_TYPE, KEY_TYPE, Persisted} from "../store_object/StoreObject_Types";
@@ -12,24 +13,24 @@ export interface NonEditableStoreDB_I<STORE_OBJECT_T extends NonPersistedStoreOb
      * @param onSuccessfullReq
      * @return promise containing id of new oobject added.
      */
-    addObj?: (newElementToStore: STORE_OBJECT_T) => Promise<number>
+    addObj?: (newElementToStore: STORE_OBJECT_T) => Promise<Persisted<STORE_OBJECT_T>>
     /**
      * TODO: write test
      * @param newObjectsToAdd
      * @protected
      * @return promise containing new added objects ids.
      */
-    addObjs?: (newObjectsToAdd: Array<STORE_OBJECT_T>) => Promise<Persisted<STORE_OBJECT_T>[]>
+    addObjs?: (newObjectsToAdd: Array<STORE_OBJECT_T>) => Promise<Persisted<STORE_OBJECT_T>[]> // TODO: test
 
     getObjByIndexColumn?: (indexName: string, value: IDBValidKey) => Promise<Persisted<STORE_OBJECT_T>>
     getObjById?: (id: number) => Promise<Persisted<STORE_OBJECT_T>>
-    getObjsByIds?: (objectIds: number[]) => Promise<Persisted<STORE_OBJECT_T>[]>
+    getObjsByIds?: (objectIds: number[]) => Promise<Persisted<STORE_OBJECT_T>[]> // TODO: test
     getObjByKey?: (key: KEY_TYPE) => Promise<Persisted<STORE_OBJECT_T>>
-    getObjByKeys?: (keys: KEY_TYPE[]) => Promise<Persisted<STORE_OBJECT_T>[]>
+    getObjByKeys?: (keys: KEY_TYPE[]) => Promise<Persisted<STORE_OBJECT_T>[]> // TODO: test
 
     getAllObjs?: () => Promise<Persisted<STORE_OBJECT_T>[]>
 
-    deleteObjById?: (objId: number) => void
+    deleteObjById?: (objId: number) => Promise<void>
 }
 
 export class NonEditableDB<STORE_OBJECT_T extends NonPersistedStoreObjectStub>
@@ -39,14 +40,15 @@ export class NonEditableDB<STORE_OBJECT_T extends NonPersistedStoreObjectStub>
 
     // Inserts:
 
-    addObj(newObjectToStore: STORE_OBJECT_T): Promise<number> {
-        return new Promise<number>((resolve, reject) => {
-            this.addObjs
+    addObj(newElementToStore: STORE_OBJECT_T): Promise<Persisted<STORE_OBJECT_T>> {
+        return new Promise<Persisted<STORE_OBJECT_T>>((resolve, reject) => {
             let store = this.getObjectStore('readwrite');
-            const req = store.add(newObjectToStore);
+            const req = store.add(newElementToStore);
 
             req.onsuccess = function (evt: any & Event) {
-                resolve(evt.target.result)
+                newElementToStore.id = evt.target.result
+                // @ts-ignore
+                resolve(newElementToStore)
             };
 
             req.onerror = this.onFailedRequest;
@@ -129,8 +131,8 @@ export class NonEditableDB<STORE_OBJECT_T extends NonPersistedStoreObjectStub>
     }
 
     getObjByKey(key: KEY_TYPE): Promise<Persisted<STORE_OBJECT_T>> {
-        // TODO: complete
-        throw new MethodNotYetImplemented()
+
+        return this.getObjByIndexColumn(KEY_NAME, key)
     }
 
     getObjByKeys(keys: KEY_TYPE[]): Promise<Persisted<STORE_OBJECT_T>[]> {
@@ -156,10 +158,19 @@ export class NonEditableDB<STORE_OBJECT_T extends NonPersistedStoreObjectStub>
     }
 
     // deletions
-    deleteObjById(objId: number): void {
-        let store = this.getObjectStore('readwrite');
+    deleteObjById(objId: number): Promise<void> {
+        return new Promise((resolve, reject) => {
+            let store = this.getObjectStore('readwrite');
+            const deleteOperation = store.delete(objId);
+            deleteOperation.onsuccess = function () {
+                resolve()
+            };
 
-        store.delete(objId);
+            deleteOperation.onerror = function (evt: any) {
+                console.error("geting similar results did not work")
+                resolve(null);
+            };
+        })
     }
 
 }

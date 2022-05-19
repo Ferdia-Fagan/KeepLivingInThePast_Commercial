@@ -46,28 +46,26 @@ describe("DBStore", function(){
         )
 
         const newObject: StoreObjectInterfaceExample = {
-            theKey: "testKey1"
+            key: "testKey1"
         }
 
-        let newObjectAddedToStore = await storeInstance.addObj(
-            newObject
-        );
+        let newObjectAddedToStore = await storeInstance.addObj(newObject);
 
         // await FlushPromises();
 
-        expect(newObjectAddedToStore).toBe(1)
+        expect(newObjectAddedToStore).toMatchObject({ ...newObjectAddedToStore, id: 1})
     });
 
     it("getObjectByIndexColumn(...) - get object by column index that exists", async () => {
         let storeInstance = await createDb(
             "test", 3, "test",
             [
-                {theKey: "testKey"}
+                {key: "testKey"}
             ]
         )
 
         let expectedResult: StoreObjectInterfaceExample = {
-            id: 1, theKey: "testKey"
+            id: 1, key: "testKey"
         }
 
         let objectWithIndexColumnValue = await storeInstance.getObjByIndexColumn(
@@ -75,16 +73,16 @@ describe("DBStore", function(){
         );
 
         console.log("hello" + objectWithIndexColumnValue)
-        expect(objectWithIndexColumnValue.theKey).toBe(expectedResult.theKey)
+        expect(objectWithIndexColumnValue.key).toBe(expectedResult.key)
     })
 
-    it("getAllObjects(..)", async () => {
+    it("getAllObjs", async () => {
         let storeInstance = await createDb(
             "test", 3, "test",
             [
-                {theKey: "testKey1"},
-                {theKey: "testKey2"},
-                {theKey: "testKey3"}
+                {key: "testKey1"},
+                {key: "testKey2"},
+                {key: "testKey3"}
             ]
         )
 
@@ -100,7 +98,7 @@ describe("DBStore", function(){
         let storeInstance = await createDb(
             "test", 3, "test",
             [
-                {theKey: "testKey1"}
+                {key: "testKey1"}
             ]
         )
 
@@ -115,7 +113,7 @@ describe("DBStore", function(){
         let storeInstance = await createDb(
             "test", 3, "test",
             [
-                {theKey: "testKey1"}
+                {key: "testKey1"}
             ]
         )
 

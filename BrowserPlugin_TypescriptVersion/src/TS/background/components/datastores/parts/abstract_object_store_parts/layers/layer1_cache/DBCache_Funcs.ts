@@ -1,7 +1,7 @@
 import MapCache from "../../../../../../utils/MapCache";
 import {NonPersistedStoreObjectStub} from "../layer0_db/store_object/StoreObject_Dtos";
 import {ID_TYPE, KEY_TYPE} from "../layer0_db/store_object/StoreObject_Types";
-import {StoreObjectKeyGetter} from "./DBCache";
+import {StoreObjectKeyGetter} from "./DBCache_Types";
 import {DBCache} from "./DBCache_Implementations";
 
 function createDbCache<STORE_T extends NonPersistedStoreObjectStub>(

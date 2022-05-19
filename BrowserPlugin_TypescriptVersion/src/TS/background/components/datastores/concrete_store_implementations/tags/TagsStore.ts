@@ -2,7 +2,7 @@ import {KEY_NAME} from "../../parts/abstract_object_store_parts/layers/layer0_db
 import {StoreController} from "../../parts/abstract_object_store_parts/layers/Types";
 import TagObject from "./TagObject";
 import {GetCreateDBStoreHandler} from "../../parts/abstract_object_store_parts/factory/BuildDBConstructionActions";
-import {builder} from "../../parts/abstract_object_store_parts/layers/layer1_cache/DBCache";
+import {builder} from "../../parts/abstract_object_store_parts/layers/layer1_cache/DBCache_Types";
 import BuildingSetupCheckInterface from "../../management/StoreConstructionSetupCheckerInteface";
 
 interface TagsStoreInterface {

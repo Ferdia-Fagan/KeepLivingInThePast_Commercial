@@ -9,13 +9,13 @@ require("fake-indexeddb/auto");
 
 describe("DBWithCacheWithReporting_StoreDummy", function() {
 
-    describe("addObject", function() {
+    describe("reportAddedObject", function() {
         it('should add object to new objects report', async () => {
             let storeInstance = DBWithCacheWithReporting_StoreDummy.builder();
 
             let testData: StoreObjectInterfaceExample = {
                 id: 0,
-                theKey: "testKey",
+                key: "testKey",
                 dataToHaveForUpdateReport: "testdata"
             }
             // when
@@ -29,11 +29,11 @@ describe("DBWithCacheWithReporting_StoreDummy", function() {
         });
     });
 
-    describe("updateObject", function() {
+    describe("reportUpdateObject", function() {
         it('if object is not in new objects report -> should add update to update report', async () => {
             let ogDataWillTryToUpdate: StoreObjectInterfaceExample = {
                 id: 1,
-                theKey: "testKey",
+                key: "testKey",
                 dataToHaveForUpdateReport: "1234"
             }
             let sampleInitialUpdateReports: InsertReport<StoreObjectUpdateReportInterfaceExample> =
@@ -47,7 +47,7 @@ describe("DBWithCacheWithReporting_StoreDummy", function() {
 
             let updatedObject: StoreObjectInterfaceExample = {
                 id: 1,
-                theKey: "testKey",
+                key: "testKey",
                 dataToHaveForUpdateReport: "5678" // changed
             }
             // when
@@ -64,7 +64,7 @@ describe("DBWithCacheWithReporting_StoreDummy", function() {
         it("if object is in new objects added report -> then update that new objects report and not the update report", () => {
             let ogDataWillTryToUpdate: StoreObjectInterfaceExample = {
                 id: 1,
-                theKey: "testKey",
+                key: "testKey",
                 dataToHaveForUpdateReport: "1234"
             }
             let sampleInitialUpdateReports: InsertReport<StoreObjectUpdateReportInterfaceExample> =
@@ -78,7 +78,7 @@ describe("DBWithCacheWithReporting_StoreDummy", function() {
 
             let updatedObject: StoreObjectInterfaceExample = {
                 id: 1,
-                theKey: "testKey",
+                key: "testKey",
                 dataToHaveForUpdateReport: "5678" // changed
             }
             // when
@@ -93,11 +93,11 @@ describe("DBWithCacheWithReporting_StoreDummy", function() {
         })
     });
 
-    describe("deleteObjectById", function() {
+    describe("reportDeletedObject", function() {
         it('if object mutation to report is in any of the other report -> should add delete to delete report', async () => {
             let dataWillTryToDelete = {
                 id: 1,
-                theKey: "testKey",
+                key: "testKey",
                 dataToHaveForUpdateReport: 1234
             }
             let testDataForDb = [
@@ -116,7 +116,7 @@ describe("DBWithCacheWithReporting_StoreDummy", function() {
         it("if object mutation to report is in new objects added report -> remove from this list and dont add to delete report", () => {
             let dataWillTryToDelete = {
                 id: 1,
-                theKey: "testKey",
+                key: "testKey",
                 dataToHaveForUpdateReport: "1234"
             }
             let sampleInitialUpdateReports: InsertReport<StoreObjectUpdateReportInterfaceExample> =
@@ -139,7 +139,7 @@ describe("DBWithCacheWithReporting_StoreDummy", function() {
         it("if object mutation to report is in updated objs report -> remove from this report and add to delete report", () => {
             let dataWillTryToDelete = {
                 id: 1,
-                theKey: "testKey",
+                key: "testKey",
                 dataToHaveForUpdateReport: "1234"
             }
             let sampleInitialUpdateReports: InsertReport<StoreObjectUpdateReportInterfaceExample> =

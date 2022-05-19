@@ -2,12 +2,12 @@ import {ID_TYPE, PersistedStoreObject} from "../../layer0_db/store_object/StoreO
 import {DBOperationsReportGenericWithMappedType} from "../reports/management/Types";
 import {ReportName} from "../reports/ReportName";
 import {DeleteReport, UpdatesReport} from "../reports/dtos/IndividualReports";
-import {DBInsertOperationsReporting, DBInsertsReportingInterface} from "./DBInsertOperationsReporting";
+import {DBInsertOperationsReporting, DBInsertsReporting_I} from "./DBInsertOperationsReporting";
 
-export interface DBMutationOperations<
+export interface DBAllOperationsReporting_I<
     R_STORE_REPORT_T extends PersistedStoreObject
 >
-    extends DBInsertsReportingInterface<R_STORE_REPORT_T> {
+    extends DBInsertsReporting_I<R_STORE_REPORT_T> {
 
     reportUpdateObject(updatedObject: R_STORE_REPORT_T): void
 
@@ -18,7 +18,7 @@ export class DBAllOperationsReporting<
     R_STORE_REPORT_T extends PersistedStoreObject
 >
     extends DBInsertOperationsReporting<R_STORE_REPORT_T>
-    implements DBMutationOperations<R_STORE_REPORT_T> {
+    implements DBAllOperationsReporting_I<R_STORE_REPORT_T> {
 
     updatedObjectReports: UpdatesReport<R_STORE_REPORT_T> = new Map<ID_TYPE, R_STORE_REPORT_T>()
     deletedObjectReports: DeleteReport = new Set<ID_TYPE>()
