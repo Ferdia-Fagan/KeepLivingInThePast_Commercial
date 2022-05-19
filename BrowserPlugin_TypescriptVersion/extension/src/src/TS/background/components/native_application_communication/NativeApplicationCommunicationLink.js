@@ -46,7 +46,7 @@ class NativeApplicationCommunicator {
         this.requestsToRoute.setRequestResponse(requestToSend.responseId, messageResponseAction);
     }
     /**
-     * NOTE: not receive messages that are not a response
+     * NOTE: not receive internal_messages that are not a response
      * @param response
      */
     onMessageReceived(response) {

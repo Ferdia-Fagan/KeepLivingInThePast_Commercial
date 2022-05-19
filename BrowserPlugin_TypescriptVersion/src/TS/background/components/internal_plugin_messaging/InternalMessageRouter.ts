@@ -1,5 +1,5 @@
 import browser, {Runtime} from "webextension-polyfill";
-import BaseInternalMessageDto from "./messages/base_dto/BaseInternalMessageDto";
+import BaseInternalMessageDto from "./internal_messages/base_dto/BaseInternalMessageDto";
 
 type InternalMessageAction = (messageData?: any, sender?: Runtime.MessageSender) => void
 

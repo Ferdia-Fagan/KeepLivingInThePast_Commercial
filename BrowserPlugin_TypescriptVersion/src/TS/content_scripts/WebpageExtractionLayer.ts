@@ -2,12 +2,12 @@ const browser = require("webextension-polyfill");
 
 const webpageMetadataParser = require("page-metadata-parser");
 
-import TellSystem_WebpageScrapings from "../background/components/internal_plugin_messaging/messages/dto/webpage_scraping/TellSystem_WebpageScrapings"
+import TellSystem_WebpageScrapings from "../background/components/internal_plugin_messaging/internal_messages/dto/webpage_scraping/TellSystem_WebpageScrapings"
 
 console.log("WebpageExtrractionLayer has been imported")
 
 /**
- * This will listen for messages from the background scripts
+ * This will listen for internal_messages from the background scripts
  */
 browser.runtime.onMessage.addListener((request: any) => {
     if(request.messageType == "askForTitle"){

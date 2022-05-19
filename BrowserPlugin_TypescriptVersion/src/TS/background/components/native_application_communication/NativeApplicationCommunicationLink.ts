@@ -48,7 +48,7 @@ export class NativeApplicationCommunicator
     }
 
     /**
-     * NOTE: not receive messages that are not a response
+     * NOTE: not receive internal_messages that are not a response
      * @param response
      */
     onMessageReceived(response: NativeMessageResponse) {

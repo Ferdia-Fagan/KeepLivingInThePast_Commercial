@@ -4,7 +4,7 @@ const browser = require("webextension-polyfill");
 const webpageMetadataParser = require("page-metadata-parser");
 console.log("WebpageExtrractionLayer has been imported");
 /**
- * This will listen for messages from the background scripts
+ * This will listen for internal_messages from the background scripts
  */
 browser.runtime.onMessage.addListener((request) => {
     if (request.messageType == "askForTitle") {
