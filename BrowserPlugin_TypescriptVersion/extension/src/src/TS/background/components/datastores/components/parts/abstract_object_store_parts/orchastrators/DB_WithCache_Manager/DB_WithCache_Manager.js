@@ -6,15 +6,15 @@ const DB_Manager_1 = require("../DB_Manager/DB_Manager");
 class EditableDB_WithCache_Manager {
     constructor(db, cache) {
         this.addObj = (newElementToStore) => this.db.addObj(newElementToStore).then(persistedObjectId => {
-            this.cache.cacheObjectWithId(persistedObjectId, newElementToStore);
+            this.cache.cacheObject(newElementToStore);
             return persistedObjectId;
         });
         this.addObjs = (newObjectsToAdd) => this.db.addObjs(newObjectsToAdd).then((persistedNewObjs) => {
-            this.cache.cacheObjectsWithIds(persistedNewObjs);
+            this.cache.cacheObjects(persistedNewObjs);
             return persistedNewObjs;
         });
         this.getObjByKey = (objKey) => {
-            const objId = this.cache.getObjectIdByKey(objKey);
+            const objId = this.cache.getObjIdByKey(objKey);
             if (objId) {
                 return this.db.getObjById(objId);
             }
@@ -23,17 +23,17 @@ class EditableDB_WithCache_Manager {
             }
         };
         this.getObjByKeys = (objKeys) => {
-            const cacheResponse = this.cache.getObjectIdsByKeys(objKeys);
-            const cachedIds = (!cacheResponse.ids.length) ?
-                null : this.db.getObjsByIds(cacheResponse.ids);
+            const cacheResponse = this.cache.getObjIdsByKeys(objKeys);
+            const cachedIds = (!cacheResponse.cachedIds.length) ?
+                null : this.db.getObjsByIds(cacheResponse.cachedIds);
             const nonCachedKeys = (!cacheResponse.keysNotCached) ?
-                null : this.db.getObjByKeys(cacheResponse.keysNotCached);
+                null : this.db.getObjsByKeys(cacheResponse.keysNotCached);
             nonCachedKeys.then();
             return Promise.all([
-                (!cacheResponse.ids.length) ?
-                    null : this.db.getObjsByIds(cacheResponse.ids),
+                (!cacheResponse.cachedIds.length) ?
+                    null : this.db.getObjsByIds(cacheResponse.cachedIds),
                 (!cacheResponse.keysNotCached) ?
-                    null : this.db.getObjByKeys(cacheResponse.keysNotCached)
+                    null : this.db.getObjsByKeys(cacheResponse.keysNotCached)
             ].filter(v => v != null)).then(result => result.flat());
         };
         this.db = db;

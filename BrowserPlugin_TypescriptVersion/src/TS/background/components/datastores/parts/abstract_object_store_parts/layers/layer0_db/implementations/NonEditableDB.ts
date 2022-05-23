@@ -26,7 +26,7 @@ export interface NonEditableStoreDB_I<STORE_OBJECT_T extends NonPersistedStoreOb
     getObjById?: (id: number) => Promise<Persisted<STORE_OBJECT_T>>
     getObjsByIds?: (objectIds: number[]) => Promise<Persisted<STORE_OBJECT_T>[]> // TODO: test
     getObjByKey?: (key: KEY_TYPE) => Promise<Persisted<STORE_OBJECT_T>>
-    getObjByKeys?: (keys: KEY_TYPE[]) => Promise<Persisted<STORE_OBJECT_T>[]> // TODO: test
+    getObjsByKeys?: (keys: KEY_TYPE[]) => Promise<Persisted<STORE_OBJECT_T>[]> // TODO: test
 
     getAllObjs?: () => Promise<Persisted<STORE_OBJECT_T>[]>
 
@@ -135,7 +135,7 @@ export class NonEditableDB<STORE_OBJECT_T extends NonPersistedStoreObjectStub>
         return this.getObjByIndexColumn(KEY_NAME, key)
     }
 
-    getObjByKeys(keys: KEY_TYPE[]): Promise<Persisted<STORE_OBJECT_T>[]> {
+    getObjsByKeys(keys: KEY_TYPE[]): Promise<Persisted<STORE_OBJECT_T>[]> {
         // TODO: complete
         throw new MethodNotYetImplemented()
     }

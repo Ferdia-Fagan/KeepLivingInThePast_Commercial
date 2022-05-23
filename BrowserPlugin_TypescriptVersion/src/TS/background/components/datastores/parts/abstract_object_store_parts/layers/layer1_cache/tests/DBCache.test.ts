@@ -17,7 +17,7 @@ describe("DBCache", function() {
                 key: keyOfCacheObj
             }
 
-            await storeInstance.cacheObjectWithId(testData.id, testData)
+            await storeInstance.cacheObject(testData)
 
             let testCache = await storeInstance["cache"].cache
 
@@ -38,7 +38,7 @@ describe("DBCache", function() {
             jest.spyOn(storeInstance["cache"], "get")
 
             // WHEN:
-            let actualObjectId = await storeInstance.getObjectIdByKey(objectKeyThatDoesNotExist)
+            let actualObjectId = await storeInstance.getObjIdByKey(objectKeyThatDoesNotExist)
 
             // THEN:
             expect(actualObjectId).toBe(undefined)
@@ -58,7 +58,7 @@ describe("DBCache", function() {
             jest.spyOn(storeInstance["cache"], "get")
 
             // WHEN
-            let actualObjectId = await storeInstance.getObjectIdByKey("test1")
+            let actualObjectId = await storeInstance.getObjIdByKey("test1")
 
             // THEN
             expect(storeInstance["cache"].get).toHaveBeenCalled()

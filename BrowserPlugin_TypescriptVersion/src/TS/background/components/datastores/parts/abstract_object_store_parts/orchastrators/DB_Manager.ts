@@ -211,7 +211,7 @@ export class EditableDB_Manager<
     getObjById: (id: number) => Promise<Persisted<STORE_OBJECT_T>>
     getObjsByIds: (objectIds: number[]) => Promise<Persisted<STORE_OBJECT_T>[]>
     getObjByKey: (key: KEY_TYPE) => Promise<Persisted<STORE_OBJECT_T>>
-    getObjByKeys: (keys: KEY_TYPE[]) => Promise<Persisted<STORE_OBJECT_T>[]>
+    getObjsByKeys: (keys: KEY_TYPE[]) => Promise<Persisted<STORE_OBJECT_T>[]>
 
     getAllObjs: () => Promise<Persisted<STORE_OBJECT_T>[]>
 

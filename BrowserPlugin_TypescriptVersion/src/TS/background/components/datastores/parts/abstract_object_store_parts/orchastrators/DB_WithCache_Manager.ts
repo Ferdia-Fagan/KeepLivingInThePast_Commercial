@@ -41,6 +41,11 @@ export interface DBComponent<
     db: A_EditableDBController<STORE_OBJECT_T,UPDATE_STORE_OBJECT_T>
 }
 
+export interface CacheComponent<
+    STORE_OBJECT_T extends NonPersistedStoreObjectStub
+> {
+    cache: DBCacheInterface<STORE_OBJECT_T>
+}
 
 export class EditableDB_WithCache_Manager<
     STORE_OBJECT_T extends NonPersistedStoreObjectStub,
@@ -48,7 +53,8 @@ export class EditableDB_WithCache_Manager<
 >
     implements
         EditableDB_WithCache_Interface<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T>,
-        DBComponent<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T>
+        DBComponent<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T>,
+        CacheComponent<STORE_OBJECT_T>
 {
 
     db: A_EditableDBController<STORE_OBJECT_T,UPDATE_STORE_OBJECT_T>
@@ -74,46 +80,52 @@ export class EditableDB_WithCache_Manager<
             "db"
         )
     }
-
+    
     addObj: (newElementToStore: STORE_OBJECT_T) => Promise<Persisted<STORE_OBJECT_T>> = (newElementToStore: STORE_OBJECT_T): Promise<Persisted<STORE_OBJECT_T>> =>
         this.db.addObj(newElementToStore).then(newPersObj => {
-            this.cache.cacheObjectWithId(newPersObj.id, newElementToStore)
+            this.cache.cacheObject(newPersObj)
             return newPersObj
         })
 
     addObjs: (newObjectsToAdd: Array<STORE_OBJECT_T>) => Promise<Persisted<STORE_OBJECT_T>[]> = (newObjectsToAdd: Array<STORE_OBJECT_T>) =>
         this.db.addObjs(newObjectsToAdd).then((persistedNewObjs) => {
-            this.cache.cacheObjectsWithIds(persistedNewObjs)
+            this.cache.cacheObjects(persistedNewObjs)
             return persistedNewObjs
         })
 
     getObjByKey = (objKey: KEY_TYPE) => {
-        const objId: ID_TYPE | null = this.cache.getObjectIdByKey(objKey)
+        const objId: ID_TYPE | null = this.cache.getObjIdByKey(objKey);
         if(objId){
             return this.db.getObjById(objId)
         } else {
-            return this.db.getObjByKey(objKey)
+            return this.db.getObjByKey(objKey).then(obj => {
+                this.cache.cacheObject(obj)
+                return obj
+            })
         }
     }
 
     getObjByIndexColumn = (indexName: string, value: IDBValidKey): Promise<Persisted<STORE_OBJECT_T>> => {
-        return this.db.getObjByIndexColumn(indexName, value)
+        return this.db.getObjByIndexColumn(indexName, value).then(obj => {
+            this.cache.cacheObject(obj)
+            return obj
+        })
     }
 
-    getObjByKeys = (objKeys: KEY_TYPE[]): Promise<Persisted<STORE_OBJECT_T>[]> => {
-        const cacheResponse = this.cache.getObjectIdsByKeys(objKeys)
+    getObjsByKeys = (objKeys: KEY_TYPE[]): Promise<Persisted<STORE_OBJECT_T>[]> => {
+        const cacheResponse = this.cache.getObjIdsByKeys(objKeys)
 
-        const cachedIds: Promise<Persisted<STORE_OBJECT_T>[]> | null = (!cacheResponse.ids.length)?
-            null : this.db.getObjsByIds(cacheResponse.ids)
+        const cachedIds: Promise<Persisted<STORE_OBJECT_T>[]> | null = (!cacheResponse.cachedIds.length)?
+            null : this.db.getObjsByIds(cacheResponse.cachedIds)
         const nonCachedKeys: Promise<Persisted<STORE_OBJECT_T>[]> | null = (!cacheResponse.keysNotCached)?
-            null : this.db.getObjByKeys(cacheResponse.keysNotCached)
+            null : this.db.getObjsByKeys(cacheResponse.keysNotCached)
         nonCachedKeys.then()
         return Promise.all(
             [
-                (!cacheResponse.ids.length)?
-                    null : this.db.getObjsByIds(cacheResponse.ids),
+                (!cacheResponse.cachedIds.length)?
+                    null : this.db.getObjsByIds(cacheResponse.cachedIds),
                 (!cacheResponse.keysNotCached)?
-                    null : this.db.getObjByKeys(cacheResponse.keysNotCached)
+                    null : this.db.getObjsByKeys(cacheResponse.keysNotCached)
             ].filter(v => v != null)
         ).then(result => result.flat())
     }
@@ -123,6 +135,8 @@ export class EditableDB_WithCache_Manager<
         await this.db.deleteObjById(objId)
         this.cache.deleteObjByKey(obj.key)
     }
+
+    updateObject?: (storeObject: UPDATE_STORE_OBJECT_T) => void
 
 }
 
@@ -136,7 +150,7 @@ export function create_DB_WithCache_Manager<
 ): EditableDB_WithCache_Manager<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T> {
     const manager =  new EditableDB_WithCache_Manager(db,cache)
     prepopulateCache.forEach(obj => {
-        manager.cache.cacheObjectWithId(obj.id, obj as any)
+        manager.cache.cacheObject(obj as any)
     })
     return manager
     // return stitchObjects(
