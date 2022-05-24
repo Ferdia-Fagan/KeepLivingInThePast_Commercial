@@ -33,13 +33,12 @@ class EditableDB_WithCache_WithReporting_Manager<
     implements
         EditableDB_WithCache_WithReporting< STORE_OBJECT_T, UPDATE_STORE_OBJECT_T >
 {
-    report: A_DBAllOperationsReportingController<STORE_OBJECT_T,UPDATE_STORE_OBJECT_T>
-
+    report: A_DBAllOperationsReportingController<STORE_OBJECT_T,R_STORE_REPORT_T>
 
     constructor(
         db: A_EditableDBController<STORE_OBJECT_T,UPDATE_STORE_OBJECT_T>,
         cache: A_DBCacheController<STORE_OBJECT_T>,
-        report: A_DBAllOperationsReportingController<STORE_OBJECT_T,UPDATE_STORE_OBJECT_T>
+        report: A_DBAllOperationsReportingController<STORE_OBJECT_T,R_STORE_REPORT_T>
     ) {
         super(db, cache)
         this.report = report
@@ -81,9 +80,6 @@ export function create_DB_WithCache_WithReporting_Manager<
     prepopulateCache?: StoreObjectInterfaceExample[],
     prepopulateReport?: DBReportInterface<R_STORE_REPORT_T>
 ): EditableDB_WithCache_WithReporting_Manager<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T, R_STORE_REPORT_T> {
-    const x = new DBAllOperationsReporting<
-        STORE_OBJECT_T, R_STORE_REPORT_T
-    >(prepopulateReport, extractReportInformationFunc)
     const manager =  new EditableDB_WithCache_WithReporting_Manager<
         STORE_OBJECT_T,
         UPDATE_STORE_OBJECT_T,
@@ -91,7 +87,9 @@ export function create_DB_WithCache_WithReporting_Manager<
     >(
         db,
         cache,
-        x
+        new DBAllOperationsReporting<
+            STORE_OBJECT_T, R_STORE_REPORT_T
+            >(prepopulateReport, extractReportInformationFunc)
     )
     prepopulateCache.forEach(obj => {
         manager.cache.cacheObject(obj as any)
