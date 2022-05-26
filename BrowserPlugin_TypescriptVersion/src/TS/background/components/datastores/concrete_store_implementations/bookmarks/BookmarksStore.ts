@@ -1,7 +1,7 @@
 import {
     BookmarkDataChangedInfo
 } from "../../../browser_state_management/handlers/bookmarks_state_management/dtos/BookmarkStateChanges";
-import {GetCreateDBStoreHandler} from "../../parts/abstract_object_store_parts/factory/BuildDBConstructionActions";
+import {GetCreateDBStoreHandler} from "../../parts/abstract_object_store_parts/factory/junk/BuildDBConstructionActions";
 import {KEY_NAME} from "../../parts/abstract_object_store_parts/layers/layer0_db/store_object/StoreObject_Constants";
 import {
     ID_TYPE

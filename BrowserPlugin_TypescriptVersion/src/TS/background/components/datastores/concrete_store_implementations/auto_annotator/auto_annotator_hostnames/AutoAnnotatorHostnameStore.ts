@@ -4,7 +4,7 @@ import {
 import {builder} from "../../../parts/abstract_object_store_parts/layers/layer1_cache/DBCache_Types";
 import HostnameObject from "./HostnameObject";
 import BuildingSetupCheckInterface from "../../../management/StoreConstructionSetupCheckerInteface";
-import {GetCreateDBStoreHandler} from "../../../parts/abstract_object_store_parts/factory/BuildDBConstructionActions";
+import {GetCreateDBStoreHandler} from "../../../parts/abstract_object_store_parts/factory/junk/BuildDBConstructionActions";
 
 interface AutoAnnotatorHostnameStoreInterface {
 

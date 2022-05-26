@@ -1,9 +1,12 @@
 import "mockzilla-webextension";
 import {
-    DBWithCacheWithReporting_StoreDummy, StoreObjectInterfaceExample, StoreObjectUpdateReportInterfaceExample
+    DBWithCacheWithReporting_StoreDummy,
+    extractStoreObjectReportExample,
+    StoreObjectInterfaceExample,
+    StoreObjectUpdateReportInterfaceExample
 } from "../../../../../../../../../../tests/background/datastores/abstract_object_store_parts/utils/DBWithCacheWithReporting_StoreDummy";
 import {ID_TYPE} from "../../layer0_db/store_object/StoreObject_Types";
-import {InsertReport} from "../reports/dtos/IndividualReports";
+import {DeleteReport, InsertReport} from "../reports/dtos/IndividualReports";
 require("fake-indexeddb/auto");
 
 
@@ -11,12 +14,21 @@ describe("DBWithCacheWithReporting_StoreDummy", function() {
 
     describe("reportAddedObject", function() {
         it('should add object to new objects report', async () => {
-            let storeInstance = DBWithCacheWithReporting_StoreDummy.builder();
+            let storeInstance = DBWithCacheWithReporting_StoreDummy.builder<
+                StoreObjectInterfaceExample,
+                StoreObjectUpdateReportInterfaceExample
+            >({extractReportInformationFunc: extractStoreObjectReportExample});
 
             let testData: StoreObjectInterfaceExample = {
                 id: 0,
                 key: "testKey",
-                dataToHaveForUpdateReport: "testdata"
+                dataToHaveForUpdateReport: "testdata",
+                otherDate: "otherdata"
+            }
+            let testDataReport: StoreObjectUpdateReportInterfaceExample = {
+                id: 0,
+                key: "testKey",
+                dataToHaveForUpdateReport: "testdata",
             }
             // when
             storeInstance.reportAddedObject(testData)
@@ -24,8 +36,7 @@ describe("DBWithCacheWithReporting_StoreDummy", function() {
             // expect(returnedResult).toBe(1)
             let newObjsReport = storeInstance.newObjectAddedReports
             expect(newObjsReport.size).toBe(1)
-            let expectedReport: StoreObjectUpdateReportInterfaceExample = testData
-            expect(newObjsReport.get(testData.id)).toMatchObject(expectedReport)
+            expect(newObjsReport.get(testData.id)).toMatchObject(testDataReport)
         });
     });
 
@@ -34,62 +45,78 @@ describe("DBWithCacheWithReporting_StoreDummy", function() {
             let ogDataWillTryToUpdate: StoreObjectInterfaceExample = {
                 id: 1,
                 key: "testKey",
-                dataToHaveForUpdateReport: "1234"
+                dataToHaveForUpdateReport: "1234",
+                otherDate: "otherdata"
             }
             let sampleInitialUpdateReports: InsertReport<StoreObjectUpdateReportInterfaceExample> =
                 new Map([[ogDataWillTryToUpdate.id, ogDataWillTryToUpdate]])
 
             let dbReportController = await DBWithCacheWithReporting_StoreDummy.builder(
-                new Map<ID_TYPE, StoreObjectUpdateReportInterfaceExample>(),
-                sampleInitialUpdateReports,
-                null
+                {
+                    extractReportInformationFunc: extractStoreObjectReportExample,
+                    newObjectAddedReports: new Map<ID_TYPE, StoreObjectUpdateReportInterfaceExample>(),
+                    updatedObjectReports: sampleInitialUpdateReports,
+                    deletedObjectReports: new Set<ID_TYPE>()
+                }
             );
 
             let updatedObject: StoreObjectInterfaceExample = {
                 id: 1,
                 key: "testKey",
-                dataToHaveForUpdateReport: "5678" // changed
+                dataToHaveForUpdateReport: "5678",
+                otherDate: "otherdata"
             }
             // when
             dbReportController.reportUpdateObject(updatedObject)
 
             // then
+            let updatedObjReport: StoreObjectUpdateReportInterfaceExample = {
+                id: 1,
+                key: "testKey",
+                dataToHaveForUpdateReport: "5678"
+            }
             let updatedObjsReport = dbReportController.updatedObjectReports
 
             expect(updatedObjsReport.size).toBe(1)
-            let expectedUpdateReport: StoreObjectUpdateReportInterfaceExample = updatedObject
-            expect(updatedObjsReport.get(ogDataWillTryToUpdate.id)).toMatchObject(expectedUpdateReport)
+            expect(updatedObjsReport.get(ogDataWillTryToUpdate.id)).toMatchObject(updatedObjReport)
         });
 
         it("if object is in new objects added report -> then update that new objects report and not the update report", () => {
             let ogDataWillTryToUpdate: StoreObjectInterfaceExample = {
                 id: 1,
                 key: "testKey",
-                dataToHaveForUpdateReport: "1234"
+                dataToHaveForUpdateReport: "1234",
+                otherDate: "otherdata"
             }
             let sampleInitialUpdateReports: InsertReport<StoreObjectUpdateReportInterfaceExample> =
                 new Map([[ogDataWillTryToUpdate.id, ogDataWillTryToUpdate]])
 
             let dbReportController = DBWithCacheWithReporting_StoreDummy.builder(
-                    sampleInitialUpdateReports,
-                null,
-                null
+                {
+                    updatedObjectReports: sampleInitialUpdateReports,
+                    extractReportInformationFunc: extractStoreObjectReportExample
+                }
             );
 
             let updatedObject: StoreObjectInterfaceExample = {
                 id: 1,
                 key: "testKey",
-                dataToHaveForUpdateReport: "5678" // changed
+                dataToHaveForUpdateReport: "5678",
+                otherDate: "otherdata"
             }
             // when
             dbReportController.reportUpdateObject(updatedObject)
 
             // then
-            let newObjsReport = dbReportController.newObjectAddedReports
+            let updatedObjReport: StoreObjectUpdateReportInterfaceExample = {
+                id: 1,
+                key: "testKey",
+                dataToHaveForUpdateReport: "5678"
+            }
+            let updatedObjsReport = dbReportController.updatedObjectReports
 
-            expect(newObjsReport.size).toBe(1)
-            let expectedUpdateReport: StoreObjectUpdateReportInterfaceExample = updatedObject
-            expect(newObjsReport.get(ogDataWillTryToUpdate.id)).toMatchObject(expectedUpdateReport)
+            expect(updatedObjsReport.size).toBe(1)
+            expect(updatedObjsReport.get(ogDataWillTryToUpdate.id)).toMatchObject(updatedObjReport)
         })
     });
 
@@ -100,34 +127,37 @@ describe("DBWithCacheWithReporting_StoreDummy", function() {
                 key: "testKey",
                 dataToHaveForUpdateReport: 1234
             }
-            let testDataForDb = [
-                dataWillTryToDelete
-            ]
-            let dbReportController = DBWithCacheWithReporting_StoreDummy.builder();
+            let dbReportController = DBWithCacheWithReporting_StoreDummy.builder<
+                StoreObjectInterfaceExample,
+                StoreObjectUpdateReportInterfaceExample
+            >({extractReportInformationFunc: extractStoreObjectReportExample});
 
             // when
             dbReportController.reportDeletedObject(dataWillTryToDelete.id)
+
             // then
             let deletedObjsReport = dbReportController.deletedObjectReports
             expect(deletedObjsReport.size).toBe(1)
             expect(deletedObjsReport.has(dataWillTryToDelete.id)).toBe(true)
         })
-        
+
         it("if object mutation to report is in new objects added report -> remove from this list and dont add to delete report", () => {
             let dataWillTryToDelete = {
                 id: 1,
                 key: "testKey",
                 dataToHaveForUpdateReport: "1234"
             }
-            let sampleInitialUpdateReports: InsertReport<StoreObjectUpdateReportInterfaceExample> =
+            let sampleInitialAddedObjReports: InsertReport<StoreObjectUpdateReportInterfaceExample> =
                 new Map([[dataWillTryToDelete.id, dataWillTryToDelete]]
             )
-            
-            let dbReportController = DBWithCacheWithReporting_StoreDummy.builder(
-                sampleInitialUpdateReports,
-                null,
-                null
-            )
+
+            let dbReportController = DBWithCacheWithReporting_StoreDummy.builder<
+                StoreObjectInterfaceExample,
+                StoreObjectUpdateReportInterfaceExample
+            >({
+                newObjectAddedReports: sampleInitialAddedObjReports,
+                extractReportInformationFunc: extractStoreObjectReportExample
+            });
             expect(dbReportController.newObjectAddedReports.size).toBe(1)
 
             // when
@@ -147,13 +177,17 @@ describe("DBWithCacheWithReporting_StoreDummy", function() {
             )
 
             let dbReportController = DBWithCacheWithReporting_StoreDummy.builder(
-                new Map<ID_TYPE, StoreObjectUpdateReportInterfaceExample>(),
-                sampleInitialUpdateReports,
-                new Set<ID_TYPE>()
+                {
+                    newObjectAddedReports: new Map<ID_TYPE, StoreObjectUpdateReportInterfaceExample>(),
+                    updatedObjectReports: sampleInitialUpdateReports,
+                    deletedObjectReports: new Set<ID_TYPE>(),
+                    extractReportInformationFunc: extractStoreObjectReportExample
+                }
             )
 
             // when
             dbReportController.reportDeletedObject(dataWillTryToDelete.id)
+
             // then
             expect(dbReportController.updatedObjectReports.size).toBe(0)
             expect(dbReportController.deletedObjectReports.size).toBe(1)

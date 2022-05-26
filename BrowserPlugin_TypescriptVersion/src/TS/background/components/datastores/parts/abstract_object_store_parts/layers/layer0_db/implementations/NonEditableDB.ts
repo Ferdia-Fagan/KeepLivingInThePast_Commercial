@@ -33,7 +33,9 @@ export interface NonEditableStoreDB_I<STORE_OBJECT_T extends NonPersistedStoreOb
     deleteObjById?: (objId: number) => Promise<void>
 }
 
-export class NonEditableDB<STORE_OBJECT_T extends NonPersistedStoreObjectStub>
+export class NonEditableDB<
+    STORE_OBJECT_T extends NonPersistedStoreObjectStub
+>
     extends DBConnection_A
     implements A_NonEditableDBController<STORE_OBJECT_T> {
     // ------------ FUNCTIONALITY -------------------

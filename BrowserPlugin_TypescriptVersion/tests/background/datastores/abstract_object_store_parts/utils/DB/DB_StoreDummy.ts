@@ -20,7 +20,7 @@ export interface PersistedStoreObjectInterfaceExample
     extends PersistedStoreObject {}
 
 type StoreObjectUpdateInterfaceExample = StoreObjectInterfaceExample & UpdatedStoreObjectStub
-const THE_KEY_NAME = "key"
+export const THE_KEY_NAME = "key"
 
 export class DB_StoreDummy<
     STORE_T extends NonPersistedStoreObjectStub,
@@ -40,7 +40,12 @@ export class DB_StoreDummy<
 
         function onUpgradeNeededHandler(event: any){    // TODO: correct any
             const objectStore = event.currentTarget.result.createObjectStore(
-                STORE_NAME, { keyPath: ID_NAME, autoIncrement: true });
+                STORE_NAME,
+                {
+                    keyPath: ID_NAME,
+                    autoIncrement: true
+                }
+            );
 
             objectStore.createIndex(
                 KEY_NAME,

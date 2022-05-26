@@ -1,4 +1,4 @@
-import {NonPersistedStoreObjectStub, UpdatedStoreObjectStub} from "../layers/layer0_db/store_object/StoreObject_Dtos";
+import {NonPersistedStoreObjectStub, UpdatedStoreObjectStub} from "../../layers/layer0_db/store_object/StoreObject_Dtos";
 
 export default interface DBWithCacheWithReportingBuilderInterface<
     STORE_T extends NonPersistedStoreObjectStub,

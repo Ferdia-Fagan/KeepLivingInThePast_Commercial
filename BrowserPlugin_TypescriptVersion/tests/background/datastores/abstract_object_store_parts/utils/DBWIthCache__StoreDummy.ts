@@ -1,5 +1,5 @@
 import {
-    NonPersistedStoreObjectStub,
+    NonPersistedStoreObjectStub, PersistedStoreObjectStub,
     UpdatedStoreObjectStub
 } from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer0_db/store_object/StoreObject_Dtos";
 import {
@@ -14,7 +14,8 @@ import {
 } from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer1_cache/DBCache_Implementations";
 import MapCache from "../../../../../src/TS/background/utils/MapCache";
 
-export interface StoreObjectInterfaceExample extends NonPersistedStoreObjectStub{}
+export interface StoreObjectInterfaceExample 
+    extends PersistedStoreObjectStub{ }
 
 type StoreObjectUpdateInterfaceExample = StoreObjectInterfaceExample & UpdatedStoreObjectStub
 const THE_KEY_NAME = "theKey"

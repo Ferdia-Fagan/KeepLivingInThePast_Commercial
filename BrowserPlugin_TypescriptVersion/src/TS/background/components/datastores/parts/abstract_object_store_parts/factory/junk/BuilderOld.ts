@@ -1,4 +1,4 @@
-import {NonPersistedStoreObjectStub} from "../layers/layer0_db/store_object/StoreObject_Dtos";
+import {NonPersistedStoreObjectStub} from "../../layers/layer0_db/store_object/StoreObject_Dtos";
 import DBWithCacheWithReportingBuilderInterface from "./DBWithCacheWithReportingBuilderInterface";
 
 // async function builder<

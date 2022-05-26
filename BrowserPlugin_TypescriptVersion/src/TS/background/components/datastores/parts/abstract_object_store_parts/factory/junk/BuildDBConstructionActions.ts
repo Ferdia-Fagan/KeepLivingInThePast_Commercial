@@ -1,4 +1,4 @@
-import {ID_NAME} from "../layers/layer0_db/store_object/StoreObject_Constants";
+import {ID_NAME} from "../../layers/layer0_db/store_object/StoreObject_Constants";
 
 interface IndexConstructorParams {
     indexName: string,

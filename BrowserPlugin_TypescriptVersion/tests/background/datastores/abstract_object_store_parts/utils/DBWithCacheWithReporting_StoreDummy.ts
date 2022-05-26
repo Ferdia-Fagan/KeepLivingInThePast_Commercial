@@ -1,9 +1,15 @@
 import {
+    NonPersistedStoreObjectStub
+} from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer0_db/store_object/StoreObject_Dtos";
+import {
     ID_TYPE, KEY_TYPE, PersistedStoreObject
 } from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer0_db/store_object/StoreObject_Types";
 import {
-    DBAllOperationsReporting
+    DBAllOperationsReporting, DBReportInterface
 } from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer2_reporting/implementations/DBAllOperationsReporting";
+import {
+    ExtractReportInformationFunc
+} from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer2_reporting/implementations/DBInsertOperationsReporting";
 import {
     DeleteReport, InsertReport,
     UpdatesReport
@@ -12,47 +18,73 @@ import {
 export interface StoreObjectInterfaceExample
     extends PersistedStoreObject {
     dataToHaveForUpdateReport: string
+    otherDate: string
 }
 export interface StoreObjectUpdateReportInterfaceExample
     extends PersistedStoreObject {
     dataToHaveForUpdateReport: string
 }
 
+// TODO: improve
+export function extractStoreObjectReportExample(obj: StoreObjectInterfaceExample): StoreObjectUpdateReportInterfaceExample {
+    return {
+        id: obj.id,
+        key: obj.key,
+        dataToHaveForUpdateReport: obj.dataToHaveForUpdateReport
+    }
+}
+
 const THE_KEY_NAME = "theKey"
 
 export class DBWithCacheWithReporting_StoreDummy<
+    STORE_OBJECT_T extends NonPersistedStoreObjectStub,
     R_STORE_REPORT_T extends PersistedStoreObject
 >
-    extends DBAllOperationsReporting<R_STORE_REPORT_T>{
+    extends DBAllOperationsReporting<STORE_OBJECT_T,R_STORE_REPORT_T>{
 
     static builder<
-        R_STORE_REPORT_T extends PersistedStoreObject = StoreObjectUpdateReportInterfaceExample,
-    >(
-        newObjectAddedReports: InsertReport<R_STORE_REPORT_T> = new Map<ID_TYPE, R_STORE_REPORT_T>(),
-        updatedObjectReports: UpdatesReport<R_STORE_REPORT_T> = new Map<ID_TYPE, R_STORE_REPORT_T>(),
-        deletedObjectReports: DeleteReport = new Set<ID_TYPE>()
-    ) {
+        STORE_OBJECT_T extends NonPersistedStoreObjectStub,
+        R_STORE_REPORT_T extends PersistedStoreObject
+    >(params: {
+        newObjectAddedReports?: InsertReport<R_STORE_REPORT_T>,
+        updatedObjectReports?: UpdatesReport<R_STORE_REPORT_T>,
+        deletedObjectReports?: DeleteReport,
+        extractReportInformationFunc: ExtractReportInformationFunc<STORE_OBJECT_T, R_STORE_REPORT_T>
+    }) {
+        if(params.newObjectAddedReports == null){
+            params.newObjectAddedReports = new Map<ID_TYPE, R_STORE_REPORT_T>()
+        }
+        if(params.updatedObjectReports == null){
+            params.updatedObjectReports = new Map<ID_TYPE, R_STORE_REPORT_T>()
+        }
+        if(params.deletedObjectReports == null){
+            params.deletedObjectReports = new Set<ID_TYPE>()
+        }
         const dbCacheDummyInstance = new DBWithCacheWithReporting_StoreDummy<
-            R_STORE_REPORT_T
-        >()
-        dbCacheDummyInstance.newObjectAddedReports = newObjectAddedReports
-        dbCacheDummyInstance.updatedObjectReports = updatedObjectReports
-        dbCacheDummyInstance.deletedObjectReports = deletedObjectReports
-
+            STORE_OBJECT_T,R_STORE_REPORT_T
+        >(
+    {
+                newObjectAddedReports: params.newObjectAddedReports,
+                updatedObjectReports: params.updatedObjectReports,
+                deletedObjectReports: params.deletedObjectReports
+            },
+            params.extractReportInformationFunc
+        )
+        
         return dbCacheDummyInstance
     }
 
-    reportAddedObject(newSyncedObj: R_STORE_REPORT_T): void {
-        return super.reportAddedObject(newSyncedObj)
-    }
-
-    reportDeletedObject(id: number): void {
-        return super.reportDeletedObject(id)
-    }
-
-    reportUpdateObject(updatedObject: R_STORE_REPORT_T): void {
-        return super.reportUpdateObject(updatedObject)
-    }
+    // reportAddedObject(newSyncedObj: STORE_OBJECT_T): void {
+    //     return super.reportAddedObject(newSyncedObj)
+    // }
+    //
+    // reportDeletedObject(id: number): void {
+    //     return super.reportDeletedObject(id)
+    // }
+    //
+    // reportUpdateObject(updatedObject: STORE_OBJECT_T): void {
+    //     return super.reportUpdateObject(updatedObject)
+    // }
 
 }
 

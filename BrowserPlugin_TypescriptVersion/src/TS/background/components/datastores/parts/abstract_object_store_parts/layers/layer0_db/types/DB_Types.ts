@@ -15,9 +15,11 @@ export type A_NonEditableDBController<STORE_OBJECT_T extends NonPersistedStoreOb
 /**
  * This is a DB that does regular queries, and does all aswell as updates.
  */
-export type A_EditableDBController<STORE_OBJECT_T extends NonPersistedStoreObjectStub,
-    UPDATE_STORE_OBJECT_T extends UpdatedStoreObjectStub> = (
-    EditableStoreDB_I<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T>
-    )
+export type A_EditableDBController<
+    STORE_OBJECT_T extends NonPersistedStoreObjectStub,
+    UPDATE_STORE_OBJECT_T extends UpdatedStoreObjectStub
+> = (
+        EditableStoreDB_I<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T>
+)
 
 type ObjectStoreAndTransaction = [IDBTransaction, IDBObjectStore]

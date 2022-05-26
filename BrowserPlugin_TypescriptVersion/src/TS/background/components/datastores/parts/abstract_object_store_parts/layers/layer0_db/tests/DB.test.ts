@@ -10,6 +10,8 @@ import {
     PersistedStoreObjectInterfaceExample,
     StoreObjectInterfaceExample
 } from "../../../../../../../../../../tests/background/datastores/abstract_object_store_parts/utils/DB/DB_StoreDummy";
+import {buildDBLayer} from "../construction/Builder";
+import {EditableDB} from "../implementations/EditableDB";
 import {ID_NAME, KEY_NAME} from "../store_object/StoreObject_Constants";
 
 var HAS_BEEN__CREATED: boolean = false;
@@ -21,13 +23,23 @@ const flushPromises = () => new Promise(setImmediate);
 describe("DBStore", function(){
 
     beforeAll(async() => {
-        await DB_StoreDummy.builder(
-            "test", 3, "test");
+        await buildDBLayer({
+            DATABASE: "test",
+            DB_VERSION: 3,
+            STORE_NAME: "test",
+            dbConstructor: EditableDB,
+        })
+        // await DB_StoreDummy.builder(
+        //     "test", 3, "test");
     })
 
     it("addObj - add object with key that does not exist - successfully added object", async() => {
-        let storeInstance = await DB_StoreDummy.builder(
-            "test", 3, "test");
+        let storeInstance = await buildDBLayer({
+            DATABASE: "test",
+            DB_VERSION: 3,
+            STORE_NAME: "test",
+            dbConstructor: EditableDB,
+        });
 
         const newObject: StoreObjectInterfaceExample = {
             key: "testKey1"
@@ -41,12 +53,15 @@ describe("DBStore", function(){
     });
 
     it("getObjectByIndexColumn - get object by column index that exists", async () => {
-        let storeInstance = await DB_StoreDummy.builder(
-            "test", 3, "test",
-            [
+        let storeInstance = await buildDBLayer({
+            DATABASE: "test",
+            DB_VERSION: 3,
+            STORE_NAME: "test",
+            dbConstructor: EditableDB,
+            startingData: [
                 {key: "testKey"}
             ]
-        );
+        });
 
         let expectedResult: StoreObjectInterfaceExample = {
             id: 1, key: "testKey"
@@ -61,14 +76,17 @@ describe("DBStore", function(){
     })
 
     it("getAllObjs", async () => {
-        let storeInstance = await DB_StoreDummy.builder(
-            "test", 3, "test",
-            [
+        let storeInstance = await buildDBLayer({
+            DATABASE: "test",
+            DB_VERSION: 3,
+            STORE_NAME: "test",
+            dbConstructor: EditableDB,
+            startingData: [
                 {key: "testKey1"},
                 {key: "testKey2"},
                 {key: "testKey3"}
             ]
-        );
+        });
 
         let allObjectsFromStore = await storeInstance.getAllObjs()
 
@@ -79,12 +97,15 @@ describe("DBStore", function(){
     })
 
     it("deleteObjById", async () => {
-        let storeInstance = await DB_StoreDummy.builder(
-            "test", 3, "test",
-            [
+        let storeInstance = await buildDBLayer({
+            DATABASE: "test",
+            DB_VERSION: 3,
+            STORE_NAME: "test",
+            dbConstructor: EditableDB,
+            startingData: [
                 {key: "testKey1"}
             ]
-        );
+        });
 
         storeInstance.deleteObjById(1)
 
@@ -94,12 +115,15 @@ describe("DBStore", function(){
     })
 
     it("updateObject", async () => {
-        let storeInstance = await DB_StoreDummy.builder(
-            "test", 3, "test",
-            [
+        let storeInstance = await buildDBLayer({
+            DATABASE: "test",
+            DB_VERSION: 3,
+            STORE_NAME: "test",
+            dbConstructor: EditableDB,
+            startingData: [
                 {key: "testKey1"}
             ]
-        );
+        });
 
         let expectedTestKeyUpdated = {
             id: 1, key: "testKey10"

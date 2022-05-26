@@ -1,3 +1,6 @@
+import {NonPersistedStoreObjectStub, UpdatedStoreObjectStub} from "./store_object/StoreObject_Dtos";
+
+
 /**
  * Base of a DB implementation
  */
@@ -35,4 +38,11 @@ export abstract class DBConnection_A {
     protected onFailedRequest(evt: any): void { // TODO: update evt interface
         console.error("error with database request", evt.target.errorCode);
     }
+}
+
+export abstract class DBConnection_A_WRAPPER<
+    STORE_T extends NonPersistedStoreObjectStub,
+    UPDATE_STORE_OBJECT_T extends UpdatedStoreObjectStub
+> extends DBConnection_A {
+
 }
