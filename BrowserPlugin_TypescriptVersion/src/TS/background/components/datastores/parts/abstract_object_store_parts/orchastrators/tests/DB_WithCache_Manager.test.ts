@@ -6,7 +6,8 @@ import {
 import {
     StoreObjectInterfaceExample
 } from "../../../../../../../../../tests/background/datastores/abstract_object_store_parts/utils/DBWIthCache__StoreDummy";
-import {EditableStoreDB_I} from "../../layers/layer0_db/implementations/EditableDB";
+import {buildDBLayer, KeyIndexKeyAssignement} from "../../layers/layer0_db/construction/Builder";
+import {EditableDB, EditableStoreDB_I} from "../../layers/layer0_db/implementations/EditableDB";
 import {KEY_NAME} from "../../layers/layer0_db/store_object/StoreObject_Constants";
 import {
     NonPersistedStoreObjectStub,
@@ -25,20 +26,33 @@ interface SampleDbWithCacheManagerInterface<
         DBComponent<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T>,
         CacheComponent<STORE_OBJECT_T> {}
 
-function createDb(
+function createDb<
+    STORE_T extends NonPersistedStoreObjectStub,
+    STORE_T_UPDATE_INTERFACE extends UpdatedStoreObjectStub
+>(
     DATABASE: string, DB_VERSION: number,
     STORE_NAME: string,
-    testData: StoreObjectInterfaceExample[] = [],
-    prepopulateCache: StoreObjectInterfaceExample[] = []
+    testData: STORE_T[] = [],
+    prepopulateCache: STORE_T[] = []
 ): Promise<
-    SampleDbWithCacheManagerInterface<StoreObjectInterfaceExample, PersistedStoreObjectInterfaceExample>
+    SampleDbWithCacheManagerInterface<STORE_T, STORE_T_UPDATE_INTERFACE>
 > {
-    return DB_StoreDummy.builder(
-        DATABASE, DB_VERSION, STORE_NAME, testData
-    ).then(db => {
-        return create_DB_WithCache_Manager<StoreObjectInterfaceExample, PersistedStoreObjectInterfaceExample>(
+    return buildDBLayer<
+        STORE_T,
+        STORE_T_UPDATE_INTERFACE,
+        EditableDB<STORE_T, STORE_T_UPDATE_INTERFACE>
+    >({
+        DATABASE: "test",
+        DB_VERSION: 3,
+        STORE_NAME: "test",
+        dbConstructor: EditableDB,
+        startingData: testData,
+        keyIndexAssignement: KeyIndexKeyAssignement,
+        otherKeysIndexAssignements: []
+    }).then(db => {
+        return create_DB_WithCache_Manager<STORE_T, STORE_T_UPDATE_INTERFACE>(
             db, // as unknown as A_EditableDBController<StoreObjectInterfaceExample, PersistedStoreObjectInterfaceExample>,
-            new DBCache<StoreObjectInterfaceExample>(((object) => object.key)),
+            new DBCache<STORE_T>(((object) => object.key)),
             prepopulateCache
         )
     })

@@ -15,7 +15,7 @@ import {
 import MapCache from "../../../../../src/TS/background/utils/MapCache";
 
 export interface StoreObjectInterfaceExample 
-    extends PersistedStoreObjectStub{ }
+    extends NonPersistedStoreObjectStub{ }
 
 type StoreObjectUpdateInterfaceExample = StoreObjectInterfaceExample & UpdatedStoreObjectStub
 const THE_KEY_NAME = "theKey"

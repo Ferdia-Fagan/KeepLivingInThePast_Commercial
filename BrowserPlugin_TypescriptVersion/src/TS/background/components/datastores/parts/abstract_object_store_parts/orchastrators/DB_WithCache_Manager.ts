@@ -146,7 +146,7 @@ export function create_DB_WithCache_Manager<
 >(
     db: A_EditableDBController<STORE_OBJECT_T,UPDATE_STORE_OBJECT_T>,
     cache: DBCacheInterface<STORE_OBJECT_T>,
-    prepopulateCache?: StoreObjectInterfaceExample[]
+    prepopulateCache?: STORE_OBJECT_T[]
 ): EditableDB_WithCache_Manager<STORE_OBJECT_T, UPDATE_STORE_OBJECT_T> {
     const manager =  new EditableDB_WithCache_Manager(db,cache)
     prepopulateCache.forEach(obj => {
