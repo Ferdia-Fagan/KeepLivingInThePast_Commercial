@@ -6,7 +6,8 @@ import "mockzilla-webextension";
 import {
     DB_StoreDummy, PersistedStoreObjectInterfaceExample, StoreObjectInterfaceExample
 } from "../../../../../../../../../tests/background/datastores/abstract_object_store_parts/utils/DB/DB_StoreDummy";
-import {EditableStoreDB_I} from "../../layers/layer0_db/implementations/EditableDB";
+import {buildDBLayer, KeyIndexKeyAssignement} from "../../layers/layer0_db/construction/Builder";
+import {EditableDB, EditableStoreDB_I} from "../../layers/layer0_db/implementations/EditableDB";
 import {KEY_NAME} from "../../layers/layer0_db/store_object/StoreObject_Constants";
 import {
     NonPersistedStoreObjectStub,
@@ -22,11 +23,21 @@ function createDb<
 >(
     DATABASE: string, DB_VERSION: number,
     STORE_NAME: string,
-    testData?: StoreObjectInterfaceExample[]
+    testData?: STORE_T[]
 ) {
-    return DB_StoreDummy.builder(
-        DATABASE, DB_VERSION, STORE_NAME, testData
-    ).then(db => {
+    return buildDBLayer<
+        STORE_T,
+        STORE_T_UPDATE_INTERFACE,
+        EditableDB<STORE_T, STORE_T_UPDATE_INTERFACE>
+    >({
+        DATABASE: "test",
+        DB_VERSION: 3,
+        STORE_NAME: "test",
+        dbConstructor: EditableDB,
+        startingData: testData,
+        keyIndexAssignement: KeyIndexKeyAssignement,
+        otherKeysIndexAssignements: []
+    }).then(db => {
         return createDBManager<
             EditableStoreDB_I<StoreObjectInterfaceExample, PersistedStoreObjectInterfaceExample>
         >(db)
@@ -36,8 +47,12 @@ function createDb<
 describe("DBStore", function(){
 
     beforeAll(async() => {
-        await DB_StoreDummy.builder(
-            "test", 3, "test")
+        await buildDBLayer({
+            DATABASE: "test",
+            DB_VERSION: 3,
+            STORE_NAME: "test",
+            dbConstructor: EditableDB,
+        })
     })
 
     it("addObject(...) - add object with key that does not exist - successfully added object", async() => {

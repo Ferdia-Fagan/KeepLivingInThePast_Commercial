@@ -149,7 +149,6 @@ export function stitch<T>(
     const objToStitch = _this[keyToObjectToSwitch]
     let currentLayerPrototype = Object.getPrototypeOf(objToStitch)
     while(!haveReachedBaseDBLayer(currentLayerPrototype.constructor.name)){
-        currentLayerPrototype = Object.getPrototypeOf(currentLayerPrototype)
         const currentLayerFuncNames = Object.getOwnPropertyNames(currentLayerPrototype)
         currentLayerFuncNames
             .filter(l => l !== "constructor")
@@ -158,6 +157,8 @@ export function stitch<T>(
                 const x = funcName as keyof T
                 _this[x] = _this[keyToObjectToSwitch][x].bind(_this[keyToObjectToSwitch])
             })
+
+        currentLayerPrototype = Object.getPrototypeOf(currentLayerPrototype)
     }
 }
 
