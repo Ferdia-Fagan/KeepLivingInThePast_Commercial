@@ -1,11 +1,11 @@
-import BrowserStateManager_Settings from "../../../src/TS/background/components/browser_state_management/junk/BrowserStateManager_Settings";
+import BrowserStateManager_Settings from "../../../src/TS/background/components/browser_state_management_component/junk/BrowserStateManager_Settings";
 
 import "mockzilla-webextension";
 import { DEFAULT_BOOKMARK_FOLDER_NAME, DEFAULT_SETTINGS } from "../../../src/TS/background/settings/Settings";
 
 
 
-// // import BrowserStateManager_Settings from "../../../src/background/browser_state_management/BrowserStateManager_Settings";
+// // import BrowserStateManager_Settings from "../../../src/background/browser_state_management_component/BrowserStateManager_Settings";
 
 // describe('BrowserStateManager_Settings constructor should change settings')
 

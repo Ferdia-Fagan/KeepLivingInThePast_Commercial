@@ -1,8 +1,8 @@
-// import WindowTabsStateManager from "../../../../../src/background/browser_state_management/layers/layer1_windows_state_management/WindowTabsStateManager";
-// import WebpageData from "../../../../../src/background/browser_state_management/layers/layer1_windows_state_management/layers/layer2_webpage_state_management/components.webpages/WebpageData";
+// import WindowTabsStateManager from "../../../../../src/background/browser_state_management_component/layers/layer1_windows_state_management/WindowTabsStateManager";
+// import WebpageData from "../../../../../src/background/browser_state_management_component/layers/layer1_windows_state_management/layers/layer2_webpage_state_management/components.webpages/WebpageData";
 // import { CurrentSettings, SetSettings } from "../../../../../src/background/settings/Settings";
 //
-// // jest.mock("../../../../src/background/browser_state_management/webpages/WebpageData");
+// // jest.mock("../../../../src/background/browser_state_management_component/webpages/WebpageData");
 //
 // describe('basic functionality', function () {
 //

@@ -1,17 +1,17 @@
 import {
     NonPersistedStoreObjectStub, PersistedStoreObjectStub,
     UpdatedStoreObjectStub
-} from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer0_db/store_object/StoreObject_Dtos";
+} from "../../../../../src/TS/background/components/datastore_components/abstract/parts/layers/layer0_db/store_object/StoreObject_Dtos";
 import {
     ID_TYPE,
     KEY_TYPE
-} from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer0_db/store_object/StoreObject_Types";
+} from "../../../../../src/TS/background/components/datastore_components/abstract/parts/layers/layer0_db/store_object/StoreObject_Types";
 import {
     StoreObjectKeyGetter
-} from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer1_cache/DBCache_Types";
+} from "../../../../../src/TS/background/components/datastore_components/abstract/parts/layers/layer1_cache/DBCache_Types";
 import {
     DBCache
-} from "../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer1_cache/DBCache_Implementations";
+} from "../../../../../src/TS/background/components/datastore_components/abstract/parts/layers/layer1_cache/DBCache_Implementations";
 import MapCache from "../../../../../src/TS/background/utils/MapCache";
 
 export interface StoreObjectInterfaceExample 

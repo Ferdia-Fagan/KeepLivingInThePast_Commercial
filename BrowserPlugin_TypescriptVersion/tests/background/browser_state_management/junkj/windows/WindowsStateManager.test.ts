@@ -1,6 +1,6 @@
 // import { assert } from "console";
-// import WindowTabsStateManager from "../../../../../src/background/browser_state_management/layers/layer1_windows_state_management/WindowTabsStateManager";
-// import BrowserStateManager from "../../../../../src/background/browser_state_management/BrowserStateManager";
+// import WindowTabsStateManager from "../../../../../src/background/browser_state_management_component/layers/layer1_windows_state_management/WindowTabsStateManager";
+// import BrowserStateManager from "../../../../../src/background/browser_state_management_component/BrowserStateManager";
 //
 //
 // describe('constructor', function () {

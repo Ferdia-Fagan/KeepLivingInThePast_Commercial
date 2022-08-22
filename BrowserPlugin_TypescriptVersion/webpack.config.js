@@ -4,7 +4,7 @@ const keysTransformer = require('ts-transformer-keys/transformer').default;
 
 module.exports = {
     entry: {
-        'background-script': './src/TS/background/browser_state_management/BrowserStateManager.ts',
+        'background-script': './src/TS/background/browser_state_management_component/BrowserStateManager.ts',
     },
     output: {
         path: path.resolve(__dirname, 'extension/src'),

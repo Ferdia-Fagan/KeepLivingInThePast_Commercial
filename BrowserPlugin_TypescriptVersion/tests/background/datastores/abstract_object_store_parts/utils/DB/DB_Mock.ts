@@ -2,7 +2,7 @@
 import {
     NonPersistedStoreObjectStub,
     UpdatedStoreObjectStub
-} from "../../../../../../src/TS/background/components/datastores/parts/abstract_object_store_parts/layers/layer0_db/store_object/StoreObject_Dtos";
+} from "../../../../../../src/TS/background/components/datastore_components/abstract/parts/layers/layer0_db/store_object/StoreObject_Dtos";
 import {PersistedStoreObjectInterfaceExample, StoreObjectInterfaceExample} from "./DB_StoreDummy";
 
 export function createDBMock<
