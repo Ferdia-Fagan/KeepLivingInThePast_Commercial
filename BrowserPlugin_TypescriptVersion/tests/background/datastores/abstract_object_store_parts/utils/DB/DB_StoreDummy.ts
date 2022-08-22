@@ -1,17 +1,17 @@
 import {
     EditableDB
-} from "../../../../../../src/TS/background/components/datastore_components/abstract/parts/layers/layer0_db/implementations/EditableDB";
+} from "../../../../../../src/TS/background/domain/components/datastore_components/abstract/parts/layers/layer0_db/implementations/EditableDB";
 import {
     ID_NAME,
     KEY_NAME
-} from "../../../../../../src/TS/background/components/datastore_components/abstract/parts/layers/layer0_db/store_object/StoreObject_Constants";
+} from "../../../../../../src/TS/background/domain/components/datastore_components/abstract/parts/layers/layer0_db/store_object/StoreObject_Constants";
 import {
     NonPersistedStoreObjectStub,
     UpdatedStoreObjectStub
-} from "../../../../../../src/TS/background/components/datastore_components/abstract/parts/layers/layer0_db/store_object/StoreObject_Dtos";
+} from "../../../../../../src/TS/background/domain/components/datastore_components/abstract/parts/layers/layer0_db/store_object/StoreObject_Dtos";
 import {
     KEY_TYPE, PersistedStoreObject
-} from "../../../../../../src/TS/background/components/datastore_components/abstract/parts/layers/layer0_db/store_object/StoreObject_Types";
+} from "../../../../../../src/TS/background/domain/components/datastore_components/abstract/parts/layers/layer0_db/store_object/StoreObject_Types";
 
 export interface StoreObjectInterfaceExample
     extends NonPersistedStoreObjectStub {}

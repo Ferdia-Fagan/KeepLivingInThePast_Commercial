@@ -1,19 +1,19 @@
 import {
     NonPersistedStoreObjectStub
-} from "../../../../../src/TS/background/components/datastore_components/abstract/parts/layers/layer0_db/store_object/StoreObject_Dtos";
+} from "../../../../../src/TS/background/domain/components/datastore_components/abstract/parts/layers/layer0_db/store_object/StoreObject_Dtos";
 import {
     ID_TYPE, KEY_TYPE, PersistedStoreObject
-} from "../../../../../src/TS/background/components/datastore_components/abstract/parts/layers/layer0_db/store_object/StoreObject_Types";
+} from "../../../../../src/TS/background/domain/components/datastore_components/abstract/parts/layers/layer0_db/store_object/StoreObject_Types";
 import {
     DBAllOperationsReporting, DBReportInterface
-} from "../../../../../src/TS/background/components/datastore_components/abstract/parts/layers/layer2_reporting/implementations/DBAllOperationsReporting";
+} from "../../../../../src/TS/background/domain/components/datastore_components/abstract/parts/layers/layer2_reporting/implementations/DBAllOperationsReporting";
 import {
     ExtractReportInformationFunc
-} from "../../../../../src/TS/background/components/datastore_components/abstract/parts/layers/layer2_reporting/implementations/DBInsertOperationsReporting";
+} from "../../../../../src/TS/background/domain/components/datastore_components/abstract/parts/layers/layer2_reporting/implementations/DBInsertOperationsReporting";
 import {
     DeleteReport, InsertReport,
     UpdatesReport
-} from "../../../../../src/TS/background/components/datastore_components/abstract/parts/layers/layer2_reporting/reports/dtos/IndividualReports";
+} from "../../../../../src/TS/background/domain/components/datastore_components/abstract/parts/layers/layer2_reporting/reports/dtos/IndividualReports";
 
 export interface StoreObjectInterfaceExample
     extends PersistedStoreObject {
