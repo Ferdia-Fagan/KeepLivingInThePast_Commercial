@@ -9,7 +9,6 @@ import './KeyboardCommandHandlers';
 
 import '../datastores/BookmarksCollection';
 
-console.log("hello")
 
 // setUp()
 

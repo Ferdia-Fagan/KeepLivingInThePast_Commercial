@@ -44,9 +44,9 @@ module.exports = {
     //   './src/sidebar/AutoCollector/AutoCollectorMenu.js'
     // ],
 
-    'contentScripts/WebpageExtractionLayer': [
-      './src/contentScripts/WebPageExtractionLayer.js'
-    ]
+    // 'contentScripts/WebpageExtractionLayer': [
+    //   './src/contentScripts/WebPageExtractionLayer.js'
+    // ]
  },
 
   // devtool: 'eval-source-map',
