@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "strict": false,
+    "module": "commonjs",
+    "target": "es6",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "sourceMap": false,
+    "outDir": "extension/build",
+    "noEmit": false,
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact",
+    "typeRoots": [ "node_modules/@types" ],
+    "experimentalDecorators": true
+  },
+
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.tsx",
+  ],
+  "exclude": [
+    "extension",
+    "node_modules",
+  ]
+}

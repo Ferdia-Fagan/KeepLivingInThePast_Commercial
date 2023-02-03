@@ -1,5 +1,4 @@
 {
-
     "description": "Keep Living In the Past, Man: A nativeMessaging browser plugin made for final year project of a Irish computer scientist.",
     "manifest_version": 2,
     "name": "Keep Living In the Past, Man.",
@@ -15,4 +14,4 @@
       "page": "./src/background/Background.html"
     }
   
-  }
+}

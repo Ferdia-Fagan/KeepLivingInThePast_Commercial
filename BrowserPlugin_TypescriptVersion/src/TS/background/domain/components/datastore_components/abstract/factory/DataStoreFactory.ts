@@ -21,7 +21,7 @@ import {
 import {PersistedStoreObject} from "../parts/layers/layer0_db/store_object/StoreObject_Types";
 import {DBCache} from "../parts/layers/layer1_cache/DBCache_Implementations";
 
-interface DatastoreConstructor<
+export interface DatastoreConstructor<
     STORE_T extends NonPersistedStoreObjectStub,
     STORE_T_UPDATE_INTERFACE extends UpdatedStoreObjectStub,
     DATA_STORE_I extends NonEditableStoreDB_I<STORE_T>,

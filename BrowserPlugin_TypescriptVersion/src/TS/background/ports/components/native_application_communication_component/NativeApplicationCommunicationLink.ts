@@ -1,6 +1,7 @@
 import browser, {Runtime} from "webextension-polyfill";
 import {NativeMessageOut, NativeMessageResponse, NativeRequestOut} from "./messages/NativeMessageOut";
 import {MessageResponseAction, ResponseId, ResponseIdProp} from "./messages/Types";
+
 // TODO: complete: []
 export interface NativeApplicationCommunicationContract {
     sendMessage(message: NativeMessageOut<any>): void

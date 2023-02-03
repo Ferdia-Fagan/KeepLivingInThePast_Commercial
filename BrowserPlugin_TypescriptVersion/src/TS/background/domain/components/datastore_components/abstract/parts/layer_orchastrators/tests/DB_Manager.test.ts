@@ -6,7 +6,7 @@ import "mockzilla-webextension";
 import {
     DB_StoreDummy, PersistedStoreObjectInterfaceExample, StoreObjectInterfaceExample
 } from "../../../../../../../../../../tests/background/datastores/abstract_object_store_parts/utils/DB/DB_StoreDummy";
-import {createDataStoreFromParts} from "../../../factory/DataStoreFactory";
+import {createDataStoreFromParts, DatastoreConstructor} from "../../../factory/DataStoreFactory";
 import {buildDBLayer, KeyIndexKeyAssignement} from "../../layers/layer0_db/construction/Builder";
 import {EditableDB, EditableStoreDB_I} from "../../layers/layer0_db/implementations/EditableDB";
 import {KEY_NAME} from "../../layers/layer0_db/store_object/StoreObject_Constants";
